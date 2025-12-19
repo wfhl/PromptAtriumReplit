@@ -332,12 +332,20 @@ toast({
 })
 ```
 
-### Styling
+### Variants
 
-Toasts use glass-morphism styling:
-- Background: `rgba(168, 85, 247, 0.85)` (purple glass)
-- Backdrop blur: `blur(12px)`
-- Border: `rgba(168, 85, 247, 0.3)`
+| Variant | Styling (Tailwind Classes) |
+|---------|---------------------------|
+| **default** | `border-purple-500/30 bg-purple-500/85 text-white backdrop-blur-md shadow-purple-500/20` |
+| **destructive** | `border-destructive bg-destructive text-destructive-foreground` |
+
+### Styling Details
+
+Default toasts use glass-morphism via Tailwind classes:
+- Background: `bg-purple-500/85` (purple with 85% opacity)
+- Backdrop blur: `backdrop-blur-md`
+- Border: `border-purple-500/30` (purple with 30% opacity)
+- Shadow: `shadow-purple-500/20` (purple shadow)
 
 ---
 
@@ -373,37 +381,50 @@ For navigation items with gradient text:
 
 ## Glass-morphism Patterns
 
-### Primary Glass (Blue)
+> **Note:** Some glass patterns are already implemented in existing components (e.g., Toast). The patterns below show how to apply similar effects to custom components.
+
+### Already Implemented
+
+| Component | Location | Glass Effect |
+|-----------|----------|--------------|
+| **Toast** | `ui/toast.tsx` | `bg-purple-500/85 backdrop-blur-md border-purple-500/30` |
+| **Mobile Nav** | `index.css` | Gradient overlay with backdrop-filter |
+| **Dropdowns** | `index.css` | Gradient glass overlay |
+
+### Optional Patterns for Custom Components
+
+#### Primary Glass (Blue)
 
 ```tsx
-<div className="bg-primary/90 backdrop-blur-xl border border-primary/30 shadow-lg">
+<div className="bg-primary/90 backdrop-blur-md border border-primary/30 shadow-lg">
   {/* Content */}
 </div>
 ```
 
-### Purple Glass (Toasts)
+#### Purple Glass
 
 ```tsx
-<div className="bg-purple-500/85 backdrop-blur-xl border border-purple-500/30 shadow-lg">
+<div className="bg-purple-500/85 backdrop-blur-md border border-purple-500/30 shadow-lg shadow-purple-500/20">
   {/* Content */}
 </div>
 ```
 
-### Overlay Glass (Dropdowns)
+#### Overlay Glass (Multi-color Gradient)
 
 ```tsx
-<div className="bg-gradient-to-br from-[rgba(2,142,198,0.3)] via-[rgba(104,81,200,0.3)] to-[rgba(255,200,2,0.3)] backdrop-blur-xl border border-violet-500/30">
+<div className="bg-gradient-to-br from-[rgba(2,142,198,0.3)] via-[rgba(104,81,200,0.3)] to-[rgba(255,200,2,0.3)] backdrop-blur-md border border-violet-500/30">
   {/* Content */}
 </div>
 ```
 
 ### Usage Guidelines
 
-1. Always include `-webkit-backdrop-filter` for Safari support
-2. Use `backdrop-blur-xl` (20px) for stronger effects
-3. Use `backdrop-blur` (12px) for standard effects
-4. Add subtle borders with `/30` opacity
-5. Include shadow for depth
+1. **Use Tailwind classes** - Prefer `backdrop-blur-md` over raw CSS
+2. **Tailwind handles prefixes** - No need for manual `-webkit-backdrop-filter`
+3. Use `backdrop-blur-md` (12px) for standard effects
+4. Use `backdrop-blur-xl` (24px) for stronger effects
+5. Add subtle borders with `/30` opacity
+6. Include shadow for depth
 
 ---
 
