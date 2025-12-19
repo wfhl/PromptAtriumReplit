@@ -1,0 +1,152 @@
+{
+  "figma_export": {
+    "metadata": {
+      "name": "PromptAtrium Design System",
+      "version": "1.0.0",
+      "description": "Complete design tokens for Figma import",
+      "last_updated": "December 2024",
+      "export_format": "figma_tokens_json"
+    },
+    "colors": {
+      "semantic": {
+        "background": "#111318",
+        "foreground": "#F0F1F4",
+        "primary": "#2563EB",
+        "primary-foreground": "#FAFAFA",
+        "secondary": "#242830",
+        "secondary-foreground": "#B4BAC4",
+        "muted": "#1F232A",
+        "muted-foreground": "#8E95A2",
+        "accent": "#242830",
+        "accent-foreground": "#B4BAC4",
+        "destructive": "#F04444",
+        "destructive-foreground": "#FAFAFA",
+        "success": "#22C55E",
+        "success-foreground": "#FAFAFA",
+        "warning": "#F59E0B",
+        "warning-foreground": "#141414"
+      },
+      "surface": {
+        "card": "#1A1D24",
+        "card-foreground": "#F0F1F4",
+        "popover": "#1A1D24",
+        "popover-foreground": "#F0F1F4"
+      },
+      "borders_and_inputs": {
+        "border": "#2D323B",
+        "input": "#2D323B",
+        "ring": "#2563EB"
+      },
+      "chart": {
+        "chart-1": "#2563EB",
+        "chart-2": "#00B877",
+        "chart-3": "#F7B32B",
+        "chart-4": "#20C05B",
+        "chart-5": "#E21C4F"
+      },
+      "sidebar": {
+        "sidebar": "#1A1D24",
+        "sidebar-foreground": "#F0F1F4",
+        "sidebar-primary": "#2563EB",
+        "sidebar-primary-foreground": "#FAFAFA",
+        "sidebar-accent": "#242830",
+        "sidebar-accent-foreground": "#B4BAC4",
+        "sidebar-border": "#2D323B",
+        "sidebar-ring": "#2563EB"
+      }
+    },
+    "gradients": {
+      "brand": {
+        "library": "linear-gradient(135deg, #028ec6 0%, #9175ff 30%, #9175ff 70%, #028ec6 100%)",
+        "community": "linear-gradient(135deg, #ffc800 0%, #ff7300 30%, #ff7300 70%, #ffc802 100%)",
+        "tools": "linear-gradient(135deg, #8466d6 0%, #128fc4 30%, #128fc4 70%, #8466d6 100%)",
+        "marketplace": "linear-gradient(135deg, #b084cc 0%, #28a745 30%, #28a745 70%, #b084cc 100%)"
+      }
+    },
+    "typography": {
+      "font_families": {
+        "sans": "Inter",
+        "serif": "Georgia",
+        "mono": "Menlo"
+      },
+      "sizes": {
+        "xs": "12px",
+        "sm": "14px",
+        "base": "16px",
+        "lg": "18px",
+        "xl": "20px",
+        "2xl": "24px",
+        "3xl": "30px",
+        "4xl": "36px"
+      },
+      "line_heights": {
+        "tight": "1.2",
+        "normal": "1.5",
+        "relaxed": "1.75",
+        "loose": "2"
+      },
+      "font_weights": {
+        "light": "300",
+        "normal": "400",
+        "medium": "500",
+        "semibold": "600",
+        "bold": "700"
+      }
+    },
+    "spacing": {
+      "0": "0px",
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "16": "64px"
+    },
+    "border_radius": {
+      "sm": "4px",
+      "md": "6px",
+      "lg": "8px",
+      "xl": "12px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "xs": "0 1px 2px rgba(0, 0, 0, 0.05)",
+      "sm": "0 1px 2px rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.04)",
+      "2xl": "0 25px 50px rgba(0, 0, 0, 0.25)",
+      "primary": "0 10px 15px rgba(37, 99, 235, 0.25)",
+      "purple": "0 10px 15px rgba(168, 85, 247, 0.2)"
+    },
+    "glass_morphism": {
+      "primary": "rgba(255, 255, 255, 0.05)",
+      "purple": "rgba(168, 85, 247, 0.1)",
+      "overlay": "rgba(10, 10, 10, 0.4)"
+    },
+    "animations": {
+      "durations": {
+        "fast": "150ms",
+        "base": "200ms",
+        "slow": "300ms",
+        "slower": "500ms"
+      },
+      "timings": {
+        "ease": "ease",
+        "ease-in": "ease-in",
+        "ease-out": "ease-out",
+        "ease-in-out": "ease-in-out",
+        "linear": "linear"
+      }
+    },
+    "import_instructions": {
+      "method_1_manual_figma_tokens": "1. Install Figma Tokens plugin\n2. Open plugin in Figma\n3. Go to 'Tokens' tab\n4. Click 'Import' and paste this JSON\n5. Create tokens from each category",
+      "method_2_css_variables": "Copy CSS variable values from 'colors' section into your Figma text styles",
+      "method_3_color_library": "Create color library with semantic colors:\n- Background colors: background, card, popover\n- Text colors: foreground, card-foreground, secondary-foreground\n- State colors: primary, destructive, success, warning\n- Chart colors: chart-1 through chart-5"
+    }
+  }
+}
