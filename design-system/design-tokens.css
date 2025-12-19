@@ -1,11 +1,21 @@
 /**
- * PromptAtrium Design Tokens
+ * PromptAtrium Design Tokens - Supplemental
  * 
- * This file contains all CSS custom properties (design tokens) used in the application.
- * Import this file to access centralized design values.
+ * This file contains SUPPLEMENTAL CSS custom properties (design tokens) that extend
+ * the base token set defined in client/src/index.css.
+ * 
+ * TOKEN ARCHITECTURE:
+ * - Core color tokens: Defined in client/src/index.css (:root and .dark)
+ * - Extended tokens: Defined here (spacing, radius, animation, glass-morphism, gradients)
+ * - Utility classes: Defined here (buttons, cards, badges, forms)
+ * 
+ * To use the full design system, import both files:
+ *   @import 'client/src/index.css';
+ *   @import 'design-system/design-tokens.css';
  * 
  * @version 1.0.0
- * @see DESIGN_TOKENS.md for documentation
+ * @see DESIGN_TOKENS.md for complete token documentation
+ * @see client/src/index.css for core color tokens
  */
 
 /* ============================================

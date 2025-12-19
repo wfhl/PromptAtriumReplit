@@ -277,17 +277,42 @@ background:
   linear-gradient(to bottom, #000000, #000000);
 ```
 
-### Navigation Gradients
+### Navigation Gradients (Text)
 
-Used for active navigation states:
+Used for active navigation states with gradient text effects:
 
-| Section | Gradient |
-|---------|----------|
-| **Library** | `linear-gradient(135deg, #028EC6 0%, #9175FF 30%, #9175FF 70%, #028EC6 100%)` |
-| **Community** | `linear-gradient(135deg, #FFC800 0%, #FF7300 30%, #FF7300 70%, #FFC802 100%)` |
-| **Tools** | `linear-gradient(135deg, #8466D6 0%, #128FC4 30%, #128FC4 70%, #8466D6 100%)` |
+| Section | Gradient | CSS Class |
+|---------|----------|-----------|
+| **Library** | `linear-gradient(135deg, #028EC6 0%, #9175FF 30%, #9175FF 70%, #028EC6 100%)` | `.nav-gradient-library` |
+| **Community** | `linear-gradient(135deg, #FFC800 0%, #FF7300 30%, #FF7300 70%, #FFC802 100%)` | `.nav-gradient-community` |
+| **Tools** | `linear-gradient(135deg, #8466D6 0%, #128FC4 30%, #128FC4 70%, #8466D6 100%)` | `.nav-gradient-tools` |
+| **Marketplace** | `linear-gradient(135deg, #10B981 0%, #3B82F6 100%)` | `.nav-gradient-marketplace` |
 
 Apply with `-webkit-background-clip: text` and `-webkit-text-fill-color: transparent`.
+
+### Button Gradients (Background)
+
+Used for gradient button backgrounds with glass-morphism effects:
+
+| Section | Gradient | CSS Class |
+|---------|----------|-----------|
+| **Library** | `linear-gradient(135deg, #028EC6 0%, #6851C8 30%, #6851C8 70%, #028EC6 100%)` | `.button-gradient-library` |
+| **Community** | `linear-gradient(135deg, rgba(255,200,0,0.8) 0%, rgba(255,115,0,0.8) 50%, rgba(255,200,2,0.8) 100%)` | `.button-gradient-community` |
+| **Tools** | `linear-gradient(135deg, #8466D6 0%, #128FC4 50%, #8466D6 100%)` | `.button-gradient-tools` |
+| **Marketplace** | `linear-gradient(135deg, #10B981 0%, #3B82F6 50%, #10B981 100%)` | `.button-gradient-marketplace` |
+
+Apply with `backdrop-filter: blur(10px)` for glass effect and `:hover { transform: translateY(-1px) }` for interaction.
+
+### UI Element Gradients
+
+Used for glass-morphism overlays (dropdowns, mobile menus, toasts):
+
+| Element | Gradient |
+|---------|----------|
+| **Toast/Dropdown** | `linear-gradient(135deg, rgba(2,142,198,0.3) 0%, rgba(104,81,200,0.3) 50%, rgba(255,200,2,0.3) 100%)` |
+| **Mobile Nav** | `linear-gradient(135deg, rgba(2,142,198,0.3) 0%, rgba(59,40,103,0.5) 100%)` |
+
+Apply with `backdrop-filter: blur(10px)` and appropriate border/shadow tokens.
 
 ---
 

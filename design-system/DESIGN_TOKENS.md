@@ -6,6 +6,17 @@
 
 This document defines all design tokens used in PromptAtrium. Design tokens are the atomic values that make up the visual design system - colors, spacing, typography, shadows, and more.
 
+## Token Architecture
+
+The design system uses a two-file structure:
+
+| File | Location | Contains |
+|------|----------|----------|
+| **index.css** | `client/src/index.css` | Core color tokens, shadow tokens, semantic colors (`:root` and `.dark`) |
+| **design-tokens.css** | `design-system/design-tokens.css` | Extended tokens (spacing, radius, animation, glass-morphism, gradients) + utility classes |
+
+**Why two files?** Core colors are tightly integrated with Tailwind CSS and shadcn/ui in index.css. Extended tokens and utilities are in a separate file for cleaner organization and optional import.
+
 ---
 
 ## Table of Contents
