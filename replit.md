@@ -50,6 +50,10 @@ The application includes a comprehensive design system located in `design-system
 - `FIGMA_DESIGN_TOKENS.json` - Figma-ready token export (copy-paste into Figma Tokens plugin)
 - `design-tokens.css` - Extended CSS custom properties
 
+#### System-Level Documentation
+- `SYSTEM_OVERVIEW.md` - **Master architecture document** with C4 System Context, Container diagrams, cross-feature flows, shared data contracts, and glossary
+- `FEATURE_INTERACTION_MAP.md` - Visual map of how features connect, share data, and trigger events
+
 #### Feature Architecture Documentation
 Each feature has comprehensive diagrams (C4, Sequence, ERD) for redesign planning:
 
