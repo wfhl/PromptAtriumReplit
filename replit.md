@@ -162,6 +162,31 @@ A comprehensive platform for managing, sharing, and generating AI prompts. Featu
 - Toast notifications for user feedback
 - Mobile-responsive design
 
+## Design System
+
+The application includes a comprehensive design system located in `design-system/`:
+
+### Documentation Files
+- `README.md` - Overview and quick start guide
+- `DESIGN_TOKENS.md` - Complete token definitions (colors, spacing, shadows)
+- `COMPONENT_PATTERNS.md` - Component usage examples and patterns
+- `CSS_ARCHITECTURE.md` - CSS file structure and organization guide
+- `design-tokens.css` - Extended CSS custom properties
+
+### Key Design Principles
+- **Dark-first design** with deep blue-gray backgrounds
+- **Glass-morphism effects** for toasts, dropdowns, and navigation
+- **Gradient accents** for section branding (Library, Community, Tools, Marketplace)
+- **Consistent tokens** using CSS custom properties
+
+### Core Token Categories
+- Semantic colors (`--primary`, `--secondary`, `--destructive`, `--success`, `--warning`)
+- Surface colors (`--card`, `--popover`, `--sidebar`)
+- Shadow scale (`--shadow-xs` through `--shadow-2xl`)
+- Typography (`--font-sans`, `--font-serif`, `--font-mono`)
+
+See `BRAND_GUIDELINES.md` for detailed visual specifications.
+
 ## Technical Decisions
 
 ### Database Schema
