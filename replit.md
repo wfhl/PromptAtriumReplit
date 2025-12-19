@@ -50,6 +50,8 @@ The application includes a comprehensive design system located in `design-system
 - `FIGMA_DESIGN_TOKENS.json` - Figma-ready token export (copy-paste into Figma Tokens plugin)
 - `PROMPT_DATABASE_ARCHITECTURE.md` - Complete frontend-backend-database flow with Mermaid.js sequence diagrams
 - `DATA_OBJECT_REFERENCE.md` - Quick-reference guide for all prompt-related data objects
+- `PROMPT_GENERATOR_ARCHITECTURE.md` - **NEW** Prompt generator flow with sequence diagram (templates, characters, AI enhancement)
+- `GENERATOR_DATA_OBJECTS.md` - **NEW** Quick reference for generator-specific data objects
 - `design-tokens.css` - Extended CSS custom properties
 
 ### Key Design Principles
