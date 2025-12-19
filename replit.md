@@ -48,13 +48,25 @@ The application includes a comprehensive design system located in `design-system
 - `CSS_ARCHITECTURE.md` - CSS file structure and organization guide
 - `DESIGN_CHANGE_WORKFLOW.md` - Step-by-step guide for implementing design changes and prompting workflows
 - `FIGMA_DESIGN_TOKENS.json` - Figma-ready token export (copy-paste into Figma Tokens plugin)
-- `PROMPT_DATABASE_ARCHITECTURE.md` - Complete frontend-backend-database flow with Mermaid.js sequence diagrams
-- `DATA_OBJECT_REFERENCE.md` - Quick-reference guide for all prompt-related data objects
-- `PROMPT_GENERATOR_ARCHITECTURE.md` - Prompt generator flow with sequence diagram (templates, characters, AI enhancement)
-- `GENERATOR_DATA_OBJECTS.md` - Quick reference for generator-specific data objects
-- `WORDSMITH_CODEX_ARCHITECTURE.md` - **NEW** Wordsmith Codex component library flow with sequence diagram
-- `CODEX_DATA_OBJECTS.md` - **NEW** Quick reference for Codex-specific data objects
 - `design-tokens.css` - Extended CSS custom properties
+
+#### Feature Architecture Documentation
+Each feature has comprehensive diagrams (C4, Sequence, ERD) for redesign planning:
+
+**Prompt Database:**
+- `PROMPT_DATABASE_ARCHITECTURE.md` - Flow documentation with sequence diagrams
+- `DATA_OBJECT_REFERENCE.md` - Data objects quick reference
+- `PROMPT_DATABASE_DIAGRAMS.md` - **Complete diagram set** (C4, Sequence, ERD)
+
+**Prompt Generator:**
+- `PROMPT_GENERATOR_ARCHITECTURE.md` - Generator flow with AI enhancement
+- `GENERATOR_DATA_OBJECTS.md` - Generator data objects reference
+- `PROMPT_GENERATOR_DIAGRAMS.md` - **Complete diagram set** (C4, Sequence, ERD)
+
+**Wordsmith Codex:**
+- `WORDSMITH_CODEX_ARCHITECTURE.md` - Codex component library flow
+- `CODEX_DATA_OBJECTS.md` - Codex data objects reference
+- `WORDSMITH_CODEX_DIAGRAMS.md` - **Complete diagram set** (C4, Sequence, ERD)
 
 ### Key Design Principles
 - **Dark-first design** with deep blue-gray backgrounds
