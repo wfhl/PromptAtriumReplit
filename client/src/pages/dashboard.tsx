@@ -817,12 +817,16 @@ export default function Dashboard() {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
-            <QuickActions
-              onCreatePrompt={handleCreatePrompt}
-              onCreateCollection={handleCreateCollection}
-              onStartProject={handleStartProject}
-              onImportPrompts={handleImportPrompts}
-            />
+            <Card data-testid="card-tools-mobile">
+              <CardContent className="pt-4">
+                <QuickActions
+                  onCreatePrompt={handleCreatePrompt}
+                  onCreateCollection={handleCreateCollection}
+                  onStartProject={handleStartProject}
+                  onImportPrompts={handleImportPrompts}
+                />
+              </CardContent>
+            </Card>
           </CollapsibleContent>
         </Collapsible>
         )}
@@ -1211,12 +1215,16 @@ export default function Dashboard() {
                 </CollapsibleTrigger>
               </div>
               <CollapsibleContent>
-                <QuickActions
-                  onCreatePrompt={handleCreatePrompt}
-                  onCreateCollection={handleCreateCollection}
-                  onStartProject={handleStartProject}
-                  onImportPrompts={handleImportPrompts}
-                />
+                <Card data-testid="card-tools">
+                  <CardContent className="pt-4">
+                    <QuickActions
+                      onCreatePrompt={handleCreatePrompt}
+                      onCreateCollection={handleCreateCollection}
+                      onStartProject={handleStartProject}
+                      onImportPrompts={handleImportPrompts}
+                    />
+                  </CardContent>
+                </Card>
               </CollapsibleContent>
             </Collapsible>
             )}
