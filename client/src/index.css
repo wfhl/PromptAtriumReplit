@@ -369,6 +369,7 @@
   box-shadow: 0 8px 32px rgba(59, 40, 103, 0.5);
 }
 
+
 /* Mobile hamburger menu background */
 .md\:hidden.bg-gray-900\/30 {
   background: linear-gradient(135deg, rgb(2, 142, 198, 0.3) 0%, rgb(59, 40, 103, 0.5)) !important;
