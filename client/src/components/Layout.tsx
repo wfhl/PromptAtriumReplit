@@ -24,6 +24,7 @@ import { PromptModal } from "@/components/PromptModal";
 import { BulkImportModal } from "@/components/BulkImportModal";
 import { IntroductionModal } from "@/components/IntroductionModal";
 import { MobilePageNav } from "@/components/MobilePageNav";
+import { CollectionsSidebar } from "@/components/CollectionsSidebar";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -68,6 +69,20 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
   const [createCollectionModalOpen, setCreateCollectionModalOpen] = useState(false);
   const [notificationModalOpen, setNotificationModalOpen] = useState(false);
   const [introductionModalOpen, setIntroductionModalOpen] = useState(false);
+  
+  // Collections sidebar state (persisted in localStorage)
+  const [collectionsSidebarOpen, setCollectionsSidebarOpen] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('collectionsSidebarOpen');
+      return saved ? saved === 'true' : false;
+    }
+    return false;
+  });
+
+  // Persist sidebar state
+  useEffect(() => {
+    localStorage.setItem('collectionsSidebarOpen', String(collectionsSidebarOpen));
+  }, [collectionsSidebarOpen]);
 
   // Apply theme to document
   useEffect(() => {
@@ -944,8 +959,19 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
         )}
       </header>
 
+      {/* Collections Sidebar */}
+      <CollectionsSidebar
+        isOpen={collectionsSidebarOpen}
+        onToggle={() => setCollectionsSidebarOpen(!collectionsSidebarOpen)}
+        onCreateCollection={() => setCreateCollectionModalOpen(true)}
+      />
+
       {/* Main Content */}
-      <main className="pt-16 relative z-10">
+      <main 
+        className={`pt-16 relative z-10 transition-all duration-300 ease-in-out ${
+          collectionsSidebarOpen ? 'ml-64' : 'ml-0'
+        }`}
+      >
         {children}
       </main>
 
