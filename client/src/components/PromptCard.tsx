@@ -1203,7 +1203,7 @@ export function PromptCard({
       borderWidth={0.5}
       duration={15}
     >
-      <Card className={`border-0 bg-gray-400/10 hover:bg-gray-400/20 transition-colors cursor-pointer break-inside-avoid w-full ${
+      <Card className={`border-0 bg-gray-400/10 hover:bg-gray-400/20 transition-colors cursor-pointer break-inside-avoid w-full backdrop-blur-none ${
         isSelected ? "border-primary bg-muted/30" : ""
       } ${isSelectable ? 'cursor-pointer' : ''}`} 
       data-testid={`card-prompt-${prompt.id}`}
