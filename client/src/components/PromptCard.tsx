@@ -137,43 +137,24 @@ export function PromptCard({
     return false;
   });
   
-  // Debug logging
-  console.log('PromptCard Debug:', {
-    promptId: prompt.id,
-    userId: typedUser?.id,
-    userRole: typedUser?.role,
-    promptUserId: prompt.userId,
-    isOwner: String(typedUser?.id) === String(prompt.userId),
-    isSuperAdmin,
-    isRegularUser,
-    userCommunityMembershipsCount: userCommunityMemberships.length,
-    userCommunityMemberships: userCommunityMemberships.map(uc => ({ 
-      communityId: uc.communityId, 
-      role: uc.role, 
-      status: uc.status 
-    })),
-    allCommunitiesCount: allCommunities.length,
-    userCommunitiesCount: userCommunities.length,
-    userCommunities: userCommunities.map(c => ({ id: c.id, name: c.name, slug: c.slug })),
-    showActions,
-    isCommunityPage,
-    shouldShowDropdown: showActions && !isCommunityPage && String(typedUser?.id) === String(prompt.userId) && userCommunities.length > 0
-  });
-  
   // Fetch prompt's shared communities
   const { data: promptCommunities = [] } = useQuery<string[]>({
     queryKey: [`/api/prompts/${prompt.id}/communities`],
     enabled: !!prompt.id,
   });
   
+  // Serialize promptCommunities to string for stable comparison in useEffect
+  const promptCommunitiesKey = JSON.stringify(promptCommunities);
+  
   // Initialize selected communities based on current prompt state
   useEffect(() => {
+    const communities = JSON.parse(promptCommunitiesKey) as string[];
     if (prompt.isPublic) {
-      setSelectedCommunities(['global', ...promptCommunities]);
+      setSelectedCommunities(['global', ...communities]);
     } else {
-      setSelectedCommunities(promptCommunities);
+      setSelectedCommunities(communities);
     }
-  }, [prompt.isPublic, promptCommunities]);
+  }, [prompt.isPublic, promptCommunitiesKey]);
 
   // Separate queries for likes and favorites
   const { data: userFavorites = [] } = useQuery({

@@ -28,7 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import type { Prompt, Collection, User } from "@shared/schema";
+import type { Prompt, Collection, User, MarketplaceListing } from "@shared/schema";
 
 const collectionSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -375,7 +375,7 @@ export default function Dashboard() {
   });
 
   // Fetch featured marketplace listings
-  const { data: featuredListings = [] } = useQuery({
+  const { data: featuredListings = [] } = useQuery<MarketplaceListing[]>({
     queryKey: ["/api/marketplace/featured?limit=4"],
     enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -1088,7 +1088,7 @@ export default function Dashboard() {
                 </div>
                 <CollapsibleContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-testid="section-featured-marketplace">
-                    {featuredListings.slice(0, 4).map((listing: any) => (
+                    {featuredListings.slice(0, 4).map((listing) => (
                       <MarketplaceListingCard key={listing.id} listing={listing} />
                     ))}
                   </div>
