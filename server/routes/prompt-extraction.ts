@@ -82,33 +82,30 @@ INSTRUCTIONS:
    - If the carousel contains 5 slides, and each has a different prompt (e.g., "Editing Plan", "Style Matching"), return them as **5 separate items** in the output list.
    - **Slide Mapping**: If possible, identify which slide index (0-based) the prompt came from.
 
-2. **TEXT ANALYSIS**:
-   - Extract prompts from captions, descriptions, or provided context
-   - Look for prompt patterns (detailed descriptions, style keywords, model parameters)
-   - **CRITICAL**: If the prompt is formatted as **JSON**, you MUST preserve the JSON structure exactly.
+2. **PROMPT EXTRACTION & FORMATTING (CRITICAL)**:
+   - **JSON PRESERVATION**: If a prompt is formatted as a JSON object (e.g., containing "prompt_structure", "subject", "appearance", etc.), you **MUST** extract and preserve the entire JSON block exactly as written. Do NOT simplify it to a string.
+   - **CLEANING**: Remove any social media artifacts (likes, share buttons, UI elements) from the prompt text.
+   - **ACCURACY**: Extract the prompt text EXACTLY as presented in the source.
 
-3. **FIND THE PROMPT(S)**:
-   - Extract the prompt text exactly as written.
-   - For each prompt found, determine:
-     - **promptType**: Classify (e.g., "Image", "Video", "3D", "Agentic", "Writing", "Code")
-     - **promptStyle**: Classify (e.g., "JSON", "Narrative", "Instructional", "Cinematic")
-     - **intendedModel**: Identify (e.g., "Midjourney", "DALL-E", "Stable Diffusion", "Flux", "Runway", "ChatGPT", "Sora")
-     - **tags**: Relevant keywords and themes
+3. **METADATA EXTRACTION (Per Item)**:
+   - **promptType**: Classify (e.g., "Image", "Video", "3D", "Agentic", "Writing", "Code")
+   - **promptStyle**: Classify (e.g., "JSON", "Narrative", "Instructional", "Cinematic")
+   - **intendedModel**: Identify (e.g., "Midjourney", "DALL-E", "Stable Diffusion", "Flux", "Runway", "ChatGPT", "Sora")
+   - **tags**: Relevant keywords and themes
 
 4. **RECONSTRUCTION**:
-   - If no direct prompt text is found, reconstruct it based on the visual analysis of the provided media.
-   - Describe what elements, styles, and techniques were likely used to generate the image.
+   - If no direct prompt text is found, reconstruct it based on the visual analysis.
 
 RESPOND IN JSON FORMAT:
 {
-  "analysis": "Brief overview of what you found (e.g. 'Found 5 prompts in the carousel').",
+  "analysis": "Brief overview of what you found.",
   "method": "direct" | "reconstructed" | "failed",
   "items": [
     {
-      "prompt": "The actual prompt text...",
+      "prompt": "The actual prompt text (preserve JSON if present)...",
       "tags": ["tag1", "tag2"],
       "promptType": "Image",
-      "promptStyle": "Narrative",
+      "promptStyle": "JSON",
       "intendedModel": "Midjourney",
       "slideIndex": 0
     }

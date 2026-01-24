@@ -158,6 +158,18 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
 
   const savePromptMutation = useMutation({
     mutationFn: async ({ item, index }: { item: ExtractedPrompt; index: number }) => {
+      // Determine which image is associated with this prompt for the thumbnail
+      let mediaUrl = undefined;
+      let mediaBase64 = undefined;
+
+      if (item.slideIndex !== undefined && item.slideIndex >= 0 && item.slideIndex < previewUrls.length) {
+        mediaUrl = previewUrls[item.slideIndex];
+        // Note: For actual saving, the backend handles file persistence if needed, 
+        // but for now we use the extracted text and metadata
+      } else if (socialContext?.thumbnail) {
+        mediaUrl = socialContext.thumbnail;
+      }
+
       const promptData = {
         name: item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : ""),
         description: item.prompt,
@@ -169,6 +181,13 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         intendedGenerator: item.intendedModel,
         isPublic: false,
         status: "draft",
+        // Additional metadata to match GitHub types
+        metadata: {
+          platform: socialContext?.platform || 'manual_upload',
+          extractionMethod: result?.method || 'direct',
+          slideIndex: item.slideIndex,
+          timestamp: Date.now()
+        }
       };
 
       await apiRequest("POST", "/api/prompts", promptData);
