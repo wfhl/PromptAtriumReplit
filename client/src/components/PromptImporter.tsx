@@ -174,7 +174,8 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         name: typeof item.prompt === 'string' 
           ? item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : "")
           : "Structured Prompt",
-        description: typeof item.prompt === 'string' ? item.prompt : JSON.stringify(item.prompt, null, 2),
+        promptContent: typeof item.prompt === 'string' ? item.prompt : JSON.stringify(item.prompt, null, 2),
+        description: typeof item.prompt === 'string' ? item.prompt : "Imported structured prompt",
         category: item.promptType || "General",
         promptType: item.promptType,
         promptStyle: item.promptStyle,
@@ -184,11 +185,12 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         isPublic: false,
         status: "draft",
         // Additional metadata to match GitHub types
-        metadata: {
+        additionalMetadata: {
           platform: socialContext?.platform || 'manual_upload',
           extractionMethod: result?.method || 'direct',
           slideIndex: item.slideIndex,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          mediaUrl: mediaUrl
         }
       };
 
@@ -477,11 +479,9 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
-                            <div className="text-sm flex-1 line-clamp-3">
+                            <div className="text-sm flex-1 font-mono text-xs whitespace-pre-wrap bg-muted p-3 rounded border border-border/50">
                               {typeof item.prompt === 'object' ? (
-                                <pre className="whitespace-pre-wrap font-mono text-xs bg-muted p-2 rounded">
-                                  {JSON.stringify(item.prompt, null, 2)}
-                                </pre>
+                                JSON.stringify(item.prompt, null, 2)
                               ) : (
                                 item.prompt
                               )}
