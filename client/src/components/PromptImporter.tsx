@@ -348,12 +348,51 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                       )}
                     </div>
                     
-                    {/* Render iframe embed for YouTube/Instagram */}
-                    {socialContext.html ? (
-                      <div 
-                        className="w-full"
-                        dangerouslySetInnerHTML={{ __html: socialContext.html }}
-                      />
+                    {/* Render iframe embed for YouTube/Instagram/Twitter */}
+                    {socialContext.html || socialContext.platform === 'twitter' ? (
+                      <div className="w-full bg-white dark:bg-[#15181c] rounded-md overflow-hidden">
+                        {socialContext.platform === 'twitter' ? (
+                          <div className="p-4 border border-border/50">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                {socialContext.author?.[0] || 'X'}
+                              </div>
+                              <div>
+                                <div className="font-bold text-sm text-foreground">{socialContext.author || 'User'}</div>
+                                <div className="text-xs text-muted-foreground">@{socialContext.originalUrl?.split('/')?.slice(-3, -2)?.[0] || 'xuser'}</div>
+                              </div>
+                              <div className="ml-auto">
+                                <span className="text-xl">𝕏</span>
+                              </div>
+                            </div>
+                            <p className="text-sm text-foreground whitespace-pre-wrap mb-4 leading-relaxed">
+                              {socialContext.text || socialContext.title}
+                            </p>
+                            {socialContext.mediaUrls && socialContext.mediaUrls.length > 0 && (
+                              <div className={`grid gap-2 rounded-xl overflow-hidden ${socialContext.mediaUrls.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                                {socialContext.mediaUrls.slice(0, 4).map((mediaUrl, i) => (
+                                  <img 
+                                    key={i}
+                                    src={mediaUrl} 
+                                    alt={`Tweet media ${i+1}`} 
+                                    className="w-full h-full object-cover max-h-60"
+                                  />
+                                ))}
+                              </div>
+                            )}
+                            <div className="mt-3 pt-3 border-t border-border/30 flex items-center gap-4 text-xs text-muted-foreground">
+                              <span>{new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                              <span>•</span>
+                              <span>{new Date().toLocaleDateString([], {month: 'short', day: 'numeric', year: 'numeric'})}</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <div 
+                            className="w-full"
+                            dangerouslySetInnerHTML={{ __html: socialContext.html || '' }}
+                          />
+                        )}
+                      </div>
                     ) : (
                       <div className="p-3">
                         {socialContext.title && (

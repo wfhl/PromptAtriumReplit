@@ -143,7 +143,7 @@ export const fetchSocialContext = async (url: string): Promise<SocialContext | n
                 text: tweet.text,
                 author: tweet.author?.name,
                 mediaUrls: mediaUrls,
-                html: '', // Force custom card
+                html: '', // Handled by custom UI in PromptImporter for better formatting
                 thumbnail: mediaUrls[0],
                 rawResponse: tweet
               };
