@@ -5,7 +5,7 @@ import { isAuthenticated } from '../replitAuth';
 const router = Router();
 
 interface ExtractedItem {
-  prompt: string;
+  prompt: string | object;
   tags: string[];
   promptType: string;
   promptStyle: string;
@@ -173,7 +173,7 @@ Please analyze all provided content and extract any AI generation prompts.`;
       }
 
       result.items = result.items.map(item => ({
-        prompt: item.prompt || '',
+        prompt: item.prompt && typeof item.prompt === 'object' ? JSON.stringify(item.prompt, null, 2) : (item.prompt || ''),
         tags: Array.isArray(item.tags) ? item.tags : [],
         promptType: item.promptType || 'General',
         promptStyle: item.promptStyle || 'Narrative',

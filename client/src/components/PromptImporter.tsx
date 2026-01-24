@@ -23,7 +23,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { fetchSocialContext, fileToBase64, getPlatformIcon, type SocialContext } from "@/lib/socialMediaUtils";
 
 interface ExtractedPrompt {
-  prompt: string;
+  prompt: string | any;
   tags: string[];
   promptType: string;
   promptStyle: string;
@@ -171,8 +171,10 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
       }
 
       const promptData = {
-        name: item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : ""),
-        description: item.prompt,
+        name: typeof item.prompt === 'string' 
+          ? item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : "")
+          : "Structured Prompt",
+        description: typeof item.prompt === 'string' ? item.prompt : JSON.stringify(item.prompt, null, 2),
         category: item.promptType || "General",
         promptType: item.promptType,
         promptStyle: item.promptStyle,
@@ -475,7 +477,15 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
-                            <p className="text-sm flex-1 line-clamp-3">{item.prompt}</p>
+                            <div className="text-sm flex-1 line-clamp-3">
+                              {typeof item.prompt === 'object' ? (
+                                <pre className="whitespace-pre-wrap font-mono text-xs bg-muted p-2 rounded">
+                                  {JSON.stringify(item.prompt, null, 2)}
+                                </pre>
+                              ) : (
+                                item.prompt
+                              )}
+                            </div>
                             <Button
                               size="sm"
                               variant={savedItems.has(i) ? "ghost" : "default"}
