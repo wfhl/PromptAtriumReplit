@@ -27,6 +27,7 @@ interface SocialContext {
   author?: string;
   mediaUrls: string[];
   thumbnail?: string;
+  rawResponse?: any;
 }
 
 router.post('/extract', isAuthenticated, async (req: any, res) => {
@@ -59,48 +60,55 @@ router.post('/extract', isAuthenticated, async (req: any, res) => {
     let contextDescription = "";
     if (socialContext) {
       contextDescription = `
-SOCIAL MEDIA CONTEXT:
+SUCCESSFUL SOCIAL MEDIA EXTRACTION:
+We have successfully retrieved detailed metadata for this link. Use this as the PRIMARY source of truth.
 - Platform: ${socialContext.platform}
 - Author: ${socialContext.author || "N/A"}
 - Title: ${socialContext.title || "N/A"}
-- Text Content: "${socialContext.text || ""}"
-- Media URLs: ${socialContext.mediaUrls?.join(", ") || "None"}
+- Full Text Content: "${socialContext.text || ""}"
+- Media URLs Found: ${socialContext.mediaUrls?.join(", ") || "None"}
 `;
+      if (socialContext.rawResponse) {
+        contextDescription += `\n- Raw Metadata: ${JSON.stringify(socialContext.rawResponse).slice(0, 2000)}`;
+      }
     }
 
-    const systemPrompt = `You are an expert AI prompt engineer and analyst. Your task is to extract AI generation prompts from social media content, images, or text.
+    const systemPrompt = `You are an expert AI art forensic analyst and prompt engineer. Your task is to extract, clean, and categorize the generative AI prompts from the content provided.
 
 INSTRUCTIONS:
-1. VISUAL ANALYSIS (PRIORITY):
-   - If images are provided, carefully read any text visible in them (OCR)
-   - Look for prompts written as overlays, captions, or embedded text
-   - If multiple images (carousel), check each slide for different prompts
+1. **VISUAL ANALYSIS (PRIORITY)**:
+   - If images are provided (especially multiple slides), you **MUST** read the text inside them (OCR).
+   - **Carousel Logic**: If multiple images are present, check if each slide contains a *separate* prompt.
+   - If the carousel contains 5 slides, and each has a different prompt (e.g., "Editing Plan", "Style Matching"), return them as **5 separate items** in the output list.
+   - **Slide Mapping**: If possible, identify which slide index (0-based) the prompt came from.
 
-2. TEXT ANALYSIS:
+2. **TEXT ANALYSIS**:
    - Extract prompts from captions, descriptions, or provided context
    - Look for prompt patterns (detailed descriptions, style keywords, model parameters)
+   - **CRITICAL**: If the prompt is formatted as **JSON**, you MUST preserve the JSON structure exactly.
 
-3. CLASSIFICATION:
-   For each prompt found, determine:
-   - promptType: Image, Video, 3D, Agentic, Writing, Code, etc.
-   - promptStyle: JSON, Narrative, Instructional, Technical, Minimal
-   - intendedModel: Midjourney, DALL-E, Stable Diffusion, Flux, Runway, ChatGPT, etc.
-   - tags: Relevant keywords and themes
+3. **FIND THE PROMPT(S)**:
+   - Extract the prompt text exactly as written.
+   - For each prompt found, determine:
+     - **promptType**: Classify (e.g., "Image", "Video", "3D", "Agentic", "Writing", "Code")
+     - **promptStyle**: Classify (e.g., "JSON", "Narrative", "Instructional", "Cinematic")
+     - **intendedModel**: Identify (e.g., "Midjourney", "DALL-E", "Stable Diffusion", "Flux", "Runway", "ChatGPT", "Sora")
+     - **tags**: Relevant keywords and themes
 
-4. RECONSTRUCTION:
-   - If no direct prompt text is found but images show AI-generated content, 
-     reconstruct what the prompt might have been based on the visual elements
+4. **RECONSTRUCTION**:
+   - If no direct prompt text is found, reconstruct it based on the visual analysis of the provided media.
+   - Describe what elements, styles, and techniques were likely used to generate the image.
 
 RESPOND IN JSON FORMAT:
 {
-  "analysis": "Brief summary of what you found",
+  "analysis": "Brief overview of what you found (e.g. 'Found 5 prompts in the carousel').",
   "method": "direct" | "reconstructed" | "failed",
   "items": [
     {
-      "prompt": "The extracted or reconstructed prompt text",
+      "prompt": "The actual prompt text...",
       "tags": ["tag1", "tag2"],
       "promptType": "Image",
-      "promptStyle": "Narrative", 
+      "promptStyle": "Narrative",
       "intendedModel": "Midjourney",
       "slideIndex": 0
     }

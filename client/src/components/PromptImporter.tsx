@@ -329,23 +329,61 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
 
               <div className="space-y-4">
                 {socialContext && (
-                  <div className="p-3 rounded-lg bg-accent/50 border border-border">
-                    <div className="flex items-center gap-2 mb-2">
+                  <div className="rounded-lg bg-accent/50 border border-border overflow-hidden">
+                    <div className="flex items-center gap-2 p-3 border-b border-border">
                       <span className="text-lg">{getPlatformIcon(socialContext.platform)}</span>
                       <span className="font-medium capitalize">{socialContext.platform}</span>
                       {socialContext.author && (
                         <span className="text-sm text-muted-foreground">by {socialContext.author}</span>
                       )}
+                      {url && (
+                        <a 
+                          href={url} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="ml-auto text-primary hover:text-primary/80"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
                     </div>
-                    {socialContext.title && (
-                      <p className="text-sm text-foreground line-clamp-2">{socialContext.title}</p>
-                    )}
-                    {socialContext.thumbnail && (
-                      <img 
-                        src={socialContext.thumbnail} 
-                        alt="Preview" 
-                        className="mt-2 rounded-md max-h-32 object-cover"
+                    
+                    {/* Render iframe embed for YouTube/Instagram */}
+                    {socialContext.html ? (
+                      <div 
+                        className="w-full"
+                        dangerouslySetInnerHTML={{ __html: socialContext.html }}
                       />
+                    ) : (
+                      <div className="p-3">
+                        {socialContext.title && (
+                          <p className="text-sm text-foreground line-clamp-2 mb-2">{socialContext.title}</p>
+                        )}
+                        {socialContext.text && socialContext.text !== socialContext.title && (
+                          <p className="text-xs text-muted-foreground line-clamp-3 mb-2">{socialContext.text}</p>
+                        )}
+                        {/* Show thumbnail for Twitter/Reddit (no iframe) */}
+                        {socialContext.thumbnail && (
+                          <img 
+                            src={socialContext.thumbnail} 
+                            alt="Preview" 
+                            className="rounded-md max-h-40 object-cover"
+                          />
+                        )}
+                        {/* Show gallery for Reddit multi-image posts */}
+                        {!socialContext.thumbnail && socialContext.mediaUrls && socialContext.mediaUrls.length > 0 && (
+                          <div className={`grid gap-2 ${socialContext.mediaUrls.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                            {socialContext.mediaUrls.slice(0, 4).map((mediaUrl, i) => (
+                              <img 
+                                key={i}
+                                src={mediaUrl} 
+                                alt={`Media ${i+1}`} 
+                                className="rounded-md max-h-32 w-full object-cover"
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}
