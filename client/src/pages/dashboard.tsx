@@ -22,6 +22,7 @@ import { QuickActions } from "@/components/QuickActions";
 import { BulkImportModal } from "@/components/BulkImportModal";
 import { StatsCard } from "@/components/StatsCard";
 import { MarketplaceListingCard } from "@/components/MarketplaceListingCard";
+import { PromptImporter } from "@/components/PromptImporter";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -655,6 +656,11 @@ export default function Dashboard() {
                 }}
               />
             </div>
+          </div>
+
+          {/* Prompt Importer - Extract prompts from social media */}
+          <div className="mb-6">
+            <PromptImporter />
           </div>
 
           {/* Stats Cards - Collapsible, Hidden on mobile */}

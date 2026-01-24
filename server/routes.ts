@@ -31,6 +31,7 @@ import promptMinerRouter from "./routes/prompt-miner";
 import systemDataRouter from "./routes/system-data";
 import adminRouter from "./routes/admin";
 import promptRefinementRouter from "./routes/prompt-refinement";
+import promptExtractionRouter from "./routes/prompt-extraction";
 import { 
   authLimiter, 
   apiLimiter, 
@@ -7442,6 +7443,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Prompt Refinement routes (AI-powered chat)
   app.use('/api/prompt-refinement', promptRefinementRouter);
+  app.use('/api/prompts', promptExtractionRouter);
   
   // Generate prompt metadata endpoint for ShareToLibraryModal
   app.post('/api/generate-prompt-metadata', async (req, res) => {
