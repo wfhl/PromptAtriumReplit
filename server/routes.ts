@@ -957,6 +957,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Extract sharedCommunityIds before parsing
       const { sharedCommunityIds, ...promptDataToValidate } = requestBody;
       
+      // If additionalMetadata contains a mediaUrl (from social extraction), ensure it's in exampleImagesUrl
+      if (promptDataToValidate.additionalMetadata?.mediaUrl && !promptDataToValidate.exampleImagesUrl?.includes(promptDataToValidate.additionalMetadata.mediaUrl)) {
+        promptDataToValidate.exampleImagesUrl = [promptDataToValidate.additionalMetadata.mediaUrl, ...(promptDataToValidate.exampleImagesUrl || [])];
+      }
+
       const promptData = insertPromptSchema.parse(promptDataToValidate);
       const prompt = await storage.createPrompt({ ...promptData, sharedCommunityIds });
       
@@ -1027,6 +1032,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         exampleImagesUrl: req.body.example_images || req.body.exampleImagesUrl || [],
         technicalParams: req.body.metadata || req.body.technicalParams || {}
       };
+
+      // If additionalMetadata contains a mediaUrl (from social extraction), ensure it's in exampleImagesUrl
+      if (req.body.additionalMetadata?.mediaUrl && !mappedData.exampleImagesUrl.includes(req.body.additionalMetadata.mediaUrl)) {
+        mappedData.exampleImagesUrl = [req.body.additionalMetadata.mediaUrl, ...mappedData.exampleImagesUrl];
+      }
       
       const promptData = insertPromptSchema.parse(mappedData);
       const prompt = await storage.createPrompt(promptData);
