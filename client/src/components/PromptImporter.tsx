@@ -158,21 +158,56 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
 
   const savePromptMutation = useMutation({
     mutationFn: async ({ item, index }: { item: ExtractedPrompt; index: number }) => {
-      // Determine which image is associated with this prompt for the thumbnail
-      let mediaUrl = undefined;
+      // Collect image URLs - either from uploaded files or social context
+      const imageUrls: string[] = [];
+      let uploadFailed = false;
 
+      // Try to upload local file if available
       if (item.slideIndex !== undefined && item.slideIndex >= 0 && item.slideIndex < mediaFiles.length) {
-        // Instead of using blob URLs which expire, we send the media data to be handled by the server
         const file = mediaFiles[item.slideIndex];
-        const base64 = await fileToBase64(file);
-        
-        // Use a special prefix for the backend to handle
-        mediaUrl = `data:${file.type};base64,${base64}`;
-      } else if (socialContext?.thumbnail) {
-        mediaUrl = socialContext.thumbnail;
+        try {
+          const uploadUrlResponse = await apiRequest("POST", "/api/objects/upload");
+          if (!uploadUrlResponse.ok) {
+            throw new Error("Failed to get upload URL");
+          }
+          const { uploadURL, publicURL, objectPath } = await uploadUrlResponse.json();
+          
+          // Upload the file to the signed URL
+          const uploadResult = await fetch(uploadURL, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type },
+          });
+          
+          if (!uploadResult.ok) {
+            throw new Error("Upload failed");
+          }
+          
+          // Use the permanent URL (prefer publicURL, fallback to objectPath)
+          const savedUrl = publicURL || objectPath;
+          if (savedUrl) {
+            imageUrls.push(savedUrl);
+          }
+        } catch (uploadError) {
+          console.error("Failed to upload image to storage:", uploadError);
+          uploadFailed = true;
+        }
+      }
+      
+      // Add external URLs from social context (only valid http/https URLs)
+      if (socialContext?.thumbnail && socialContext.thumbnail.startsWith('http')) {
+        if (!imageUrls.includes(socialContext.thumbnail)) {
+          imageUrls.push(socialContext.thumbnail);
+        }
+      }
+      if (socialContext?.mediaUrls && socialContext.mediaUrls.length > 0) {
+        const validUrls = socialContext.mediaUrls.filter(u => 
+          u && u.startsWith('http') && !imageUrls.includes(u)
+        );
+        imageUrls.push(...validUrls.slice(0, 4));
       }
 
-      // Build the final prompt data to match GitHub version requirements
+      // Build the final prompt data
       const promptData = {
         name: typeof item.prompt === 'string' 
           ? item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : "")
@@ -185,29 +220,37 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         tags: item.tags || [],
         sourceUrl: url || undefined,
         intendedGenerator: item.intendedModel,
-        exampleImagesUrl: mediaUrl ? [mediaUrl] : [],
+        exampleImagesUrl: imageUrls,
         isPublic: false,
         status: "draft",
         additionalMetadata: {
           platform: socialContext?.platform || 'manual_upload',
           extractionMethod: result?.method || 'direct',
           slideIndex: item.slideIndex,
-          timestamp: Date.now(),
-          mediaUrl: mediaUrl
+          timestamp: Date.now()
         }
       };
 
       await apiRequest("POST", "/api/prompts", promptData);
-      return index;
+      return { index, uploadFailed, hasImages: imageUrls.length > 0 };
     },
-    onSuccess: (index) => {
-      setSavedItems(prev => new Set(prev).add(index));
+    onSuccess: (result) => {
+      setSavedItems(prev => new Set(prev).add(result.index));
       queryClient.invalidateQueries({ queryKey: ["/api/prompts"] });
       queryClient.invalidateQueries({ queryKey: ["/api/user/stats"] });
-      toast({
-        title: "Prompt Saved",
-        description: "Added to your library",
-      });
+      
+      if (result.uploadFailed && !result.hasImages) {
+        toast({
+          title: "Prompt Saved",
+          description: "Saved without image (upload failed)",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Prompt Saved",
+          description: result.hasImages ? "Added with image to your library" : "Added to your library",
+        });
+      }
       onPromptSaved?.();
     },
     onError: (error: any) => {

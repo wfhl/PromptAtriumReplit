@@ -987,9 +987,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Extract sharedCommunityIds before parsing
       const { sharedCommunityIds, ...promptDataToValidate } = requestBody;
       
-      // If additionalMetadata contains a mediaUrl (from social extraction), ensure it's in exampleImagesUrl
-      if (promptDataToValidate.additionalMetadata?.mediaUrl && !promptDataToValidate.exampleImagesUrl?.includes(promptDataToValidate.additionalMetadata.mediaUrl)) {
-        promptDataToValidate.exampleImagesUrl = [promptDataToValidate.additionalMetadata.mediaUrl, ...(promptDataToValidate.exampleImagesUrl || [])];
+      // Filter out any base64 or blob URLs from exampleImagesUrl - only allow valid URLs
+      if (promptDataToValidate.exampleImagesUrl && Array.isArray(promptDataToValidate.exampleImagesUrl)) {
+        promptDataToValidate.exampleImagesUrl = promptDataToValidate.exampleImagesUrl.filter((url: string) => 
+          url && typeof url === 'string' && !url.startsWith('data:') && !url.startsWith('blob:')
+        );
       }
 
       const promptData = insertPromptSchema.parse(promptDataToValidate);
@@ -1063,37 +1065,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         technicalParams: req.body.metadata || req.body.technicalParams || {}
       };
 
-      // Handle Base64 image uploads in compatibility endpoint
+      // Strictly filter image URLs - only allow valid http/https URLs or local storage paths
       if (mappedData.exampleImagesUrl && Array.isArray(mappedData.exampleImagesUrl)) {
-        const processedImages = [];
-        for (const url of mappedData.exampleImagesUrl) {
-          if (url.startsWith('data:image/')) {
-            try {
-              const base64Data = url.split(',')[1];
-              const mimeType = url.split(';')[0].split(':')[1];
-              const buffer = Buffer.from(base64Data, 'base64');
-              const objectId = `compat_extraction_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${mimeType.split('/')[1]}`;
-              
-              const savedPath = await devStorage.saveFile(objectId, buffer, 'prompt', {
-                contentType: mimeType,
-                userId
-              });
-              
-              processedImages.push(savedPath);
-            } catch (e) {
-              console.error("Failed to process base64 image in compat:", e);
-              processedImages.push(url);
-            }
-          } else {
-            processedImages.push(url);
-          }
-        }
-        mappedData.exampleImagesUrl = processedImages;
-      }
-
-      // If additionalMetadata contains a mediaUrl (from social extraction), ensure it's in exampleImagesUrl
-      if (req.body.additionalMetadata?.mediaUrl && !mappedData.exampleImagesUrl.includes(req.body.additionalMetadata.mediaUrl)) {
-        mappedData.exampleImagesUrl = [req.body.additionalMetadata.mediaUrl, ...mappedData.exampleImagesUrl];
+        mappedData.exampleImagesUrl = mappedData.exampleImagesUrl.filter((url: string) => {
+          if (!url || typeof url !== 'string') return false;
+          // Allow http/https URLs
+          if (url.startsWith('http://') || url.startsWith('https://')) return true;
+          // Allow local storage paths (from dev storage)
+          if (url.startsWith('/api/dev-storage/') || url.startsWith('/objects/')) return true;
+          // Reject everything else (data:, blob:, etc.)
+          return false;
+        });
       }
       
       const promptData = insertPromptSchema.parse(mappedData);
