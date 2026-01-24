@@ -1,9 +1,0 @@
-id,name,description,user_id,type,is_active,created_at,updated_at
-40ab358a-0db8-41c0-bc7f-73141cde77ca,Virtual Influencer,,40785157,user,t,2025-09-10 22:32:49.69689,2025-09-10 22:32:49.69689
-cat_1,Art & Design,Visual arts and design prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_2,Photography,Photography-related prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_3,Character Design,Character creation and design prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_4,Landscape,Landscape and scenery prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_5,Logo & Branding,Logo design and branding prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_6,Abstract,Abstract art and concepts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-cat_7,Other,Miscellaneous prompts,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575

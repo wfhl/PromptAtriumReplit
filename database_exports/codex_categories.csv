@@ -1,9 +1,0 @@
-id,name,description,slug,parent_id,order_index,is_active,created_at,updated_at
-1de53e83-820b-4993-b362-59f6e3b609e7,Characters,Character types and personalities,characters,,1,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-26668786-d8ff-4ecb-9427-00b137dedc79,Materials,Textures and materials,materials,,7,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-747f9fe1-c433-4174-9dfa-5c9e205fa4d2,Settings,Locations and environments,settings,,8,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-8d07c850-05fb-4792-9baf-90025632f7ca,Moods,Emotional tones and atmospheres,moods,,5,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-bff30814-8090-4a25-80b5-bd54576edf1b,Colors,Color schemes and palettes,colors,,4,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-c4f88858-e01e-4863-8f6e-396e085705c7,Styles,Art styles and aesthetics,styles,,2,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-cd0f665a-ff58-4b7b-8950-d53ea96ad081,Lighting,Lighting conditions and effects,lighting,,3,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028
-da2500aa-2b77-4517-a932-e810774877a8,Camera,Camera angles and perspectives,camera,,6,t,2025-09-17 01:47:00.256028,2025-09-17 01:47:00.256028

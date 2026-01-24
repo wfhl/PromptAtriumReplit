@@ -1,7 +1,0 @@
-id,name,description,user_id,type,is_active,created_at,updated_at
-pt_1,Text to Image,Generate images from text descriptions,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-pt_2,Image to Image,Transform existing images,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-pt_3,Text Generation,Generate text content,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-pt_4,Code Generation,Generate programming code,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-pt_5,Creative Writing,Creative writing and storytelling,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-pt_6,Other,Other prompt types,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575

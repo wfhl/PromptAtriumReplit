@@ -207,11 +207,57 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         imageUrls.push(...validUrls.slice(0, 4));
       }
 
+      // Generate a descriptive name from the prompt content
+      const generatePromptName = (prompt: string | Record<string, any>): string => {
+        if (typeof prompt === 'string') {
+          return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
+        }
+        
+        // For structured JSON prompts, extract key descriptive elements
+        const extractValue = (obj: any, ...keys: string[]): string | null => {
+          for (const key of keys) {
+            if (obj[key] && typeof obj[key] === 'string') return obj[key];
+            if (obj[key] && typeof obj[key] === 'object') {
+              const nested = extractValue(obj[key], ...keys);
+              if (nested) return nested;
+            }
+          }
+          for (const k in obj) {
+            if (typeof obj[k] === 'object') {
+              const nested = extractValue(obj[k], ...keys);
+              if (nested) return nested;
+            }
+          }
+          return null;
+        };
+        
+        // Try to find descriptive fields in order of preference
+        const subject = extractValue(prompt, 'type', 'subject', 'character', 'person');
+        const location = extractValue(prompt, 'location', 'setting', 'background', 'scene');
+        const style = extractValue(prompt, 'style', 'aesthetic', 'mood');
+        
+        const parts: string[] = [];
+        if (subject) parts.push(subject);
+        if (location) parts.push(location);
+        if (style && parts.length < 2) parts.push(style);
+        
+        if (parts.length > 0) {
+          const name = parts.join(' - ').slice(0, 100);
+          return name.charAt(0).toUpperCase() + name.slice(1);
+        }
+        
+        // Fallback: use first string value found or generic name
+        const firstString = Object.values(prompt).find(v => typeof v === 'string');
+        if (firstString && typeof firstString === 'string') {
+          return firstString.slice(0, 80) + (firstString.length > 80 ? "..." : "");
+        }
+        
+        return "Structured Prompt";
+      };
+
       // Build the final prompt data
       const promptData = {
-        name: typeof item.prompt === 'string' 
-          ? item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : "")
-          : "Structured Prompt",
+        name: generatePromptName(item.prompt),
         promptContent: typeof item.prompt === 'string' ? item.prompt : JSON.stringify(item.prompt, null, 2),
         description: typeof item.prompt === 'string' ? item.prompt : "Imported structured prompt",
         category: item.promptType || "General",

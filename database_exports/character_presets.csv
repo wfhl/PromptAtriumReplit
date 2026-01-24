@@ -1,6 +1,0 @@
-id,name,gender,role,description,is_favorite,user_id,is_global,created_at,updated_at
-034542ff-d9bb-4dd8-8217-c71fc03da004,"Elena, Warrior Princess",Female,Warrior,"A fierce warrior princess with flowing red hair, emerald eyes, and ornate armor",t,,f,2025-09-19 18:02:33.911714,2025-09-19 18:02:33.911714
-19d6717e-18ec-4343-9729-82e21f43a0e5,"Marcus, Knight Commander",Male,Knight,A noble knight commander in gleaming silver armor with a scarred face and determined expression,t,,f,2025-09-19 18:02:33.911714,2025-09-19 18:02:33.911714
-495e1fb2-eb57-4ec6-bde3-43a6644f70cd,"Zara, Mystic Scholar",Female,Mage,"An elegant mystic scholar with dark skin, white hair, and glowing tattoos",f,,f,2025-09-19 18:02:33.911714,2025-09-19 18:02:33.911714
-50122acc-4900-4047-8b22-63268d2e8dae,"Luna, Forest Guardian",Female,Nature Spirit,"An ethereal forest guardian with antlers, flowing green robes, and nature magic",f,,f,2025-09-19 18:02:33.911714,2025-09-19 18:02:33.911714
-d4b2bd9c-a991-441e-a572-6b24aaea44cc,"Kai, Street Samurai",Non-binary,Cyberpunk,"A cyberpunk street samurai with neon implants, leather jacket, and katana",f,,f,2025-09-19 18:02:33.911714,2025-09-19 18:02:33.911714

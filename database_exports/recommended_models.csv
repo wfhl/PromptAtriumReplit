@@ -1,9 +1,0 @@
-id,name,description,user_id,type,is_active,created_at,updated_at
-a835181d-96fb-48b3-9428-e8634207047d,Flux,,40785157,user,t,2025-09-11 13:56:39.069499,2025-09-11 13:56:39.069499
-rm_1,GPT-4,OpenAI GPT-4 model,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_2,Claude-3,Anthropic Claude 3 model,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_3,SDXL,Stable Diffusion XL model,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_4,Midjourney v6,Midjourney version 6,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_5,DALL-E 3,OpenAI DALL-E 3,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_6,Stable Diffusion,Stable Diffusion base model,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
-rm_7,Leonardo AI,Leonardo AI models,,system,t,2025-09-10 19:15:23.383575,2025-09-10 19:15:23.383575
