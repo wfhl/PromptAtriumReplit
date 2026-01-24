@@ -170,6 +170,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         mediaUrl = socialContext.thumbnail;
       }
 
+      // Build the final prompt data to match GitHub version requirements
       const promptData = {
         name: typeof item.prompt === 'string' 
           ? item.prompt.slice(0, 100) + (item.prompt.length > 100 ? "..." : "")
@@ -179,12 +180,12 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         category: item.promptType || "General",
         promptType: item.promptType,
         promptStyle: item.promptStyle,
-        tags: item.tags,
+        tags: item.tags || [],
         sourceUrl: url || undefined,
         intendedGenerator: item.intendedModel,
+        exampleImagesUrl: mediaUrl ? [mediaUrl] : [],
         isPublic: false,
         status: "draft",
-        // Additional metadata to match GitHub types
         additionalMetadata: {
           platform: socialContext?.platform || 'manual_upload',
           extractionMethod: result?.method || 'direct',
@@ -480,11 +481,18 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                         >
                           <div className="flex items-start justify-between gap-2">
                             <div className="text-sm flex-1 font-mono text-xs whitespace-pre-wrap bg-muted p-3 rounded border border-border/50">
-                              {typeof item.prompt === 'object' ? (
-                                JSON.stringify(item.prompt, null, 2)
-                              ) : (
-                                item.prompt
-                              )}
+                              {(() => {
+                                try {
+                                  const parsed = typeof item.prompt === 'string' ? JSON.parse(item.prompt) : item.prompt;
+                                  return (
+                                    <pre className="overflow-x-auto text-xs custom-scrollbar">
+                                      {JSON.stringify(parsed, null, 2)}
+                                    </pre>
+                                  );
+                                } catch (e) {
+                                  return typeof item.prompt === 'object' ? JSON.stringify(item.prompt, null, 2) : item.prompt;
+                                }
+                              })()}
                             </div>
                             <Button
                               size="sm"
