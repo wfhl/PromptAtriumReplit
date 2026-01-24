@@ -209,50 +209,105 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
 
       // Generate a descriptive name from the prompt content
       const generatePromptName = (prompt: string | Record<string, any>): string => {
+        let obj: Record<string, any> | null = null;
+        
+        // Parse JSON string if needed
         if (typeof prompt === 'string') {
-          return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
+          const trimmed = prompt.trim();
+          if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+            try {
+              obj = JSON.parse(trimmed);
+            } catch {
+              // Not valid JSON, use as plain text
+              return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
+            }
+          } else {
+            // Plain text prompt
+            return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
+          }
+        } else {
+          obj = prompt;
         }
         
-        // For structured JSON prompts, extract key descriptive elements
-        const extractValue = (obj: any, ...keys: string[]): string | null => {
-          for (const key of keys) {
-            if (obj[key] && typeof obj[key] === 'string') return obj[key];
-            if (obj[key] && typeof obj[key] === 'object') {
-              const nested = extractValue(obj[key], ...keys);
-              if (nested) return nested;
+        if (!obj || typeof obj !== 'object') {
+          return "Imported Prompt";
+        }
+        
+        // Deep search for descriptive string values
+        const findDeepValue = (o: any, targetKeys: string[]): string | null => {
+          if (!o || typeof o !== 'object') return null;
+          
+          // First check direct keys
+          for (const key of targetKeys) {
+            if (o[key] && typeof o[key] === 'string' && o[key].length > 2) {
+              return o[key];
             }
           }
-          for (const k in obj) {
-            if (typeof obj[k] === 'object') {
-              const nested = extractValue(obj[k], ...keys);
-              if (nested) return nested;
+          
+          // Then search nested objects
+          for (const k in o) {
+            if (typeof o[k] === 'object') {
+              const found = findDeepValue(o[k], targetKeys);
+              if (found) return found;
             }
           }
           return null;
         };
         
-        // Try to find descriptive fields in order of preference
-        const subject = extractValue(prompt, 'type', 'subject', 'character', 'person');
-        const location = extractValue(prompt, 'location', 'setting', 'background', 'scene');
-        const style = extractValue(prompt, 'style', 'aesthetic', 'mood');
+        // Collect all string values for fallback
+        const collectStrings = (o: any, depth = 0): string[] => {
+          if (depth > 5 || !o) return [];
+          const strings: string[] = [];
+          if (typeof o === 'string' && o.length > 10) {
+            strings.push(o);
+          } else if (typeof o === 'object') {
+            for (const k in o) {
+              strings.push(...collectStrings(o[k], depth + 1));
+            }
+          }
+          return strings;
+        };
         
-        const parts: string[] = [];
-        if (subject) parts.push(subject);
-        if (location) parts.push(location);
-        if (style && parts.length < 2) parts.push(style);
+        // Try to find key descriptive elements
+        const pose = findDeepValue(obj, ['pose', 'action', 'activity']);
+        const setting = findDeepValue(obj, ['setting', 'location', 'environment', 'background', 'scene']);
+        const subject = findDeepValue(obj, ['gender', 'type', 'subject', 'character']);
+        const style = findDeepValue(obj, ['style', 'aesthetic', 'mood', 'lighting']);
+        const promptText = findDeepValue(obj, ['prompt', 'description', 'caption']);
         
-        if (parts.length > 0) {
-          const name = parts.join(' - ').slice(0, 100);
-          return name.charAt(0).toUpperCase() + name.slice(1);
+        // Build a descriptive name from found elements
+        const nameParts: string[] = [];
+        
+        if (subject) {
+          nameParts.push(subject.charAt(0).toUpperCase() + subject.slice(1));
+        }
+        if (pose && nameParts.length < 2) {
+          nameParts.push(pose);
+        }
+        if (setting && nameParts.length < 2) {
+          nameParts.push(setting);
+        }
+        if (style && nameParts.length < 2) {
+          nameParts.push(style);
         }
         
-        // Fallback: use first string value found or generic name
-        const firstString = Object.values(prompt).find(v => typeof v === 'string');
-        if (firstString && typeof firstString === 'string') {
-          return firstString.slice(0, 80) + (firstString.length > 80 ? "..." : "");
+        if (nameParts.length > 0) {
+          return nameParts.join(' - ').slice(0, 100);
         }
         
-        return "Structured Prompt";
+        // Use the prompt/description field if found
+        if (promptText) {
+          return promptText.slice(0, 100) + (promptText.length > 100 ? "..." : "");
+        }
+        
+        // Fallback: find the longest descriptive string
+        const allStrings = collectStrings(obj);
+        const best = allStrings.sort((a, b) => b.length - a.length)[0];
+        if (best) {
+          return best.slice(0, 100) + (best.length > 100 ? "..." : "");
+        }
+        
+        return "Imported Prompt";
       };
 
       // Build the final prompt data
