@@ -1874,18 +1874,18 @@ export function PromptCard({
           </div>
         )}
 
-        <div className="relative text-sm text-gray-200/70 bg-green-900/20 p-2 rounded border border-green-700/30 leading-relaxed hover:border-green-600/40 transition-colors rounded-md p-2 md:p-3 text-xs md:text-sm font-mono group" data-testid={`text-content-${prompt.id}`}>
-          <div className="pr-8 max-h-[10rem] md:max-h-none overflow-y-auto">
+        <div className="relative text-sm text-gray-200/70 bg-slate-950/50 p-3 rounded-xl border border-border/50 leading-relaxed font-mono group" data-testid={`text-content-${prompt.id}`}>
+          <div className="pr-8 max-h-[20rem] overflow-y-auto custom-scrollbar">
             {(() => {
               try {
                 const parsed = JSON.parse(prompt.promptContent);
                 return (
-                  <pre className="overflow-x-auto text-xs sm:text-sm custom-scrollbar whitespace-pre-wrap break-words">
+                  <pre className="text-xs sm:text-sm whitespace-pre-wrap break-words text-slate-300">
                     {JSON.stringify(parsed, null, 2)}
                   </pre>
                 );
               } catch (e) {
-                return prompt.promptContent;
+                return <span className="text-slate-300">{prompt.promptContent}</span>;
               }
             })()}
           </div>

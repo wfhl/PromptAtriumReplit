@@ -920,6 +920,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (requestBody.collectionId === "" || requestBody.collectionId === undefined) {
         requestBody.collectionId = null;
       }
+
+      // Handle Base64 image uploads from Importer
+      if (requestBody.exampleImagesUrl && Array.isArray(requestBody.exampleImagesUrl)) {
+        const processedImages = [];
+        for (const url of requestBody.exampleImagesUrl) {
+          if (url.startsWith('data:image/')) {
+            try {
+              // Convert base64 to buffer
+              const base64Data = url.split(',')[1];
+              const mimeType = url.split(';')[0].split(':')[1];
+              const buffer = Buffer.from(base64Data, 'base64');
+              const objectId = `extraction_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${mimeType.split('/')[1]}`;
+              
+              // Save to dev storage (or production object storage)
+              const savedPath = await devStorage.saveFile(objectId, buffer, 'prompt', {
+                contentType: mimeType,
+                userId
+              });
+              
+              processedImages.push(savedPath);
+            } catch (e) {
+              console.error("Failed to process base64 image:", e);
+              processedImages.push(url); // Fallback to original
+            }
+          } else {
+            processedImages.push(url);
+          }
+        }
+        requestBody.exampleImagesUrl = processedImages;
+      }
       
       // Handle sub-community and visibility
       if (requestBody.subCommunityId) {
@@ -1032,6 +1062,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         exampleImagesUrl: req.body.example_images || req.body.exampleImagesUrl || [],
         technicalParams: req.body.metadata || req.body.technicalParams || {}
       };
+
+      // Handle Base64 image uploads in compatibility endpoint
+      if (mappedData.exampleImagesUrl && Array.isArray(mappedData.exampleImagesUrl)) {
+        const processedImages = [];
+        for (const url of mappedData.exampleImagesUrl) {
+          if (url.startsWith('data:image/')) {
+            try {
+              const base64Data = url.split(',')[1];
+              const mimeType = url.split(';')[0].split(':')[1];
+              const buffer = Buffer.from(base64Data, 'base64');
+              const objectId = `compat_extraction_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${mimeType.split('/')[1]}`;
+              
+              const savedPath = await devStorage.saveFile(objectId, buffer, 'prompt', {
+                contentType: mimeType,
+                userId
+              });
+              
+              processedImages.push(savedPath);
+            } catch (e) {
+              console.error("Failed to process base64 image in compat:", e);
+              processedImages.push(url);
+            }
+          } else {
+            processedImages.push(url);
+          }
+        }
+        mappedData.exampleImagesUrl = processedImages;
+      }
 
       // If additionalMetadata contains a mediaUrl (from social extraction), ensure it's in exampleImagesUrl
       if (req.body.additionalMetadata?.mediaUrl && !mappedData.exampleImagesUrl.includes(req.body.additionalMetadata.mediaUrl)) {

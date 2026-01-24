@@ -160,12 +160,14 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
     mutationFn: async ({ item, index }: { item: ExtractedPrompt; index: number }) => {
       // Determine which image is associated with this prompt for the thumbnail
       let mediaUrl = undefined;
-      let mediaBase64 = undefined;
 
-      if (item.slideIndex !== undefined && item.slideIndex >= 0 && item.slideIndex < previewUrls.length) {
-        mediaUrl = previewUrls[item.slideIndex];
-        // Note: For actual saving, the backend handles file persistence if needed, 
-        // but for now we use the extracted text and metadata
+      if (item.slideIndex !== undefined && item.slideIndex >= 0 && item.slideIndex < mediaFiles.length) {
+        // Instead of using blob URLs which expire, we send the media data to be handled by the server
+        const file = mediaFiles[item.slideIndex];
+        const base64 = await fileToBase64(file);
+        
+        // Use a special prefix for the backend to handle
+        mediaUrl = `data:${file.type};base64,${base64}`;
       } else if (socialContext?.thumbnail) {
         mediaUrl = socialContext.thumbnail;
       }
