@@ -6,6 +6,7 @@ const router = Router();
 
 interface ExtractedItem {
   prompt: string | object;
+  name: string;
   tags: string[];
   promptType: string;
   promptStyle: string;
@@ -88,6 +89,7 @@ INSTRUCTIONS:
    - **ACCURACY**: Extract the prompt text EXACTLY as presented in the source.
 
 3. **METADATA EXTRACTION (Per Item)**:
+   - **name**: Generate a SHORT, DESCRIPTIVE title (3-8 words max) that captures the essence of the prompt. Examples: "Ethereal Forest Portrait", "Cyberpunk City at Night", "Vintage Film Noir Woman", "Golden Hour Beach Scene"
    - **promptType**: Classify (e.g., "Image", "Video", "3D", "Agentic", "Writing", "Code")
    - **promptStyle**: Classify (e.g., "JSON", "Narrative", "Instructional", "Cinematic")
    - **intendedModel**: Identify (e.g., "Midjourney", "DALL-E", "Stable Diffusion", "Flux", "Runway", "ChatGPT", "Sora")
@@ -103,6 +105,7 @@ RESPOND IN JSON FORMAT:
   "items": [
     {
       "prompt": "The actual prompt text (preserve JSON if present)...",
+      "name": "Short Descriptive Title",
       "tags": ["tag1", "tag2"],
       "promptType": "Image",
       "promptStyle": "JSON",
@@ -174,6 +177,7 @@ Please analyze all provided content and extract any AI generation prompts.`;
 
       result.items = result.items.map(item => ({
         prompt: item.prompt && typeof item.prompt === 'object' ? JSON.stringify(item.prompt, null, 2) : (item.prompt || ''),
+        name: item.name || 'Imported Prompt',
         tags: Array.isArray(item.tags) ? item.tags : [],
         promptType: item.promptType || 'General',
         promptStyle: item.promptStyle || 'Narrative',

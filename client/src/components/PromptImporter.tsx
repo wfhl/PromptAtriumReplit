@@ -24,6 +24,7 @@ import { fetchSocialContext, fileToBase64, getPlatformIcon, type SocialContext }
 
 interface ExtractedPrompt {
   prompt: string | any;
+  name: string;
   tags: string[];
   promptType: string;
   promptStyle: string;
@@ -207,109 +208,6 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         imageUrls.push(...validUrls.slice(0, 4));
       }
 
-      // Generate a descriptive name from the prompt content
-      const generatePromptName = (prompt: string | Record<string, any>): string => {
-        let obj: Record<string, any> | null = null;
-        
-        // Parse JSON string if needed
-        if (typeof prompt === 'string') {
-          const trimmed = prompt.trim();
-          if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
-            try {
-              obj = JSON.parse(trimmed);
-            } catch {
-              // Not valid JSON, use as plain text
-              return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
-            }
-          } else {
-            // Plain text prompt
-            return prompt.slice(0, 100) + (prompt.length > 100 ? "..." : "");
-          }
-        } else {
-          obj = prompt;
-        }
-        
-        if (!obj || typeof obj !== 'object') {
-          return "Imported Prompt";
-        }
-        
-        // Deep search for descriptive string values
-        const findDeepValue = (o: any, targetKeys: string[]): string | null => {
-          if (!o || typeof o !== 'object') return null;
-          
-          // First check direct keys
-          for (const key of targetKeys) {
-            if (o[key] && typeof o[key] === 'string' && o[key].length > 2) {
-              return o[key];
-            }
-          }
-          
-          // Then search nested objects
-          for (const k in o) {
-            if (typeof o[k] === 'object') {
-              const found = findDeepValue(o[k], targetKeys);
-              if (found) return found;
-            }
-          }
-          return null;
-        };
-        
-        // Collect all string values for fallback
-        const collectStrings = (o: any, depth = 0): string[] => {
-          if (depth > 5 || !o) return [];
-          const strings: string[] = [];
-          if (typeof o === 'string' && o.length > 10) {
-            strings.push(o);
-          } else if (typeof o === 'object') {
-            for (const k in o) {
-              strings.push(...collectStrings(o[k], depth + 1));
-            }
-          }
-          return strings;
-        };
-        
-        // Try to find key descriptive elements
-        const pose = findDeepValue(obj, ['pose', 'action', 'activity']);
-        const setting = findDeepValue(obj, ['setting', 'location', 'environment', 'background', 'scene']);
-        const subject = findDeepValue(obj, ['gender', 'type', 'subject', 'character']);
-        const style = findDeepValue(obj, ['style', 'aesthetic', 'mood', 'lighting']);
-        const promptText = findDeepValue(obj, ['prompt', 'description', 'caption']);
-        
-        // Build a descriptive name from found elements
-        const nameParts: string[] = [];
-        
-        if (subject) {
-          nameParts.push(subject.charAt(0).toUpperCase() + subject.slice(1));
-        }
-        if (pose && nameParts.length < 2) {
-          nameParts.push(pose);
-        }
-        if (setting && nameParts.length < 2) {
-          nameParts.push(setting);
-        }
-        if (style && nameParts.length < 2) {
-          nameParts.push(style);
-        }
-        
-        if (nameParts.length > 0) {
-          return nameParts.join(' - ').slice(0, 100);
-        }
-        
-        // Use the prompt/description field if found
-        if (promptText) {
-          return promptText.slice(0, 100) + (promptText.length > 100 ? "..." : "");
-        }
-        
-        // Fallback: find the longest descriptive string
-        const allStrings = collectStrings(obj);
-        const best = allStrings.sort((a, b) => b.length - a.length)[0];
-        if (best) {
-          return best.slice(0, 100) + (best.length > 100 ? "..." : "");
-        }
-        
-        return "Imported Prompt";
-      };
-
       // Generate a brief description (not the full prompt content)
       const generateDescription = (): string => {
         if (socialContext?.title) return socialContext.title;
@@ -318,9 +216,9 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         return `Imported from ${socialContext?.platform || 'file upload'}`;
       };
 
-      // Build the final prompt data
+      // Build the final prompt data - use AI-generated name from extraction
       const promptData = {
-        name: generatePromptName(item.prompt),
+        name: item.name || 'Imported Prompt',
         promptContent: typeof item.prompt === 'string' ? item.prompt : JSON.stringify(item.prompt, null, 2),
         description: generateDescription(),
         category: item.promptType || "General",
