@@ -363,6 +363,56 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
           <CardContent className="space-y-4 pt-0">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="space-y-4">
+                {/* Scout Keywords - AI Search Section (moved to top) */}
+                <div className="p-3 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Compass className="h-4 w-4 text-indigo-400" />
+                    <label className="block text-sm font-medium text-indigo-300">
+                      Scout Keywords
+                    </label>
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-indigo-500/30 text-indigo-400">
+                      AI Search
+                    </Badge>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-indigo-400/60" />
+                      <Input
+                        value={scoutKeywords}
+                        onChange={(e) => setScoutKeywords(e.target.value)}
+                        placeholder="e.g., cyberpunk portrait, ethereal landscape..."
+                        className="pl-9 bg-background/80 border-indigo-500/30 text-foreground placeholder:text-muted-foreground/60"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => scoutMutation.mutate()}
+                      disabled={scoutMutation.isPending || !canScout}
+                      className="shrink-0 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/30"
+                    >
+                      {scoutMutation.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Compass className="h-4 w-4 mr-1" />
+                          Scout
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">
+                    Search the web for trending AI prompts matching your keywords
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-xs text-muted-foreground">or extract from URL</span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-1">
                     Post URL
@@ -373,7 +423,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                       value={url}
                       onChange={(e) => setUrl(e.target.value)}
                       placeholder="https://instagram.com/p/..."
-                      className="pl-9"
+                      className="pl-9 text-foreground"
                     />
                     {isLoadingContext && (
                       <div className="absolute right-3 top-2.5">
@@ -395,49 +445,8 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                     onChange={(e) => setTextContext(e.target.value)}
                     placeholder="Paste caption, description, or specific details here..."
                     rows={3}
+                    className="text-foreground"
                   />
-                </div>
-
-                <div className="p-3 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Compass className="h-4 w-4 text-indigo-400" />
-                    <label className="block text-sm font-medium text-indigo-300">
-                      Scout Keywords
-                    </label>
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-indigo-500/30 text-indigo-400">
-                      AI Search
-                    </Badge>
-                  </div>
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        value={scoutKeywords}
-                        onChange={(e) => setScoutKeywords(e.target.value)}
-                        placeholder="e.g., cyberpunk portrait, ethereal landscape..."
-                        className="pl-9 bg-background/50"
-                      />
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      onClick={() => scoutMutation.mutate()}
-                      disabled={scoutMutation.isPending || !canScout}
-                      className="shrink-0"
-                    >
-                      {scoutMutation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <>
-                          <Compass className="h-4 w-4 mr-1" />
-                          Scout
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground mt-1.5">
-                    Search the web for trending AI prompts matching your keywords
-                  </p>
                 </div>
 
                 <div>
