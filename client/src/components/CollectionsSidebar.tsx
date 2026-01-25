@@ -33,7 +33,17 @@ import {
   Sun,
   Shield,
   ScrollText,
-  ChevronUp
+  ChevronUp,
+  BookOpen,
+  GraduationCap,
+  Image,
+  Download,
+  FileSearch,
+  Wand2,
+  Sparkles,
+  Home,
+  Library,
+  Wrench
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiRequest } from "@/lib/queryClient";
@@ -97,7 +107,7 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
       <aside
         className={cn(
           "fixed left-0 top-16 h-[calc(100vh-4rem)] z-30 transition-all duration-300 ease-in-out flex flex-col",
-          "bg-[#1c1c1c] border-r border-black/30",
+          "bg-[#1c1c1c]/95 backdrop-blur-md border-r border-white/5",
           "shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03),inset_-1px_-1px_2px_rgba(0,0,0,0.6)]",
           isOpen ? "w-64" : "w-0"
         )}
@@ -138,48 +148,127 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
             </div>
 
             <ScrollArea className="flex-1 px-4">
-              {/* Core Modules Section */}
-              <div className="mb-6">
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-4 px-2">
-                  Core_Modules
+              {/* Navigation Section */}
+              <div className="mb-4">
+                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
+                  Navigate
                 </span>
 
-                {/* Quick Actions */}
                 <NavItem 
-                  label="All Prompts"
-                  mark="*"
+                  label="Dashboard"
+                  icon={<Home className="h-4 w-4" />}
+                  active={location === '/'}
+                  onClick={() => setLocation('/')}
+                />
+                <NavItem 
+                  label="My Library"
+                  icon={<Library className="h-4 w-4" />}
                   active={location === '/library'}
                   onClick={() => setLocation('/library')}
                 />
                 <NavItem 
                   label="Community"
-                  mark="{c}"
+                  icon={<Users className="h-4 w-4" />}
                   active={location === '/community'}
                   onClick={() => setLocation('/community')}
                 />
                 <NavItem 
-                  label="Tools"
-                  mark="_fn"
-                  active={location === '/tools'}
-                  onClick={() => setLocation('/tools')}
+                  label="Marketplace"
+                  icon={<DollarSign className="h-4 w-4" />}
+                  active={location === '/marketplace'}
+                  onClick={() => setLocation('/marketplace')}
                 />
-                {onCreateCollection && (
-                  <NavItem 
-                    label="New Collection"
-                    mark="+"
-                    onClick={onCreateCollection}
-                  />
-                )}
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-6" />
+              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
+
+              {/* Tools Section */}
+              <div className="mb-4">
+                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
+                  Tools
+                </span>
+
+                <NavItem 
+                  label="Quick Prompter"
+                  icon={<Wand2 className="h-4 w-4" />}
+                  active={location === '/tools/quick-prompter'}
+                  onClick={() => setLocation('/tools/quick-prompter')}
+                />
+                <NavItem 
+                  label="Wordsmith Codex"
+                  icon={<BookOpen className="h-4 w-4" />}
+                  active={location === '/codex'}
+                  onClick={() => setLocation('/codex')}
+                />
+                <NavItem 
+                  label="Metadata Analyzer"
+                  icon={<FileSearch className="h-4 w-4" />}
+                  active={location === '/tools/metadata-analyzer'}
+                  onClick={() => setLocation('/tools/metadata-analyzer')}
+                />
+                <NavItem 
+                  label="Aspect Ratio"
+                  icon={<Image className="h-4 w-4" />}
+                  active={location === '/tools/aspect-ratio-calculator'}
+                  onClick={() => setLocation('/tools/aspect-ratio-calculator')}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
+
+              {/* Resources Section */}
+              <div className="mb-4">
+                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
+                  Resources
+                </span>
+
+                <NavItem 
+                  label="Prompting Guides"
+                  icon={<BookOpen className="h-4 w-4" />}
+                  active={location === '/prompting-guides'}
+                  onClick={() => setLocation('/prompting-guides')}
+                />
+                <NavItem 
+                  label="AI Services"
+                  icon={<Sparkles className="h-4 w-4" />}
+                  active={location === '/ai-services'}
+                  onClick={() => setLocation('/ai-services')}
+                />
+                <NavItem 
+                  label="Getting Started"
+                  icon={<GraduationCap className="h-4 w-4" />}
+                  active={location === '/getting-started'}
+                  onClick={() => setLocation('/getting-started')}
+                />
+                <NavItem 
+                  label="Install Guide"
+                  icon={<Download className="h-4 w-4" />}
+                  active={location === '/install-guide'}
+                  onClick={() => setLocation('/install-guide')}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
 
               {/* Collections Section */}
-              <div>
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-4 px-2">
-                  Collections
-                </span>
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-3 px-2">
+                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444]">
+                    Collections
+                  </span>
+                  {onCreateCollection && (
+                    <button
+                      onClick={onCreateCollection}
+                      className="text-[#666] hover:text-white transition-colors p-1 rounded hover:bg-white/5"
+                      title="New Collection"
+                    >
+                      <FolderPlus className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
 
                 {collectionsLoading ? (
                   <div className="space-y-2 px-2">
@@ -355,43 +444,46 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
 // Nav Item Component
 interface NavItemProps {
   label: string;
-  mark: string;
+  icon?: React.ReactNode;
+  mark?: string;
   active?: boolean;
   count?: number;
   onClick: () => void;
 }
 
-function NavItem({ label, mark, active, count, onClick }: NavItemProps) {
+function NavItem({ label, icon, mark, active, count, onClick }: NavItemProps) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "w-full flex items-center justify-between px-4 py-3 mb-2 rounded-sm transition-all duration-300",
-        "text-[#a0a0a0] hover:text-white hover:translate-x-1",
-        "relative group",
+        "w-full flex items-center gap-3 px-3 py-2.5 mb-1 rounded-md transition-all duration-200",
+        "text-[#888] hover:text-white hover:bg-white/5",
         active && [
-          "text-white bg-white/[0.02]",
-          "shadow-[inset_2px_2px_5px_rgba(0,0,0,0.6),inset_-1px_-1px_2px_rgba(255,255,255,0.03)]"
+          "text-white bg-white/[0.05]",
+          "shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)]"
         ]
       )}
     >
-      {/* Relief effect on hover */}
-      <div className={cn(
-        "absolute inset-0 rounded-sm opacity-0 transition-opacity duration-300",
-        "shadow-[inset_1px_1px_2px_rgba(0,0,0,0.6),inset_-1px_-1px_2px_rgba(255,255,255,0.03)]",
-        "group-hover:opacity-100"
-      )} />
+      {icon && (
+        <span className={cn(
+          "transition-colors duration-200",
+          active ? "text-white" : "text-[#666]"
+        )}>
+          {icon}
+        </span>
+      )}
       
-      <span className="font-light text-[1.05rem] z-10">{label}</span>
+      <span className="flex-1 text-left text-sm font-medium">{label}</span>
       
-      {count !== undefined ? (
-        <span className="font-mono text-[0.7rem] bg-[#252525] px-1.5 py-0.5 rounded-sm text-[#444] shadow-[inset_1px_1px_2px_#000] z-10">
+      {count !== undefined && (
+        <span className="font-mono text-[0.65rem] bg-[#252525] px-1.5 py-0.5 rounded text-[#555] shadow-[inset_1px_1px_2px_#000]">
           {count}
         </span>
-      ) : (
+      )}
+      {mark && !count && (
         <span className={cn(
-          "font-mono text-[0.9rem] text-[#444] transition-colors duration-300 z-10",
-          active && "text-white"
+          "font-mono text-xs text-[#444] transition-colors duration-200",
+          active && "text-[#666]"
         )}>
           {mark}
         </span>
