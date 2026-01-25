@@ -244,7 +244,13 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
     },
     onSuccess: (result) => {
       setSavedItems(prev => new Set(prev).add(result.index));
-      queryClient.invalidateQueries({ queryKey: ["/api/prompts"] });
+      // Invalidate all prompts-related queries including Recent Prompts
+      queryClient.invalidateQueries({ 
+        predicate: (query) => {
+          const key = query.queryKey[0];
+          return typeof key === 'string' && key.startsWith('/api/prompts');
+        }
+      });
       queryClient.invalidateQueries({ queryKey: ["/api/user/stats"] });
       
       if (result.uploadFailed && !result.hasImages) {
@@ -528,18 +534,21 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                       {result.items.map((item, i) => (
                         <div 
                           key={i} 
-                          className={`p-3 rounded-lg border relative ${
+                          className={`p-3 rounded-lg border ${
                             savedItems.has(i) ? 'bg-green-500/10 border-green-500/30' : 'bg-card border-border'
                           }`}
                         >
-                          {/* Save button positioned at top right, always visible */}
-                          <div className="absolute top-2 right-2 z-10">
+                          {/* Header with name and save button */}
+                          <div className="flex items-center justify-between mb-2">
+                            <h5 className="font-semibold text-sm text-foreground truncate pr-2">
+                              {item.name || 'Imported Prompt'}
+                            </h5>
                             <Button
                               size="sm"
                               variant={savedItems.has(i) ? "ghost" : "default"}
                               onClick={() => savePromptMutation.mutate({ item, index: i })}
                               disabled={savePromptMutation.isPending || savedItems.has(i)}
-                              className="shadow-md"
+                              className="shadow-md shrink-0"
                             >
                               {savedItems.has(i) ? (
                                 <Check className="h-3 w-3 text-green-500" />
@@ -548,8 +557,8 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                               )}
                             </Button>
                           </div>
-                          {/* Prompt content with padding for button */}
-                          <div className="text-sm font-mono text-xs bg-muted p-3 pr-16 rounded border border-border/50 max-h-[200px] overflow-auto">
+                          {/* Prompt content */}
+                          <div className="text-sm font-mono text-xs bg-muted p-3 rounded border border-border/50 max-h-[200px] overflow-auto">
                             {(() => {
                               try {
                                 const parsed = typeof item.prompt === 'string' ? JSON.parse(item.prompt) : item.prompt;
