@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import OpenAI from 'openai';
 import { isAuthenticated } from '../replitAuth';
+import { searchTrendingPrompts } from '../services/scoutService';
 
 const router = Router();
 
@@ -198,6 +199,49 @@ Please analyze all provided content and extract any AI generation prompts.`;
     console.error('Prompt extraction error:', error);
     return res.status(500).json({ 
       error: error.message || 'Failed to extract prompts' 
+    });
+  }
+});
+
+router.post('/scout', isAuthenticated, async (req: any, res) => {
+  try {
+    const { keywords } = req.body as { keywords: string };
+
+    if (!keywords || keywords.trim().length === 0) {
+      return res.status(400).json({ error: 'Please provide keywords to scout' });
+    }
+
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(400).json({ 
+        error: 'Scout feature requires GEMINI_API_KEY. Please add it in your secrets.' 
+      });
+    }
+
+    const result = await searchTrendingPrompts(keywords.trim());
+
+    const items: ExtractedItem[] = result.parsedPrompts.map(p => ({
+      prompt: p.promptText,
+      name: p.title || 'Scouted Prompt',
+      tags: p.tags || [],
+      promptType: p.promptType || 'Image',
+      promptStyle: p.promptStyle || 'Unknown',
+      intendedModel: p.intendedModel || 'Unknown',
+    }));
+
+    return res.json({
+      analysis: `Found ${items.length} trending prompts for "${keywords}"`,
+      items,
+      method: items.length > 0 ? 'direct' : 'failed',
+      sources: result.parsedPrompts.map(p => ({
+        platform: p.platform,
+        sourceUrl: p.sourceUrl,
+        engagement: p.engagementMetrics
+      }))
+    });
+  } catch (error: any) {
+    console.error('Scout error:', error);
+    return res.status(500).json({ 
+      error: error.message || 'Failed to scout prompts' 
     });
   }
 });

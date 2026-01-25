@@ -16,7 +16,9 @@ import {
   Loader2,
   Check,
   Download,
-  ExternalLink
+  ExternalLink,
+  Search,
+  Compass
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -47,6 +49,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [url, setUrl] = useState("");
   const [textContext, setTextContext] = useState("");
+  const [scoutKeywords, setScoutKeywords] = useState("");
   const [mediaFiles, setMediaFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -152,6 +155,38 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
       toast({
         title: "Analysis Failed",
         description: error.message || "Please try again",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const scoutMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("POST", "/api/prompts/scout", {
+        keywords: scoutKeywords,
+      });
+      return response.json() as Promise<ExtractionResult & { sources?: any[] }>;
+    },
+    onSuccess: (data) => {
+      setResult(data);
+      setSavedItems(new Set());
+      if (data.method === 'failed' || data.items.length === 0) {
+        toast({
+          title: "Scout Complete",
+          description: data.analysis || "No prompts found for those keywords.",
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Scout Complete",
+          description: `Found ${data.items.length} trending prompt${data.items.length !== 1 ? 's' : ''} for "${scoutKeywords}"`,
+        });
+      }
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Scout Failed",
+        description: error.message || "Could not scout prompts. Make sure GEMINI_API_KEY is configured.",
         variant: "destructive",
       });
     },
@@ -288,6 +323,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
   const clearAll = () => {
     setUrl("");
     setTextContext("");
+    setScoutKeywords("");
     setMediaFiles([]);
     previewUrls.forEach(u => URL.revokeObjectURL(u));
     setPreviewUrls([]);
@@ -297,6 +333,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
   };
 
   const canAnalyze = url || mediaFiles.length > 0 || textContext;
+  const canScout = scoutKeywords.trim().length >= 3;
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -359,6 +396,48 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                     placeholder="Paste caption, description, or specific details here..."
                     rows={3}
                   />
+                </div>
+
+                <div className="p-3 rounded-lg bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Compass className="h-4 w-4 text-indigo-400" />
+                    <label className="block text-sm font-medium text-indigo-300">
+                      Scout Keywords
+                    </label>
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-indigo-500/30 text-indigo-400">
+                      AI Search
+                    </Badge>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        value={scoutKeywords}
+                        onChange={(e) => setScoutKeywords(e.target.value)}
+                        placeholder="e.g., cyberpunk portrait, ethereal landscape..."
+                        className="pl-9 bg-background/50"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => scoutMutation.mutate()}
+                      disabled={scoutMutation.isPending || !canScout}
+                      className="shrink-0"
+                    >
+                      {scoutMutation.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Compass className="h-4 w-4 mr-1" />
+                          Scout
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-1.5">
+                    Search the web for trending AI prompts matching your keywords
+                  </p>
                 </div>
 
                 <div>
