@@ -1,10 +1,18 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { 
   Folder, 
   FolderOpen, 
@@ -15,7 +23,17 @@ import {
   PanelLeft,
   FolderPlus,
   Lock,
-  Globe
+  Globe,
+  User as UserIcon,
+  Settings,
+  Users,
+  DollarSign,
+  LogOut,
+  Moon,
+  Sun,
+  Shield,
+  ScrollText,
+  ChevronUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { apiRequest } from "@/lib/queryClient";
@@ -89,13 +107,24 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
       >
         {isOpen && (
           <>
-            {/* Header with logo */}
-            <div className="px-6 pt-6 pb-4">
+            {/* Header with logo - matching main header */}
+            <div className="px-4 pt-5 pb-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-[#444] text-lg">::</span>
-                  <span className="font-extrabold text-white tracking-tight text-lg">PROMPTA</span>
-                </div>
+                <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-orange-100/20 rounded-lg blur-lg"></div>
+                    <div className="w-8 h-8 relative">
+                      <img 
+                        src="/ATRIUM2 090725.png" 
+                        alt="PromptAtrium Logo" 
+                        className="w-8 h-8 object-contain relative z-10"
+                      />
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold bg-gradient-to-b from-orange-400 to-purple-200 to-orange-400 bg-clip-text text-transparent">
+                    PromptAtrium
+                  </span>
+                </Link>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -187,31 +216,121 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
               </div>
             </ScrollArea>
 
-            {/* Footer / User Profile */}
-            <div className="border-t border-white/[0.03] p-4 mt-auto">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-[#333] rounded-sm shadow-[inset_1px_1px_3px_#000] flex items-center justify-center overflow-hidden">
-                  {typedUser?.profileImageUrl ? (
-                    <img 
-                      src={typedUser.profileImageUrl} 
-                      alt={typedUser.username || 'User'} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="font-mono text-[#444] text-sm">
-                      {typedUser?.username?.[0]?.toUpperCase() || '?'}
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold text-[#ddd]">
-                    {typedUser?.username || 'User'}
-                  </span>
-                  <span className="font-mono text-[0.65rem] text-[#444]">
-                    active_session
-                  </span>
-                </div>
-              </div>
+            {/* Footer / User Menu - matching main header dropdown */}
+            <div className="border-t border-white/[0.03] p-3 mt-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="w-full flex items-center justify-between gap-3 p-2 rounded-md hover:bg-white/5 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center border border-cyan-400/30 overflow-hidden">
+                        {typedUser?.profileImageUrl ? (
+                          <img 
+                            src={typedUser.profileImageUrl} 
+                            alt={typedUser.username || 'User'} 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-sm font-medium text-white">
+                            {typedUser?.firstName?.[0] || typedUser?.username?.[0]?.toUpperCase() || '?'}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col text-left">
+                        <span className="text-sm font-medium text-[#ddd]">
+                          {typedUser?.firstName || typedUser?.username || 'User'}
+                        </span>
+                        <span className="text-xs text-[#666] truncate max-w-[120px]">
+                          {typedUser?.email || ''}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronUp className="h-4 w-4 text-[#666]" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  side="top" 
+                  align="start" 
+                  className="w-56 mb-2"
+                  data-testid="sidebar-user-menu"
+                >
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {typedUser?.firstName ? `${typedUser.firstName} ${typedUser.lastName || ''}` : typedUser?.username || "User"}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {typedUser?.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem asChild>
+                    <Link href={`/user/${typedUser?.username}`} className="flex items-center cursor-pointer">
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      View Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile/settings" className="flex items-center cursor-pointer">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Profile Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/user/${typedUser?.username}?tab=followers`} className="flex items-center cursor-pointer">
+                      <Users className="mr-2 h-4 w-4" />
+                      Followers
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/user/${typedUser?.username}?tab=following`} className="flex items-center cursor-pointer">
+                      <Users className="mr-2 h-4 w-4" />
+                      Following
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem asChild>
+                    <Link href="/seller/dashboard" className="flex items-center cursor-pointer">
+                      <DollarSign className="mr-2 h-4 w-4" />
+                      Start Selling
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/prompt-history" className="flex items-center cursor-pointer">
+                      <FileText className="mr-2 h-4 w-4" />
+                      Prompt History
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem asChild>
+                    <Link href="/terms" className="flex items-center cursor-pointer">
+                      <ScrollText className="mr-2 h-4 w-4" />
+                      Terms & Conditions
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/privacy-policy" className="flex items-center cursor-pointer">
+                      <Shield className="mr-2 h-4 w-4" />
+                      Privacy Policy
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem 
+                    onClick={() => window.location.href = '/api/logout'} 
+                    className="cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </>
         )}
