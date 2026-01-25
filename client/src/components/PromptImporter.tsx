@@ -620,7 +620,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                         </Button>
                       </div>
                     </div>
-                    <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
+                    <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
                       {result.items.map((item, i) => (
                         <div 
                           key={i} 
@@ -648,7 +648,7 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                             </Button>
                           </div>
                           {/* Prompt content */}
-                          <div className="text-sm font-mono text-xs bg-muted p-3 rounded border border-border/50 max-h-[200px] overflow-auto">
+                          <div className="text-sm font-mono text-xs bg-muted p-2 rounded border border-border/50 max-h-[120px] overflow-auto">
                             {(() => {
                               try {
                                 const parsed = typeof item.prompt === 'string' ? JSON.parse(item.prompt) : item.prompt;
