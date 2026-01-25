@@ -2,6 +2,7 @@ import { Router } from 'express';
 import OpenAI from 'openai';
 import { isAuthenticated } from '../replitAuth';
 import { searchTrendingPrompts } from '../services/scoutService';
+import { storage } from '../storage';
 
 const router = Router();
 
@@ -75,6 +76,14 @@ We have successfully retrieved detailed metadata for this link. Use this as the 
       }
     }
 
+    const [availableTypes, availableStyles] = await Promise.all([
+      storage.getPromptTypes({ isActive: true }),
+      storage.getPromptStyles({ isActive: true })
+    ]);
+
+    const typeList = availableTypes.map(t => t.name).join(", ");
+    const styleList = availableStyles.map(s => s.name).join(", ");
+
     const systemPrompt = `You are an expert AI art forensic analyst and prompt engineer. Your task is to extract, clean, and categorize the generative AI prompts from the content provided.
 
 INSTRUCTIONS:
@@ -91,8 +100,8 @@ INSTRUCTIONS:
 
 3. **METADATA EXTRACTION (Per Item)**:
    - **name**: Generate a SHORT, DESCRIPTIVE title (3-8 words max) that captures the essence of the prompt. Examples: "Ethereal Forest Portrait", "Cyberpunk City at Night", "Vintage Film Noir Woman", "Golden Hour Beach Scene"
-   - **promptType**: Classify (e.g., "Image", "Video", "3D", "Agentic", "Writing", "Code")
-   - **promptStyle**: Classify (e.g., "JSON", "Narrative", "Instructional", "Cinematic")
+   - **promptType**: Classify using ONLY these available types if they fit: ${typeList}. If none fit well, provide a suitable general classification.
+   - **promptStyle**: Classify using ONLY these available styles if they fit: ${styleList}. If none fit well, provide a suitable general classification.
    - **intendedModel**: Identify (e.g., "Midjourney", "DALL-E", "Stable Diffusion", "Flux", "Runway", "ChatGPT", "Sora")
    - **tags**: Relevant keywords and themes
 
@@ -217,7 +226,16 @@ router.post('/scout', isAuthenticated, async (req: any, res) => {
       });
     }
 
-    const result = await searchTrendingPrompts(keywords.trim());
+    const [availableTypes, availableStyles] = await Promise.all([
+      storage.getPromptTypes({ isActive: true }),
+      storage.getPromptStyles({ isActive: true })
+    ]);
+
+    const typeList = availableTypes.map(t => t.name).join(", ");
+    const styleList = availableStyles.map(s => s.name).join(", ");
+
+    const enhancedKeywords = `${keywords.trim()} (classify using types: ${typeList} and styles: ${styleList})`;
+    const result = await searchTrendingPrompts(enhancedKeywords);
 
     const items: ExtractedItem[] = result.parsedPrompts.map(p => ({
       prompt: p.promptText,
