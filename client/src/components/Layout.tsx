@@ -311,7 +311,6 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
 
           <div className="flex items-center space-x-2 md:space-x-4">
             {/* Credits Balance */}
-            {/* Credits Balance */}
             <Link href="/credits">
               <Button
                 variant="ghost"
