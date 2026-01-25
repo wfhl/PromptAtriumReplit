@@ -31,7 +31,8 @@ export const searchTrendingPrompts = async (topic: string): Promise<ScoutResult>
   }
 
   const ai = new GoogleGenAI({ apiKey });
-  const modelId = 'gemini-2.5-pro';
+  // Use gemini-2.0-flash which supports Google Search grounding
+  const modelId = 'gemini-2.0-flash';
 
   const searchPrompt = `
     You are a specialized Data Archivist. Your mandate is to find REAL, VERIFIABLE AI prompts for "${topic}" using Google Search.
@@ -100,7 +101,16 @@ export const searchTrendingPrompts = async (topic: string): Promise<ScoutResult>
       },
     });
 
-    const parsedPrompts = JSON.parse(response.text || "[]");
+    let parsedPrompts: any[] = [];
+    try {
+      parsedPrompts = JSON.parse(response.text || "[]");
+      if (!Array.isArray(parsedPrompts)) {
+        parsedPrompts = [];
+      }
+    } catch (parseError) {
+      console.error("Failed to parse scout response:", parseError);
+      parsedPrompts = [];
+    }
 
     const promptsWithIds: ScoutedPrompt[] = parsedPrompts.map((p: any) => ({
       ...p,
