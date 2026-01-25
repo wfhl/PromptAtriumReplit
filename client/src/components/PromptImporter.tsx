@@ -31,6 +31,8 @@ interface ExtractedPrompt {
   promptType: string;
   promptStyle: string;
   intendedModel: string;
+  sourceUrl?: string;
+  platform?: string;
   slideIndex?: number;
 }
 
@@ -260,14 +262,14 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
         promptType: item.promptType,
         promptStyle: item.promptStyle,
         tags: item.tags || [],
-        sourceUrl: url || undefined,
+        sourceUrl: item.sourceUrl || url || undefined,
         intendedGenerator: item.intendedModel,
         exampleImagesUrl: imageUrls,
         author: socialContext?.author || undefined,
         isPublic: false,
         status: "draft",
         additionalMetadata: {
-          platform: socialContext?.platform || 'manual_upload',
+          platform: item.platform || socialContext?.platform || 'manual_upload',
           extractionMethod: result?.method || 'direct',
           slideIndex: item.slideIndex,
           timestamp: Date.now()
@@ -661,6 +663,14 @@ export function PromptImporter({ onPromptSaved }: PromptImporterProps) {
                             })()}
                           </div>
                           <div className="flex flex-wrap gap-1 mt-2">
+                            {item.sourceUrl && (
+                              <Badge variant="outline" className="text-[10px] bg-indigo-500/10 border-indigo-500/20 text-indigo-300 gap-1 h-5">
+                                <ExternalLink className="h-2 w-2" />
+                                <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                  {item.platform || "Source"}
+                                </a>
+                              </Badge>
+                            )}
                             {item.promptType && (
                               <Badge variant="secondary" className="text-xs">{item.promptType}</Badge>
                             )}
