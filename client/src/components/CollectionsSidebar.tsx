@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { COLLECTIONS_SIDEBAR_BACKGROUND } from "@/components/AppSidebar";
 import { 
   Folder, 
   FolderOpen, 
@@ -107,7 +108,8 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
       <aside
         className={cn(
           "fixed left-0 top-16 h-[calc(100vh-4rem)] z-30 transition-all duration-300 ease-in-out flex flex-col",
-          "bg-[#1c1c1c]/95 backdrop-blur-md border-r border-white/5",
+          COLLECTIONS_SIDEBAR_BACKGROUND,
+          "border-r border-white/5",
           "shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03),inset_-1px_-1px_2px_rgba(0,0,0,0.6)]",
           isOpen ? "w-64" : "w-0"
         )}
