@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import type { User, UserCommunity } from "@shared/schema";
 
-interface AppSidebarProps {
+interface AppHeaderProps {
   location: string;
   user: User | null;
   userCommunityMemberships: UserCommunity[];
@@ -36,18 +36,11 @@ interface AppSidebarProps {
 }
 
 // ============================================================
-// SIDEBAR STYLING - Edit this constant to change the header/nav background
+// HEADER STYLING - Edit this constant to change the top navigation background
 // ============================================================
-export const SIDEBAR_BACKGROUND = "bg-gray-900/70 backdrop-blur-sm";
-export const COLLECTIONS_SIDEBAR_BACKGROUND = "bg-[#1c1c1c]/95 backdrop-blur-md";
-// Examples:
-// "bg-slate-900" - solid dark slate
-// "bg-indigo-900/80 backdrop-blur-sm" - indigo tint with blur
-// "bg-black/90 backdrop-blur-md" - near black with blur
-// "bg-gradient-to-r from-gray-900 to-slate-900" - gradient
-// ============================================================
+export const HEADER_BACKGROUND = "bg-gray-900/70 backdrop-blur-sm";
 
-export function AppSidebar({
+export function AppHeader({
   location,
   user,
   userCommunityMemberships,
@@ -58,7 +51,7 @@ export function AppSidebar({
   positionTo,
   handleOpenIntroduction,
   toast,
-}: AppSidebarProps) {
+}: AppHeaderProps) {
   const setLinkRef = (key: string) => (el: HTMLDivElement | null) => {
     linkRefs.current[key] = el;
   };

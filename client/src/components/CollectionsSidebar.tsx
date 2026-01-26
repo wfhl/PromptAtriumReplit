@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { COLLECTIONS_SIDEBAR_BACKGROUND } from "@/components/AppSidebar";
+import { SidebarNav } from "@/components/SidebarNav";
 import { 
   Folder, 
   FolderOpen, 
@@ -150,107 +150,7 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
             </div>
 
             <ScrollArea className="flex-1 px-4">
-              {/* Navigation Section */}
-              <div className="mb-4">
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
-                  Navigate
-                </span>
-
-                <NavItem 
-                  label="Dashboard"
-                  icon={<Home className="h-4 w-4" />}
-                  active={location === '/'}
-                  onClick={() => setLocation('/')}
-                />
-                <NavItem 
-                  label="My Library"
-                  icon={<Library className="h-4 w-4" />}
-                  active={location === '/library'}
-                  onClick={() => setLocation('/library')}
-                />
-                <NavItem 
-                  label="Community"
-                  icon={<Users className="h-4 w-4" />}
-                  active={location === '/community'}
-                  onClick={() => setLocation('/community')}
-                />
-                <NavItem 
-                  label="Marketplace"
-                  icon={<DollarSign className="h-4 w-4" />}
-                  active={location === '/marketplace'}
-                  onClick={() => setLocation('/marketplace')}
-                />
-              </div>
-
-              {/* Divider */}
-              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
-
-              {/* Tools Section */}
-              <div className="mb-4">
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
-                  Tools
-                </span>
-
-                <NavItem 
-                  label="Quick Prompter"
-                  icon={<Wand2 className="h-4 w-4" />}
-                  active={location === '/tools/quick-prompter'}
-                  onClick={() => setLocation('/tools/quick-prompter')}
-                />
-                <NavItem 
-                  label="Wordsmith Codex"
-                  icon={<BookOpen className="h-4 w-4" />}
-                  active={location === '/codex'}
-                  onClick={() => setLocation('/codex')}
-                />
-                <NavItem 
-                  label="Metadata Analyzer"
-                  icon={<FileSearch className="h-4 w-4" />}
-                  active={location === '/tools/metadata-analyzer'}
-                  onClick={() => setLocation('/tools/metadata-analyzer')}
-                />
-                <NavItem 
-                  label="Aspect Ratio"
-                  icon={<Image className="h-4 w-4" />}
-                  active={location === '/tools/aspect-ratio-calculator'}
-                  onClick={() => setLocation('/tools/aspect-ratio-calculator')}
-                />
-              </div>
-
-              {/* Divider */}
-              <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
-
-              {/* Resources Section */}
-              <div className="mb-4">
-                <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-[#444] block mb-3 px-2">
-                  Resources
-                </span>
-
-                <NavItem 
-                  label="Prompting Guides"
-                  icon={<BookOpen className="h-4 w-4" />}
-                  active={location === '/prompting-guides'}
-                  onClick={() => setLocation('/prompting-guides')}
-                />
-                <NavItem 
-                  label="AI Services"
-                  icon={<Sparkles className="h-4 w-4" />}
-                  active={location === '/ai-services'}
-                  onClick={() => setLocation('/ai-services')}
-                />
-                <NavItem 
-                  label="Getting Started"
-                  icon={<GraduationCap className="h-4 w-4" />}
-                  active={location === '/getting-started'}
-                  onClick={() => setLocation('/getting-started')}
-                />
-                <NavItem 
-                  label="Install Guide"
-                  icon={<Download className="h-4 w-4" />}
-                  active={location === '/install-guide'}
-                  onClick={() => setLocation('/install-guide')}
-                />
-              </div>
+              <SidebarNav location={location} />
 
               {/* Divider */}
               <div className="h-px bg-white/[0.02] shadow-[0_1px_0_rgba(0,0,0,0.5)] mx-2 mb-4" />
