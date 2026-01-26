@@ -25,7 +25,8 @@ interface SidebarNavProps {
 // ============================================================
 
 // Controls the OUTER sidebar container (the entire sidebar panel including logo, collections, user menu)
-export const SIDEBAR_CONTAINER_BACKGROUND = "bg-[#1c1c1c]/95 backdrop-blur-md";
+export const SIDEBAR_CONTAINER_BACKGROUND =
+  "bg-gradient-to-br from-purple-900/10 to-gray-900/30 backdrop-blur-md";
 
 // Controls the INNER navigation sections (Navigate, Tools, Resources)
 export const SIDEBAR_NAV_BACKGROUND = "bg-transparent";
@@ -38,18 +39,18 @@ export function SidebarNav({ location }: SidebarNavProps) {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05
-      }
-    }
+        staggerChildren: 0.05,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, x: -10 },
-    show: { opacity: 1, x: 0 }
+    show: { opacity: 1, x: 0 },
   };
 
   return (
-    <motion.div 
+    <motion.div
       className={cn("flex flex-col h-full", SIDEBAR_NAV_BACKGROUND)}
       variants={containerVariants}
       initial="hidden"

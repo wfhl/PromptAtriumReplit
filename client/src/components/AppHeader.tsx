@@ -63,10 +63,11 @@ export function AppHeader({
   return (
     <header className={cn("fixed top-0 left-0 right-0 z-50 h-16 border-b border-white/5", HEADER_BACKGROUND)}>
       <div className="h-full px-4 md:px-6 flex items-center justify-between">
-        <div className="flex items-center space-x-4 md:space-x-8">
+        <div className="flex items-center space-x-4 md:space-x-8 flex-1">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
+            className="flex-shrink-0"
           >
             <Link href="/" className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity">
               <div className="relative mr-2">
@@ -88,7 +89,7 @@ export function AppHeader({
 
           <nav 
             ref={navRef}
-            className="hidden md:flex items-center space-x-1 relative"
+            className="hidden lg:flex items-center space-x-1 relative"
             onMouseLeave={() => {
               const activeKey = location.startsWith('/community') ? '/community' 
                 : location.startsWith('/library') ? '/library'
@@ -201,7 +202,7 @@ export function AppHeader({
           </nav>
         </div>
 
-        <div className="hidden md:flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="text-gray-300 hover:text-cyan-400 transition-colors px-4 py-2 rounded-md flex items-center gap-1 text-[16px] bg-transparent border-none outline-none focus:outline-none" data-testid="nav-resources">
