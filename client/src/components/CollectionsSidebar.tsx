@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { motion, AnimatePresence } from "framer-motion";
 import { SidebarNav, SIDEBAR_CONTAINER_BACKGROUND } from "@/components/SidebarNav";
 import { 
   Folder, 
@@ -105,20 +106,24 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
 
   return (
     <>
-      <aside
-        className={cn(
-          "fixed left-0 top-16 h-[calc(100vh-4rem)] z-30 transition-all duration-300 ease-in-out flex flex-col",
-          SIDEBAR_CONTAINER_BACKGROUND,
-          "border-r border-white/5",
-          "shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03),inset_-1px_-1px_2px_rgba(0,0,0,0.6)]",
-          isOpen ? "w-64" : "w-0"
-        )}
-        data-testid="collections-sidebar"
-        role="navigation"
-        aria-label="Collections sidebar"
-      >
+      <AnimatePresence mode="wait">
         {isOpen && (
-          <>
+          <motion.aside
+            key="sidebar"
+            initial={{ x: -256 }}
+            animate={{ x: 0 }}
+            exit={{ x: -256 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className={cn(
+              "fixed left-0 top-16 h-[calc(100vh-4rem)] z-30 flex flex-col w-64",
+              SIDEBAR_CONTAINER_BACKGROUND,
+              "border-r border-white/5",
+              "shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03),inset_-1px_-1px_2px_rgba(0,0,0,0.6)]"
+            )}
+            data-testid="collections-sidebar"
+            role="navigation"
+            aria-label="Collections sidebar"
+          >
             {/* Header with logo - matching main header */}
             <div className="px-4 pt-5 pb-4">
               <div className="flex items-center justify-between">
@@ -323,74 +328,32 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </>
+          </motion.aside>
         )}
-      </aside>
+      </AnimatePresence>
 
-      {!isOpen && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="fixed left-3 top-[4.5rem] z-30 h-8 w-8 bg-[#1c1c1c] border border-black/30 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03)] hover:bg-[#252525] text-[#a0a0a0]"
-          onClick={onToggle}
-          data-testid="button-open-sidebar"
-          aria-label="Open collections sidebar"
-        >
-          <PanelLeft className="h-4 w-4" />
-        </Button>
-      )}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.div
+            key="open-button"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="fixed left-3 top-[4.5rem] z-30 h-8 w-8 bg-[#1c1c1c] border border-black/30 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03)] hover:bg-[#252525] text-[#a0a0a0]"
+              onClick={onToggle}
+              data-testid="button-open-sidebar"
+              aria-label="Open collections sidebar"
+            >
+              <PanelLeft className="h-4 w-4" />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
-  );
-}
-
-// Nav Item Component
-interface NavItemProps {
-  label: string;
-  icon?: React.ReactNode;
-  mark?: string;
-  active?: boolean;
-  count?: number;
-  onClick: () => void;
-}
-
-function NavItem({ label, icon, mark, active, count, onClick }: NavItemProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "w-full flex items-center gap-3 px-3 py-2.5 mb-1 rounded-md transition-all duration-200",
-        "text-[#888] hover:text-white hover:bg-white/5",
-        active && [
-          "text-white bg-white/[0.05]",
-          "shadow-[inset_1px_1px_3px_rgba(0,0,0,0.4)]"
-        ]
-      )}
-    >
-      {icon && (
-        <span className={cn(
-          "transition-colors duration-200",
-          active ? "text-white" : "text-[#666]"
-        )}>
-          {icon}
-        </span>
-      )}
-      
-      <span className="flex-1 text-left text-sm font-medium">{label}</span>
-      
-      {count !== undefined && (
-        <span className="font-mono text-[0.65rem] bg-[#252525] px-1.5 py-0.5 rounded text-[#555] shadow-[inset_1px_1px_2px_#000]">
-          {count}
-        </span>
-      )}
-      {mark && !count && (
-        <span className={cn(
-          "font-mono text-xs text-[#444] transition-colors duration-200",
-          active && "text-[#666]"
-        )}>
-          {mark}
-        </span>
-      )}
-    </button>
   );
 }
 
@@ -412,7 +375,6 @@ function CollectionFolder({
   onClick,
   onPromptClick,
   selectedPromptId,
-  punctuation
 }: CollectionFolderProps) {
   const { data: prompts = [], isLoading } = useQuery<Prompt[]>({
     queryKey: ["/api/collections", collection.id, "prompts"],
@@ -482,7 +444,12 @@ function CollectionFolder({
       </div>
       
       <CollapsibleContent>
-        <div className="ml-6 pl-3 border-l border-[#333] space-y-0.5 py-2">
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="ml-6 pl-3 border-l border-[#333] space-y-0.5 py-2 overflow-hidden"
+        >
           {isLoading ? (
             <div className="space-y-1 py-1">
               {[1, 2].map((i) => (
@@ -522,7 +489,7 @@ function CollectionFolder({
               +{prompts.length - 10} more...
             </button>
           )}
-        </div>
+        </motion.div>
       </CollapsibleContent>
     </Collapsible>
   );
