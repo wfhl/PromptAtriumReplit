@@ -29,7 +29,8 @@ export const SIDEBAR_CONTAINER_BACKGROUND =
   "bg-gradient-to-br from-purple-900/10 to-gray-900/30 backdrop-blur-md";
 
 // Controls the INNER navigation sections (Navigate, Tools, Resources)
-export const SIDEBAR_NAV_BACKGROUND = "bg-transparent";
+export const SIDEBAR_NAV_BACKGROUND =
+  "bg-gradient-to-br from-gray-900/10 to-purple-900/10 backdrop-blur-md";
 
 export function SidebarNav({ location }: SidebarNavProps) {
   const [, setLocation] = useLocation();
