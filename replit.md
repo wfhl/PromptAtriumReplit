@@ -92,6 +92,9 @@ For implementing design changes effectively:
 
 See `BRAND_GUIDELINES.md` for detailed visual specifications and `DESIGN_CHANGE_WORKFLOW.md` for implementation guidance.
 
+## Import Scripts
+- `scripts/import-all-prompts.ts` — Comprehensive bulk import script that handles all prompt file formats in `attached_assets/prompts/` (individual JSON, array JSON, aggregate JSON collections, markdown with code blocks, plain text). Supports deduplication via MD5 content hashing and batch inserts. Successfully imported 1,644 prompts from 198 source files.
+
 ## External Dependencies
 - **Replit Auth**: For user authentication.
 - **Replit AI Integrations (GPT-5)**: For AI-powered prompt refinement and metadata generation.
