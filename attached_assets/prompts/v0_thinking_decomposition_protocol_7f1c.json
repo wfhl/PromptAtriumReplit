@@ -1,0 +1,20 @@
+{
+  "title": "v0 Thinking Decomposition Protocol",
+  "promptText": "BEFORE creating a Code Project, use <Thinking> tags to think through the project structure, state management, and styling strategy. Decompose the user request into small, functional UI components and identify any external libraries required.",
+  "platform": "Twitter/X",
+  "tags": [
+    "v0",
+    "Thinking-Process",
+    "UI-UX"
+  ],
+  "engagementMetrics": {
+    "likes": 4500,
+    "views": 89000
+  },
+  "intendedModel": "GPT-4o",
+  "promptStyle": "Instructional",
+  "promptType": "Web Development",
+  "sourceUrl": "https://twitter.com/search?q=v0%20system%20prompt",
+  "id": "7f1cac65-8cc0-4ec3-a3e6-54ea9ae268d1",
+  "category": "Uncategorized"
+}

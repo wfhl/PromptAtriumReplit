@@ -1,0 +1,18 @@
+{
+  "title": "The Researcher & The Writer: Multi-Agent Collaboration",
+  "promptText": "Split composition showing two distinct AI personas working in tandem; on the left, an analytical robot surrounded by data charts (The Researcher), on the right, a creative android typing on a light-keypad (The Writer), connected by a central bridge of light representing the handoff, detailed textures, soft studio lighting, Pixar-style 3D render",
+  "platform": "Reddit (r/StableDiffusion)",
+  "tags": [
+    "multi-agent",
+    "specialized-ai",
+    "3d-render",
+    "collaboration"
+  ],
+  "engagementMetrics": {
+    "likes": 675,
+    "views": 22000
+  },
+  "sourceUrl": "https://www.reddit.com/r/StableDiffusion/comments/visualizing_the_agent_handoff/",
+  "id": "bf936ec2-fe07-4af9-99c9-aebbe9ee16ce",
+  "category": "Uncategorized"
+}

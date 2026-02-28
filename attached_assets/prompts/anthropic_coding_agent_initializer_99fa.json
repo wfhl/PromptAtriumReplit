@@ -1,0 +1,20 @@
+{
+  "title": "Anthropic Coding Agent Initializer",
+  "promptText": "Set up the initial environment: an init.sh script, a claude-progress.txt file that keeps a log of what agents have done, and an initial git commit that shows what files were added. Read the git logs and progress files to get up to speed on what was recently worked on. Choose the highest-priority feature that's not yet done.",
+  "platform": "Anthropic Blog / GitHub",
+  "tags": [
+    "Coding-Agent",
+    "Software-Development",
+    "Persistence"
+  ],
+  "engagementMetrics": {
+    "likes": 8400,
+    "views": 120000
+  },
+  "intendedModel": "Claude 3.5 Sonnet",
+  "promptStyle": "Workflow",
+  "promptType": "Dev Programming",
+  "sourceUrl": "https://www.anthropic.com/news/effective-agents",
+  "id": "99faf9d5-3d2c-43e7-bd10-a25906e82e9f",
+  "category": "Uncategorized"
+}

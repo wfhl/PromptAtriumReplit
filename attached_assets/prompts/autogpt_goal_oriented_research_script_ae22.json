@@ -1,0 +1,20 @@
+{
+  "title": "AutoGPT Goal-Oriented Research Script",
+  "promptText": "Goal: Research the top 5 competitors for {company} in the {industry} sector. Constraints: 1. Only use sources from the last 12 months. 2. Output a SWOT analysis for each. 3. Terminate once the final report is saved to 'competitors.md'.",
+  "platform": "Reddit",
+  "tags": [
+    "AutoGPT",
+    "Market-Research",
+    "Automation"
+  ],
+  "engagementMetrics": {
+    "likes": 2100,
+    "views": 33000
+  },
+  "intendedModel": "GPT-4",
+  "promptStyle": "Instructional",
+  "promptType": "Agentic",
+  "sourceUrl": "https://www.reddit.com/r/AI_Agents/",
+  "id": "ae2298ca-22e4-427b-a53e-4629ea5028ed",
+  "category": "Uncategorized"
+}

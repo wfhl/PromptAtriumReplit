@@ -1,0 +1,22 @@
+{
+  "title": "Fanvue Spicy Caption Generator Prompt",
+  "promptText": "Write perfect captions for the images of my AI Influencer I post on Fanvue. The images are mostly very spicy and I want the captions to be suitable to for an exklusive content platform. I want the captions to be a mix between playful, sensual and also funny or provocative. sometimes always end with an engaging. question to my audience. i will tell you which style I wish the caption should not be longer than three sentences.",
+  "platform": "YouTube",
+  "sourceUrl": "https://www.youtube.com/watch?v=kQy3_lXn9zc",
+  "tags": [
+    "Writing",
+    "Influencer",
+    "Spicy",
+    "Fanvue",
+    "Social Media"
+  ],
+  "engagementMetrics": {
+    "likes": 0,
+    "views": 4000
+  },
+  "intendedModel": "ChatGPT / GPT-4",
+  "promptStyle": "Agentic",
+  "promptType": "Writing",
+  "id": "de0ee942-185e-4dd9-8bc8-e9c030cd48bb",
+  "category": "Uncategorized"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Aider Architect Coding Script",
+  "promptText": "You are an expert software architect. I will provide you with a codebase and a feature request. Analyze the existing files, identify which files need modification, and propose a specific implementation plan using the *search/replace* block format. Ensure all changes follow the existing style guide and naming conventions.",
+  "platform": "GitHub",
+  "tags": [
+    "Aider",
+    "Programming",
+    "Architecture",
+    "Git"
+  ],
+  "engagementMetrics": {
+    "likes": 12000,
+    "views": 250000
+  },
+  "intendedModel": "GPT-4o",
+  "promptStyle": "Instructional",
+  "promptType": "Dev Programming",
+  "sourceUrl": "https://github.com/paul-gauthier/aider",
+  "id": "decfa917-62f8-4e42-94d5-b3ba75d50fe6",
+  "category": "Uncategorized"
+}

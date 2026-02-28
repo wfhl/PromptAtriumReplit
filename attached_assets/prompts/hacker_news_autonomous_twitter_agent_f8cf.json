@@ -1,0 +1,21 @@
+{
+  "title": "Hacker News Autonomous Twitter Agent",
+  "promptText": "The agent autonomously fetches the top story from HackerNews. It must summarize the story into a witty tweet format under 280 characters, generate a relevant cover image prompt using the Ideogram API, and publish the final result to X. Avoid duplicate stories by checking the provided Redis cache tool.",
+  "platform": "GitHub",
+  "tags": [
+    "twitter",
+    "automation",
+    "social-media",
+    "upstash"
+  ],
+  "engagementMetrics": {
+    "likes": 320,
+    "views": 15000
+  },
+  "intendedModel": "Gemini 1.5 Pro",
+  "promptStyle": "Workflow",
+  "promptType": "Agentic",
+  "sourceUrl": "https://github.com/upstash/workflow-twitter-agent",
+  "id": "f8cfb1d6-ff9e-426b-9caa-b20678186ee9",
+  "category": "Uncategorized"
+}

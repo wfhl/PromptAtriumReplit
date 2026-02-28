@@ -1,0 +1,16 @@
+{
+  "id": "1768916805616",
+  "sourceUrl": "https://x.com/TAB_TAB_HH/status/2011741588213412331",
+  "extractedPrompt": "{\n  \"image_type\": \"High-fashion editorial photography\",\n  \"subject\": {\n    \"type\": \"Young female model\",\n    \"appearance\": {\n      \"hair\": \"Long, loose wavy honey-blonde hair with center part\",\n      \"skin\": \"Fair complexion, dewy finish\",\n      \"pose\": \"Standing elegantly on a staircase\"\n    }\n  },\n  \"fashion\": {\n    \"garment\": \"Short bridal dress\",\n    \"material\": \"Satin or silk finish with a sheen\",\n    \"design_details\": [\n      \"Sweetheart neckline with a prominent bow tied at the center bust\",\n      \"Ruched/corset-style fitted bodice\",\n      \"Puffed, bubble-hem skirt (voluminous and short)\",\n      \"Draped short sleeves resting on upper arms\"\n    ],\n    \"footwear\": \"Clear (transparent) strap high-heeled sandals showing white pedicure\",\n    \"accessories\": \"Minimalist silver stud earrings\"\n  },\n  \"environment\": {\n    \"setting\": \"Indoor staircase with marble steps\",\n    \"lighting\": \"Warm, soft indoor ambient lighting\",\n    \"shadows\": \"Subtle shadows cast against the wall and stairs, highlighting the texture of the dress\",\n    \"mood\": \"Sophisticated, chic, opulent\"\n  },\n  \"technical_specifications\": {\n    \"quality\": \"4K Ultra HD, Photorealistic, Masterpiece\",\n    \"resolution\": \"High definition, sharp focus\",\n    \"texture_detail\": \"High fidelity fabric textures, skin texture, and marble reflections\",\n    \"camera_settings\": \"Portrait lens (85mm), f/2.8 aperture for depth of field\"\n  }\n}",
+  "mediaType": "text",
+  "timestamp": 1768916805616,
+  "tags": [
+    "High-Fashion",
+    "Bridal Editorial",
+    "JSON Prompting",
+    "Gemini Nano Banana",
+    "Photorealistic AI"
+  ],
+  "originalText": "",
+  "platform": "x.com"
+}

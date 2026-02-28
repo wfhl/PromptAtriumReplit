@@ -1,0 +1,21 @@
+{
+  "title": "Anthropic Context Engineering for AI Agents",
+  "promptText": "You are an AI assistant tasked with [TASK]. Use the following sections to organize your response: <background_information> [CONTEXT] </background_information> <instructions> [RULES] </instructions> ## Tool guidance [TOOL_SPEC] ## Output description [FORMAT]. Use <thought_process> to reason through the steps before providing the final answer.",
+  "platform": "Anthropic Documentation / X",
+  "tags": [
+    "AI Agents",
+    "Context Engineering",
+    "System Prompt",
+    "XML Tagging"
+  ],
+  "engagementMetrics": {
+    "likes": 1200,
+    "views": 45000
+  },
+  "intendedModel": "Claude 3.5 Sonnet",
+  "promptStyle": "Instructional",
+  "promptType": "Agentic",
+  "sourceUrl": "https://www.anthropic.com/news/context-engineering-for-ai-agents",
+  "id": "aae6b8af-d37d-4622-8a0f-a29e8ca622cf",
+  "category": "Uncategorized"
+}

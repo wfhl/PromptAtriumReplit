@@ -1,0 +1,21 @@
+{
+  "title": "Self-Reflection Debugging Agent",
+  "promptText": "Review the code provided below. First, simulate the execution in your mind step-by-step. Identify potential edge cases, logical fallacies, or performance bottlenecks. After finding issues, provide a revised version of the code and explain exactly why the changes were made to improve reliability in a production environment.",
+  "platform": "r/LocalLLaMA",
+  "tags": [
+    "Coding",
+    "Debugging",
+    "Reflection",
+    "Self-Correction"
+  ],
+  "engagementMetrics": {
+    "likes": 450,
+    "views": 15000
+  },
+  "intendedModel": "Llama-3-70B",
+  "promptStyle": "Instructional",
+  "promptType": "Dev Programming",
+  "sourceUrl": "https://www.reddit.com/r/LocalLLaMA/comments/1cg8z1x/reflection_agents_are_underrated/",
+  "id": "65e253c9-a458-4c4e-ab49-890b9cb0f3c0",
+  "category": "Uncategorized"
+}

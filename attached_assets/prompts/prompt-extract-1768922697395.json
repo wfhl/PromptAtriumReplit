@@ -1,0 +1,21 @@
+{
+  "id": "1768922697393",
+  "sourceUrl": "https://www.reddit.com/r/nanobanana2pro/comments/1qesizi/how_i_created_a_studio_portrait_with_nano_banana/",
+  "extractedPrompt": "Subject: A professional studio portrait of a young woman with freckles and striking green eyes.\nComposition: Close-up headshot, centered framing, 85mm portrait lens, f/1.8 aperture for shallow depth of field.\nLighting/Camera: Soft butterfly lighting setup, rim light highlighting hair texture, shot on Phase One XF IQ4, high dynamic range.\nStyle/References: Photorealistic, editorial fashion photography, ultra-detailed skin texture, 8k resolution, neutral grey backdrop.\nConstraints/Exclusions: No jewelry, no heavy makeup, no background clutter, no distortion.",
+  "mediaType": "text",
+  "timestamp": 1768922697393,
+  "tags": [
+    "Nano Banana",
+    "Nano Banana Pro",
+    "Gemini 3 Pro",
+    "Studio Portrait",
+    "Photography",
+    "Reconstructed",
+    "Editorial"
+  ],
+  "platform": "reddit.com",
+  "extractionMethod": "reconstructed",
+  "promptType": "Image",
+  "promptStyle": "Descriptive",
+  "intendedModel": "Nano Banana Pro"
+}

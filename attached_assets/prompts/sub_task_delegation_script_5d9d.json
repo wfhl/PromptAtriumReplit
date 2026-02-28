@@ -1,0 +1,21 @@
+{
+  "title": "Sub-Task Delegation Script",
+  "promptText": "Identify the primary goal from the user input. Break this goal into 3-5 distinct sub-tasks. For each sub-task, assign a 'specialist' role (e.g., Researcher, Coder, Reviewer). Provide the specific prompt that should be given to each specialist to complete their portion of the work.",
+  "platform": "GitHub",
+  "tags": [
+    "Delegation",
+    "Hierarchy",
+    "Efficiency",
+    "Scripting"
+  ],
+  "engagementMetrics": {
+    "likes": 4200,
+    "views": 75000
+  },
+  "intendedModel": "Claude-3-Opus",
+  "promptStyle": "Workflow",
+  "promptType": "Agentic",
+  "sourceUrl": "https://github.com/anthropics/anthropic-cookbook",
+  "id": "5d9de6bf-a6a4-4a06-b3e8-8caee1364e07",
+  "category": "Uncategorized"
+}

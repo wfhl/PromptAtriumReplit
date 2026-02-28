@@ -1,0 +1,25 @@
+{
+  "id": "1768918941732",
+  "sourceUrl": "https://x.com/TAB_TAB_HH/status/2011741588213412331",
+  "extractedPrompt": "{\n  \"prompt_structure\": {\n    \"subject\": {\n      \"type\": \"Young woman\",\n      \"appearance\": \"Natural beauty, flawless skin texture with visible pores, soft matte makeup, nude lipstick, long wavy chestnut brown hair cascading over shoulders, sun-kissed highlights\",\n      \"expression\": \"Serene, looking slightly upward and away, confident, relaxed vibe\"\n    },\n    \"attire_and_accessories\": {\n      \"headwear\": \"Vintage paisley print headscarf tied in a bandana style, terracotta red and pink tones with intricate floral patterns\",\n      \"eyewear\": \"Oversized round retro metal-rimmed sunglasses, rose-gold gradient lenses, reflecting the sunset and road\",\n      \"jewelry\": \"Layered delicate gold necklaces, thin chains with small coin pendants and charms, bohemian aesthetic\",\n      \"clothing\": \"V-neck boho-chic blouse or dress in matching earth-tone floral paisley print, soft fabric\"\n    },\n    \"environment\": {\n      \"location\": \"Outdoors, sitting in a vintage convertible car\",\n      \"background\": \"Blurred golden fields, rolling hills, open countryside road trip setting\",\n      \"atmosphere\": \"Warm, nostalgic, free-spirited, summer evening\"\n    },\n    \"lighting\": {\n      \"type\": \"Golden hour sunset\",\n      \"characteristics\": \"Strong rim lighting (backlighting) on hair creating a halo effect, warm amber glow, cinematic lens flare, soft shadows on face\"\n    },\n    \"technical_specs\": {\n      \"camera\": \"Shot on 35mm film, Fujifilm GFX 100\",\n      \"lens\": \"85mm portrait lens, f/1.8 aperture for shallow depth of field (bokeh)\",\n      \"quality\": \"8k resolution, ultra-realistic, hyper-detailed, sharp focus on face and glasses, volumetric lighting, photorealistic texture\"\n    },\n    \"parameters\": {\n      \"aspect_ratio\": \"9:16\",\n      \"stylize\": \"high\",\n      \"vibe\": \"luxury travel, festival fashion, editorial portrait\"\n    }\n  }\n}",
+  "mediaUrl": "https://pbs.twimg.com/media/G-skT-6WcAAQk0Y.jpg?name=orig",
+  "mediaType": "text",
+  "timestamp": 1768918941732,
+  "tags": [
+    "JSON",
+    "structured prompt",
+    "bohemian",
+    "golden hour",
+    "portrait",
+    "fashion",
+    "photorealistic",
+    "Fujifilm GFX 100",
+    "cinematic lighting"
+  ],
+  "originalText": "Tweet by TJ (@TAB_TAB_HH)",
+  "platform": "x.com",
+  "extractionMethod": "direct",
+  "promptType": "Image",
+  "promptStyle": "JSON",
+  "intendedModel": "Midjourney"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Memory-Augmented Conversational Agent",
+  "promptText": "Maintain a 'Long-Term Memory' block at the top of every response. Update this block whenever new personal details or preferences are shared by the user. Use this memory to customize your tone and recall past context {context_window} to provide hyper-personalized assistance.",
+  "platform": "r/ChatGPT",
+  "tags": [
+    "Memory",
+    "Personalization",
+    "Long-Context",
+    "Chat"
+  ],
+  "engagementMetrics": {
+    "likes": 5600,
+    "views": 150000
+  },
+  "intendedModel": "GPT-4",
+  "promptStyle": "Narrative",
+  "promptType": "Chat",
+  "sourceUrl": "https://www.reddit.com/r/ChatGPT/comments/16v8nqp/building_a_better_memory_system_prompt/",
+  "id": "036ec47b-8540-4554-bfc7-3c624fa923a4",
+  "category": "Uncategorized"
+}

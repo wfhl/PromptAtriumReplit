@@ -1,0 +1,21 @@
+{
+  "title": "Trending Niche Content Creation Agent",
+  "promptText": "Give me 20 tweet ideas based on the trending topics in my niche: [your niche]. Make them fresh, bold, and optimized for high engagement. Use a mix of: 1. The 'Before/After' contrast, 2. The 'Underrated Tip', 3. The 'Controversial Opinion'. Ensure each includes a strong hook and a call to action.",
+  "platform": "Medium / X",
+  "tags": [
+    "Content Creation",
+    "Twitter",
+    "Marketing Agent",
+    "Social Media"
+  ],
+  "engagementMetrics": {
+    "likes": 56,
+    "views": 5000
+  },
+  "intendedModel": "GPT-4",
+  "promptStyle": "Instructional",
+  "promptType": "Writing",
+  "sourceUrl": "https://medium.com/@santoshshelar/5-ai-prompts-that-help-you-come-up-with-tweet-ideas-copy-paste-06048d2871f3",
+  "id": "6f3f269f-3d7c-47de-9f6c-ae3991aaaec6",
+  "category": "Uncategorized"
+}

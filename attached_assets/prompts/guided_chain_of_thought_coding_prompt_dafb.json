@@ -1,0 +1,21 @@
+{
+  "title": "Guided Chain-of-Thought Coding Prompt",
+  "promptText": "Follow these steps: 1. Code Review: Structured analysis of existing code in context. 2. Planning: High-level design and implementation plan. 3. Security Review: Analysis between <SECURITY_REVIEW> tags for sensitive changes (input handling, authentication). 4. Execution: Output the modified code blocks.",
+  "platform": "Reddit",
+  "tags": [
+    "coding",
+    "chain-of-thought",
+    "security",
+    "claude"
+  ],
+  "engagementMetrics": {
+    "likes": 210,
+    "views": 45000
+  },
+  "intendedModel": "Claude 3.5 Sonnet",
+  "promptStyle": "Workflow",
+  "promptType": "Dev Programming",
+  "sourceUrl": "https://www.reddit.com/r/ClaudeAI/comments/1e3b6f2/sonnet_35_coding_system_prompt_v2_with_explainer/",
+  "id": "dafb6a09-55bb-4591-9aff-b74b7613a39e",
+  "category": "Uncategorized"
+}

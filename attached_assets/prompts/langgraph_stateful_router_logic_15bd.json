@@ -1,0 +1,20 @@
+{
+  "title": "LangGraph Stateful Router Logic",
+  "promptText": "Analyze the state of the conversation. If the user provided a 'topic' but no 'format', route to the 'ClarificationNode'. If both 'topic' and 'format' are present, route to the 'GeneratorNode'. Output the decision in the following JSON format: {\"next_node\": \"string\"}.",
+  "platform": "GitHub",
+  "tags": [
+    "LangGraph",
+    "State-Machine",
+    "Routing"
+  ],
+  "engagementMetrics": {
+    "likes": 3200,
+    "views": 28000
+  },
+  "intendedModel": "GPT-4o-mini",
+  "promptStyle": "JSON",
+  "promptType": "Agentic",
+  "sourceUrl": "https://github.com/langchain-ai/langgraph",
+  "id": "15bd82bb-2374-4dc8-a96e-60539f3c0e0e",
+  "category": "Uncategorized"
+}

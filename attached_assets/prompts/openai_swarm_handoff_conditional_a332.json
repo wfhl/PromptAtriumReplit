@@ -1,0 +1,20 @@
+{
+  "title": "OpenAI Swarm Handoff Conditional",
+  "promptText": "If the user mentions an issue with their current bill or subscription status, you must immediately call transfer_to_billing(). Do not attempt to solve billing issues yourself. Only proceed if the user asks a general support question.",
+  "platform": "GitHub",
+  "tags": [
+    "Swarm",
+    "Handoff",
+    "Guardrails"
+  ],
+  "engagementMetrics": {
+    "likes": 1100,
+    "views": 14000
+  },
+  "intendedModel": "GPT-4o",
+  "promptStyle": "Instructional",
+  "promptType": "Agentic",
+  "sourceUrl": "https://github.com/openai/swarm/tree/main/examples",
+  "id": "a3329777-1797-4c04-a1b5-9d9f21ef9845",
+  "category": "Uncategorized"
+}

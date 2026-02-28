@@ -1,0 +1,21 @@
+{
+  "title": "Fashion Scout Agentic Generator",
+  "promptText": "Act as a professional fashion scout and AI prompt engineer. Generate a detailed JSON block for a 'Cyber-Urban Scout Operation' look. The JSON must include separate objects for 'Subject_Anatomy', 'Textile_Science', and 'Optical_Parameters'. Ensure high emphasis on material durability and technical aesthetics.",
+  "platform": "Reddit",
+  "tags": [
+    "Prompt Engineering",
+    "Agentic",
+    "Fashion Scout",
+    "LocalLLaMA"
+  ],
+  "engagementMetrics": {
+    "likes": 450,
+    "views": 22000
+  },
+  "intendedModel": "Claude 3.5 Sonnet / GPT-4",
+  "promptStyle": "Instructional",
+  "promptType": "Agentic",
+  "sourceUrl": "https://www.reddit.com/r/PromptEngineering/comments/fashionagent/",
+  "id": "4a25a819-90cf-4acf-9efb-7d5e0ea94cad",
+  "category": "Uncategorized"
+}

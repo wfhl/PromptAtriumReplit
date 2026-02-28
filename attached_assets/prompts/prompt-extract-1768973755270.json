@@ -1,0 +1,23 @@
+{
+  "id": "1768973755269",
+  "sourceUrl": "https://www.reddit.com/r/nanobanana2pro/comments/1qesizi/how_i_created_a_studio_portrait_with_nano_banana/",
+  "extractedPrompt": "{\n  \"style\": \"ultra-realistic studio portrait\",\n  \"subject\": {\n    \"gender\": \"female\",\n    \"age\": \"young adult\",\n    \"pose\": \"leaning slightly forward toward the camera\",\n    \"expression\": \"playful, flirty\",\n    \"facial_details\": {\n      \"wink\": true,\n      \"tongue_out\": true,\n      \"freckles\": \"natural across fair skin\",\n      \"makeup\": {\n        \"blush\": \"soft pink\",\n        \"lips\": \"glossy\"\n      }\n    },\n    \"hair\": {\n      \"color\": \"brunette\",\n      \"length\": \"long\",\n      \"part\": \"side-parted\",\n      \"style\": \"falling naturally over the shoulders\"\n    },\n    \"wardrobe\": {\n      \"outfit\": \"off-shoulder fitted red dress\",\n      \"accessories\": [\n        \"gold dangling earrings\",\n        \"layered necklaces with a small heart pendant\"\n      ]\n    }\n  },\n  \"environment\": {\n    \"background\": \"clean, neutral studio background\",\n    \"lighting\": \"soft diffused studio lighting with smooth, natural shadows\"\n  },\n  \"camera\": {\n    \"lens\": \"50mm\",\n    \"aperture\": \"f/1.8\",\n    \"focus\": \"shallow depth of field\"\n  }\n}",
+  "mediaType": "text",
+  "timestamp": 1768973755269,
+  "tags": [
+    "studio portrait",
+    "Nano Banana Pro",
+    "JSON prompt",
+    "realistic",
+    "fashion",
+    "female portrait",
+    "playful expression",
+    "Gemini 3.0"
+  ],
+  "originalText": "Reddit Post",
+  "platform": "reddit.com",
+  "extractionMethod": "reconstructed",
+  "promptType": "Image",
+  "promptStyle": "JSON",
+  "intendedModel": "Nano Banana Pro"
+}

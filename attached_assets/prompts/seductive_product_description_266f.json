@@ -1,0 +1,21 @@
+{
+  "title": "Seductive Product Description",
+  "promptText": "Write a seductive product description for [product] that excites the reader and convinces them to buy.",
+  "platform": "Ofemwire",
+  "sourceUrl": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGDkH-vMJ-6WtLVkNCOVuBm5zfSbJmDyzf_688K_5JJTz3TavmsgcWnui_FJ2O-adpKTlydimPQfvNTvdN2YoJKVh7Yu_MhPZ9fUfQL9nD-nnPOIEi-z8EV5U2vLDKPABEqiszx2T-1jDA20p3QVsCzyKoG9r1VIYQUJfo=",
+  "tags": [
+    "Marketing",
+    "Writing",
+    "NSFW",
+    "Sales"
+  ],
+  "engagementMetrics": {
+    "likes": 0,
+    "views": 0
+  },
+  "intendedModel": "ChatGPT",
+  "promptStyle": "Agentic",
+  "promptType": "Writing",
+  "id": "266fe3ec-ed81-4244-b3c0-691336f68f9f",
+  "category": "Uncategorized"
+}

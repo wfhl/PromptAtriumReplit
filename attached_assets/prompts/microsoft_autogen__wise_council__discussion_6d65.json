@@ -1,0 +1,20 @@
+{
+  "title": "Microsoft AutoGen 'Wise Council' Discussion",
+  "promptText": "You are a member of the Wise Council. Your purpose is to discuss the user request: '{task}' and decide which specialized agent (Coder, Reviewer, or Planner) should take the next action. Provide your reasoning and then nominate the next agent by name.",
+  "platform": "Reddit",
+  "tags": [
+    "AutoGen",
+    "Agent-Council",
+    "Decision-Making"
+  ],
+  "engagementMetrics": {
+    "likes": 1200,
+    "views": 15000
+  },
+  "intendedModel": "GPT-4o",
+  "promptStyle": "Instructional",
+  "promptType": "Agentic",
+  "sourceUrl": "https://www.reddit.com/r/AutoGenAI/",
+  "id": "6d658fbd-a1e0-44a1-90b4-39f87084ea25",
+  "category": "Uncategorized"
+}

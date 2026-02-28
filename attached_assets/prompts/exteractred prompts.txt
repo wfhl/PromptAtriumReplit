@@ -1,0 +1,48 @@
+A hyper-realistic, cinematic editorial portrait of a futuristic fashion model standing on a rain-slicked neon street in a cyberpunk Tokyo. The model wears a translucent, iridescent holographic raincoat over a structured chrome bodice. She has platinum white bobbed hair with sharp geometric bangs and metallic silver graphic eyeliner. The lighting is moody and atmospheric, with cyan and magenta neon signs reflecting off the wet pavement and the plastic texture of the coat. The image has a slight film grain, shot on 35mm Cinestill 800T, f/1.8 aperture for shallow depth of field, focusing sharply on the eyes while blurring the vibrant city background.
+#cyberpunk fashion
+#futuristic portrait
+#cinestill 800t
+#iridescent aesthetics
+#ai editorial
+
+
+
+
+{
+  "image_type": "High-fashion editorial photography",
+  "subject": {
+    "type": "Young female model",
+    "appearance": {
+      "hair": "Long, loose wavy honey-blonde hair with center part",
+      "skin": "Fair complexion, dewy and flawless texture",
+      "eyes": "Soft, expressive",
+      "makeup": "Natural bridal glam, soft pink blush, nude glossy lips, defined lashes"
+    },
+    "clothing": {
+      "style": "Modern Couture Bridal",
+      "garment": "Intricate lace wedding gown with sheer details and elegant embroidery",
+      "accessories": "Delicate veil, diamond stud earrings"
+    },
+    "pose": "Graceful, poised, looking softly into the camera"
+  },
+  "environment": {
+    "setting": "Bright, minimalist luxury interior or soft-focus garden background",
+    "lighting": {
+      "quality": "Diffused natural light, golden hour glow",
+      "mood": "Ethereal, romantic, sophisticated, dreamy"
+    }
+  },
+  "technical": {
+    "style": "Photorealistic, Cinematic",
+    "resolution": "8K, ultra-detailed",
+    "camera_settings": {
+      "lens": "85mm portrait lens",
+      "aperture": "f/1.8 for shallow depth of field"
+    }
+  }
+}
+#Nano Banana Pro
+#Gemini Prompt
+#Bridal Photography
+#JSON Prompting
+#High Fashion

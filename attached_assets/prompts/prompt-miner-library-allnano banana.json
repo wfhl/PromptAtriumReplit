@@ -1,0 +1,1171 @@
+{
+  "exportedAt": "2025-12-09T05:56:17.102Z",
+  "prompts": [
+    {
+      "name": "OOTD Outfit",
+      "prompt": "Choose the person in Image 1 and dress them in all the clothing and accessories from Image 2. Shoot a series of realistic OOTD-style photos outdoors, using natural lighting, a stylish street style, and clear full-body shots. Keep the person's identity and pose from Image 1, but show the complete outfit and accessories from Image 2 in a cohesive, stylish way.",
+      "negative_prompt": "",
+      "tags": [
+        "fashion",
+        "ootd",
+        "outfit design",
+        "virtual try-on"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Character Clothing Change",
+      "prompt": "Replace the person's clothing in the input image with the target clothing shown in the reference image. Keep the person's pose, facial expression, background, and overall realism unchanged. Make the new outfit look natural, well-fitted, and consistent with lighting and shadows. Do not alter the person's identity or the environment — only change the clothes.",
+      "negative_prompt": "",
+      "tags": [
+        "clothing change",
+        "character customization",
+        "fashion",
+        "virtual try-on"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Multi-View Result Generation",
+      "prompt": "Generate the Front, Rear, Left, Right, Top, Bottom views on white. Evenly spaced. Consistent subject. Isometric Perspective Equivalence.",
+      "negative_prompt": "",
+      "tags": [
+        "multi-view",
+        "3d model",
+        "product photography",
+        "isometric"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Movie Storyboard",
+      "prompt": "Create an addictively intriguing 12 part story with 12 images with these two characters in a classic black and white film noir detective story. Make it about missing treasure that they get clues for throughout and then finally discover. The story is thrilling throughout with emotional highs and lows and ending on a great twist and high note. Do not include any words or text on the images but tell the story purely through the imagery itself.",
+      "negative_prompt": "",
+      "tags": [
+        "storyboard",
+        "film noir",
+        "comic",
+        "narrative generation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Character Pose Modification",
+      "prompt": "Have the person in the picture look straight ahead",
+      "negative_prompt": "",
+      "tags": [
+        "pose modification",
+        "character editing",
+        "portrait"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Generate image from line drawing",
+      "prompt": "Change the pose of the person in Figure 1 to that of Figure 2, and shoot in a professional studio",
+      "negative_prompt": "",
+      "tags": [
+        "line art to image",
+        "pose transfer",
+        "studio photography"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Add Watermark to Image",
+      "prompt": "Watermark the word ‘TRUMP’ over and over again across the whole image.",
+      "negative_prompt": "",
+      "tags": [
+        "watermark",
+        "image editing",
+        "text overlay"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Knowledge Reasoning Image Generation",
+      "prompt": "Make me an infographic of 5 tallest buildings in the world / Make a colorful infographic of the sweetest things on Earth",
+      "negative_prompt": "",
+      "tags": [
+        "infographic",
+        "data visualization",
+        "knowledge reasoning"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Red Pen Annotations",
+      "prompt": "Analyze this image. Use red pen to denote where you can improve.",
+      "negative_prompt": "",
+      "tags": [
+        "annotation",
+        "image analysis",
+        "feedback"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Explosive Food",
+      "prompt": "Photograph this product in a dramatic modern scene accompanied by explosive outward dynamic arrangement of the key ingredients fresh and raw flying around the product signifying its freshness and nutritional value. promo ad shot, without text, product is emphasized, with the key brand colors as background.",
+      "negative_prompt": "",
+      "tags": [
+        "food photography",
+        "product advertisement",
+        "dynamic composition"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Create Comic Book",
+      "prompt": "Based on the uploaded image, make a comic book strip, add text, write a compelling story. I want a superhero comic book.",
+      "negative_prompt": "",
+      "tags": [
+        "comic book",
+        "storytelling",
+        "superhero"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Action Figure",
+      "prompt": "make an action figure of me that says [“AI Evangelist - Kris”] and features [coffee, turtle, laptop, phone and headphones]",
+      "negative_prompt": "",
+      "tags": [
+        "action figure",
+        "character design",
+        "personalized",
+        "product design"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Map to Isometric Buildings",
+      "prompt": "Take this location and make the landmark an isometric image (building only), in the stvle of the game Theme Park",
+      "negative_prompt": "",
+      "tags": [
+        "map conversion",
+        "isometric",
+        "building rendering",
+        "game art style"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Reference Image Controls Character Expression",
+      "prompt": "Character reference from Image 1 / Change to the expression from Image 2",
+      "negative_prompt": "",
+      "tags": [
+        "expression transfer",
+        "character editing",
+        "emotion control"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Illustration Drawing Process Four-Panel",
+      "prompt": "Generate a four-panel drawing process for the character: Step 1: Line art, Step 2: Flat colors, Step 3: Add shadows, Step 4: Refine and complete. No text.",
+      "negative_prompt": "",
+      "tags": [
+        "illustration",
+        "drawing process",
+        "step-by-step",
+        "comic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Virtual Makeup Try-On",
+      "prompt": "Apply the makeup from Image 2 to the character in Image 1, while maintaining the pose from Image 1.",
+      "negative_prompt": "",
+      "tags": [
+        "virtual try-on",
+        "makeup",
+        "portrait editing",
+        "beauty"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Makeup Analysis",
+      "prompt": "Analyze this image. Use a red pen to mark areas that can be improved Analyze this image. Use a red pen to denote where you can improve",
+      "negative_prompt": "",
+      "tags": [
+        "makeup analysis",
+        "annotation",
+        "feedback",
+        "beauty"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Google Maps View of Middle-earth",
+      "prompt": "Dashcam Google Street View shot | [Hobbiton Street] | [hobbits carrying out daily tasks like gardening and smoking pipes] | [Sunny weather]",
+      "negative_prompt": "",
+      "tags": [
+        "google street view",
+        "fantasy world",
+        "scene generation",
+        "middle-earth"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Typographic Illustration Generation",
+      "prompt": "Create a minimalist black-and-white typographic illustration of the scene riding a bicycle using only the letters in the phrase ['riding a bicycle'] . Each letter should be creatively shaped or positioned to form the rider, the bicycle, and a sense of motion. The design should be clean, ultra-minimalist, and entirely composed of the modified ['riding a bicycle'] letters without adding any extra shapes or lines. The letters should flow or curve to mimic the natural form of the scene, while still remaining legible.",
+      "negative_prompt": "",
+      "tags": [
+        "typographic art",
+        "illustration",
+        "minimalist",
+        "black and white"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Multiple Character Poses Generation",
+      "prompt": "Please create a pose sheet for this illustration, making various poses!",
+      "negative_prompt": "",
+      "tags": [
+        "pose sheet",
+        "character design",
+        "illustration",
+        "multi-pose"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Product Packaging Generation",
+      "prompt": "Apply the design from Image 1 to the can in Image 2, and place it in a minimalist design setting, professional photography",
+      "negative_prompt": "",
+      "tags": [
+        "product packaging",
+        "graphic design",
+        "minimalist",
+        "professional photography"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Overlay Filter/Material",
+      "prompt": "Overlay the [glass] effect from Image 2 onto the photo in Image 1",
+      "negative_prompt": "",
+      "tags": [
+        "image editing",
+        "filter effect",
+        "material overlay"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Control Character Face Shape",
+      "prompt": "Design the character from Image 1 as a chibi version according to the face shape from Image 2",
+      "negative_prompt": "",
+      "tags": [
+        "character design",
+        "chibi",
+        "face shape",
+        "style transfer"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Lighting Control",
+      "prompt": "Change the character from Image 1 to the lighting from Image 2, with dark areas as shadows",
+      "negative_prompt": "",
+      "tags": [
+        "lighting adjustment",
+        "shadows",
+        "image editing",
+        "character rendering"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "LEGO Minifigure",
+      "prompt": "Transform the person in the photo into a LEGO minifigure packaging box style, presented in isometric perspective. Label the box with the title \"ZHOGUE\". Inside the box, display the LEGO minifigure based on the person in the photo, along with their essential items (such as makeup, bags, or other items) as LEGO accessories. Beside the box, also display the actual LEGO minifigure itself, unpackaged, rendered in a realistic and vivid style.",
+      "negative_prompt": "",
+      "tags": [
+        "lego",
+        "minifigure",
+        "packaging design",
+        "isometric",
+        "product visualization"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Gundam Model Figure",
+      "prompt": "Transform the person in the photo into a Gundam model kit packaging box style, presented in isometric perspective. Label the box with the title \"ZHOGUE\". Inside the box, display a Gundam-style mechanical version of the person from the photo, along with their essentials (such as makeup, bags, or other items) redesigned as futuristic mechanical accessories. The packaging should resemble real Gunpla boxes, including technical illustrations, instruction manual-style details, and sci-fi fonts. Beside the box, also display the actual Gundam-style mechanical figure itself, outside the packaging, rendered in a realistic and lifelike style, similar to official Bandai promotional renders.",
+      "negative_prompt": "",
+      "tags": [
+        "gundam",
+        "model kit",
+        "packaging design",
+        "sci-fi",
+        "product visualization"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Hardware Exploded View",
+      "prompt": "Exploded view of a DSLR showing all its accessories and internal components such as lens, filter, internal components, lens, sensor, screws, buttons, viewfinder, housing, and circuit board. Maintain red accents of the DSLR",
+      "negative_prompt": "",
+      "tags": [
+        "exploded view",
+        "hardware design",
+        "technical illustration",
+        "product visualization"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Food Calorie Annotation",
+      "prompt": "annotate this meal with names of food and calorie density and approximate calories",
+      "negative_prompt": "",
+      "tags": [
+        "food annotation",
+        "calorie tracking",
+        "nutrition",
+        "infographic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Extract Subject and Place on Transparent Layer",
+      "prompt": "extract the [samurai] and put transparent background",
+      "negative_prompt": "",
+      "tags": [
+        "object extraction",
+        "transparent background",
+        "image manipulation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Image Outpainting Repair",
+      "prompt": "Repair the checkerboard (transparent) parts of the image and restore a complete, coherent photo.",
+      "negative_prompt": "",
+      "tags": [
+        "image repair",
+        "outpainting",
+        "transparency"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Ancient Map → Historical Scene Photo",
+      "prompt": "full colour photograph. New Amsterdam in 1660. make sure it's full modern colors as if it's a photograph taken today.",
+      "negative_prompt": "",
+      "tags": [
+        "historical photography",
+        "map conversion",
+        "colorization",
+        "historical scene"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Fashion Moodboard Collage",
+      "prompt": "A fashion mood board collage. Surround a portrait with cutouts of the individual items the model is wearing. Add handwritten notes and sketches in a playful, marker-style font, and include the brand name and source of each item in English. The overall aesthetic should be creative and cute.",
+      "negative_prompt": "",
+      "tags": [
+        "fashion",
+        "moodboard",
+        "collage",
+        "stylized text"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Delicate Cute Product Photo",
+      "prompt": "A high-resolution advertising photograph of a realistic, miniature [PRODUCT] held delicately between a person's thumb and index finger. clean and white background, studio lighting, soft shadows. The hand is well-groomed, natural skin tone, and positioned to highlight the product’s shape and details. The product appears extremely small but hyper-detailed and brand-accurate, centered in the frame with a shallow depth of field. Emulates luxury product photography and minimalist commercial style.",
+      "negative_prompt": "",
+      "tags": [
+        "product photography",
+        "miniature",
+        "luxury",
+        "minimalist"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Place Anime Statue in Real Life",
+      "prompt": "A realistic photographic work. A gigantic statue of this person has been placed in a square in the center of Tokyo, with people looking up at it.",
+      "negative_prompt": "",
+      "tags": [
+        "anime",
+        "statue",
+        "realism",
+        "scene integration"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Create an Itasha Car",
+      "prompt": "Create a professional photograph of a sporty car with anime-style character artwork as itasha (painted car) design, shot at a famous tourist destination or scenic landmark. The car features large, prominently displayed anime character illustrations with simple, clean design composition. The character artwork should be painted in vibrant anime art style with bold colors and clear details. Position the vehicle at a recognizable tourist spot or scenic location with good natural lighting that showcases both the car's sporty appearance and the character artwork. Use professional automotive photography techniques with proper depth of field to highlight the itasha design while incorporating the scenic background for tourism appeal, suitable for promotional or enthusiast marketing materials.",
+      "negative_prompt": "",
+      "tags": [
+        "itasha",
+        "automotive photography",
+        "anime art",
+        "product promotion"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Manga Composition",
+      "prompt": "",
+      "negative_prompt": "",
+      "tags": [
+        "manga",
+        "composition",
+        "comic art",
+        "character integration"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Manga Style Conversion",
+      "prompt": "Convert the input photo into a black-and-white manga-style line drawing.",
+      "negative_prompt": "",
+      "tags": [
+        "manga style",
+        "line drawing",
+        "black and white",
+        "style transfer"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Isometric Holographic Wireframe",
+      "prompt": "Based on the uploaded image, convert it into a holographic depiction using wireframe lines only.",
+      "negative_prompt": "",
+      "tags": [
+        "holographic",
+        "wireframe",
+        "isometric",
+        "3d rendering"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Minecraft-Style Scene Generation",
+      "prompt": "Using this location, create an isometric HD-2D Minecraft-style image of the landmark (buildings only).",
+      "negative_prompt": "",
+      "tags": [
+        "minecraft style",
+        "isometric",
+        "game art",
+        "building rendering"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Apply Material Sphere to Logo",
+      "prompt": "Apply the material from Image 2 to the logo in Image 1, present it as a 3D object, render in a C4D-like style, with a solid-color background.",
+      "negative_prompt": "",
+      "tags": [
+        "logo design",
+        "3d rendering",
+        "material application",
+        "c4d style"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Floor Plan 3D Render",
+      "prompt": "Convert this residential floor plan into an isometric, photo-realistic 3D rendering of the house.",
+      "negative_prompt": "",
+      "tags": [
+        "floor plan",
+        "3d rendering",
+        "architectural visualization",
+        "photo-realistic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Reset Camera Parameters",
+      "prompt": "RAW-ISO [100] - [F2.8-1/200 24mm] settings",
+      "negative_prompt": "",
+      "tags": [
+        "camera settings",
+        "photography",
+        "image parameters"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Create an ID Photo",
+      "prompt": "Crop the head and create a 2-inch ID photo with: 1. Blue background 2. Professional business attire 3. Frontal face 4. Slight smile",
+      "negative_prompt": "",
+      "tags": [
+        "id photo",
+        "portrait",
+        "professional",
+        "blue background"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Scene A6 Folding Card",
+      "prompt": "Draw an A6 folding card: when opened, it reveals a complete 3D spherical tiny house with a miniature paper garden and a bonsai tree inside.",
+      "negative_prompt": "",
+      "tags": [
+        "folding card",
+        "3d render",
+        "miniature scene",
+        "craft design"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Design a Chess Set",
+      "prompt": "Draw a chessboard and a set of 3D-printable chess pieces inspired by this image.",
+      "negative_prompt": "",
+      "tags": [
+        "chess set",
+        "3d printable",
+        "design",
+        "game pieces"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Split-Contrast Style Photo",
+      "prompt": "A photo of a bedroom split down the middle: the left side is 2018 and the right side is 1964, in the same room.",
+      "negative_prompt": "",
+      "tags": [
+        "split image",
+        "contrast",
+        "historical era",
+        "interior design"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Jewelry Collection Design",
+      "prompt": "Transform this image into a 5-piece jewelry collection.",
+      "negative_prompt": "",
+      "tags": [
+        "jewelry design",
+        "collection",
+        "fashion accessory"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Merchandise Design",
+      "prompt": "Create merchandise using this character image.",
+      "negative_prompt": "",
+      "tags": [
+        "merchandise",
+        "product design",
+        "character goods"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Model Holographic Projection",
+      "prompt": "Ultra-realistic product photo. Subject: virtual holographic character [CHARACTER], floating above a circular hologram projector Ø120 mm placed on a modern desk. Projection source rules: - If input reference is a 3D object → show a desktop 3D scanner beside the projector. Place the reference object on the scanner plate. The hologram above the projector is generated from this scanned object. - If input reference is a 2D image → show a modern PC with monitor on the desk. Display the reference image on the monitor screen. The hologram above the projector is generated from this screen content. Hologram rendering rules: - Character always appears as a semi-transparent volumetric image, background faintly visible through. - No beams, no particles, no solid statue surfaces. - Balanced anatomy (1/7–1/8 head-to-body ratio), correct proportions. - Natural pose with clear silhouette. - Hair, outfit folds, and accessories visible but translucent. - Face crisp and expressive, readable at 1000 px crop. - No copyrighted characters, no branded designs, no IP logos. Environment: modern desk with projector base + conditional device (scanner or monitor). Camera: 85–100 mm lens, 3/4 hero angle, eye-level, f/11–f/16, ISO100, tripod. Lighting: desk softly illuminated; holographic figure defined only by volumetric light. Background: seamless black studio with subtle reflections. Output: 4:5, 2048×2560. Negative: text-free, watermark-free, logo-free, brand-free, copyrighted characters, franchise IP, trademarked designs, resin, PVC, physical statue, opaque surfaces, toy gloss, beams, scanlines, dots, distortion, extra digits. Sampling: deterministic, seed=12345, temperature=0.",
+      "negative_prompt": "text-free, watermark-free, logo-free, brand-free, copyrighted characters, franchise IP, trademarked designs, resin, PVC, physical statue, opaque surfaces, toy gloss, beams, scanlines, dots, distortion, extra digits",
+      "tags": [
+        "holographic projection",
+        "product photo",
+        "3d rendering",
+        "character display"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Giant Figure Scaffolding",
+      "prompt": "A hyper-realistic 3D render of the person in the image standing and taking a selfie. The giant figure is surrounded by massive scaffolding, with many tiny construction workers working on it. The scene is set in a city square, surrounded by modern buildings, moving vehicles (cars, buses), pedestrians, and a bright clear blue sky. The overall details are rich, presenting a photo-realistic texture with cinematic lighting effects.",
+      "negative_prompt": "",
+      "tags": [
+        "3d render",
+        "hyper-realistic",
+        "giant figure",
+        "cityscape",
+        "scaffolding"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Building Extraction from Remote Sensing Image",
+      "prompt": "Remove everything in the image except the buildings.",
+      "negative_prompt": "",
+      "tags": [
+        "object extraction",
+        "remote sensing",
+        "building identification"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Component Extraction",
+      "prompt": "Cut out each component and create a model sheet that retains the hologram.",
+      "negative_prompt": "",
+      "tags": [
+        "component extraction",
+        "model sheet",
+        "hologram"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Remove Burger Ingredients",
+      "prompt": "Remove all the ingredients from the burger and keep only the top and bottom buns. Leave a gap between them, keeping the same spacing as if the fillings were still inside.",
+      "negative_prompt": "",
+      "tags": [
+        "food editing",
+        "object removal",
+        "burger",
+        "infilling"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "High-Resolution Image Restoration",
+      "prompt": "Enhance the resolution of this old image and add the appropriate texture details, reinterpreting it with modern anime techniques.",
+      "negative_prompt": "",
+      "tags": [
+        "image restoration",
+        "high-resolution",
+        "anime style",
+        "old photo"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Generate Miniature Scene from Image",
+      "prompt": "Convert the image to isometric view",
+      "negative_prompt": "",
+      "tags": [
+        "miniature scene",
+        "isometric view",
+        "scene conversion"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Educational Comic",
+      "prompt": "Help me generate multiple 16:9 doodle-style images to explain the concept of \"futures\" to middle school students. The images should have a consistent colorful, thick-pencil hand-drawn style, be rich in information, feature English text, use solid color backgrounds, have outlines around the cards, and include uniform titles, similar to a PowerPoint presentation.",
+      "negative_prompt": "",
+      "tags": [
+        "educational comic",
+        "doodle style",
+        "infographic",
+        "presentation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Custom Character Emoji Pack Generation",
+      "prompt": "Using the character from Image 2, generate [x] emoji stickers based on various poses from Image 1.",
+      "negative_prompt": "",
+      "tags": [
+        "emoji pack",
+        "character customization",
+        "sticker generation",
+        "pose variation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Restore Partially Eaten Food",
+      "prompt": "Restore this half-eaten [XX] back to its original uneaten state.",
+      "negative_prompt": "",
+      "tags": [
+        "food restoration",
+        "image repair",
+        "object completion"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Fighting Game Interface Creation",
+      "prompt": "Create a mid motion actionscene where both subject are in focuswith aThree-Quarter Angle in martial artsfighting stances. They are in the samecinematic scene. Remove the line downthe centre with a blurred crumbling ruins ina purple alien world in the background. Thescene is shot at sunrise. Modern Fightinggame health bars MORDON V'S DEATHSEED. power move. Hud style screeneffects.Add a thumbnail of each characterto the health bars. ense flares!",
+      "negative_prompt": "",
+      "tags": [
+        "fighting game",
+        "interface design",
+        "action scene",
+        "cinematic",
+        "hud"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Model Cross-Section",
+      "prompt": "Create a cutaway visualization of this car, show exterior intact on one side, and interior engine + seats exposed on the other side. Keep proportions accurate and details realistic.",
+      "negative_prompt": "",
+      "tags": [
+        "cross-section",
+        "cutaway",
+        "automotive design",
+        "technical illustration"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Pirate Wanted Poster",
+      "prompt": "Using the original image, recreate a pirate's wanted poster drawn on parchment. Brown monochrome, with the texture of aged parchment. Retain the style and character design of the original image down to the smallest detail, and paste it large at the top of the wanted poster. A close-up of the face. Have the character wear a pirate hat. Write the bounty amount at the bottom of the poster. The bounty amount will be random, and a fictitious currency unit will be used. Below the bounty amount, write the crime in small letters. Use a fictitious language. English or Chinese characters may not be used.",
+      "negative_prompt": "",
+      "tags": [
+        "wanted poster",
+        "pirate",
+        "parchment texture",
+        "character design",
+        "fictional language"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Merchandise Display Shelf",
+      "prompt": "Remove the background from this illustration and turn it into merchandise like figurines. Image: Photorealistic Location: The shelves of a fictional convenience store that doesn't exist in Japan. The cute, pop atmosphere is complemented by neatly arranged merchandise featuring the illustration. The store's interior is dreamily bright and special, creating a special space that excites fans. Characters: These merchandise are displayed on the shelves. Merchandise Lineup: Two large, approximately 50cm-long figures in the center of the screen (for a striking display) Acrylic stands (deformed versions of the original artwork) Chibi figures (deformed versions of the original artwork) Dakimakura pillows (large prints for a striking presence) Jigsaw puzzles (visual art of the characters) Stationery (notebooks, pens, clear files, etc., deformed versions of the original artwork) Cardboards (deformed versions of the original artwork) Plush toys (deformed versions of the original artwork) Display: The merchandise are neatly arranged on the shelves, maintaining the atmosphere of a convenience store while still filling the space with love for the characters. They're arranged in a way that teenage female fans can't help but want to pick them up. Overall tone: A dreamlike merchandise sales space. Cuteness and pop are at the forefront, and despite being a convenience store, it's presented as a \"holy land for fan activities.\" Resolution: 4K, 4000px: 3000px",
+      "negative_prompt": "",
+      "tags": [
+        "merchandise display",
+        "product visualization",
+        "anime goods",
+        "convenience store",
+        "photorealistic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Comic Convention Booth",
+      "prompt": "Erase the background and replace the characters with the following: Cosplayers and Character Goods Character/Motif: Character goods based on the illustration Hairstyle, Eyes, and Appearance: (Focus on merchandise, not the character itself.) Main Character: A cosplayer is holding a figurine in the center of the screen. Location: Comic Market (a doujinshi sales event). A spacious booth is filled with merchandise lined up on tables and shelves. The atmosphere is filled with excitement and anticipation. Merchandise Lineup: • A large, approximately 100cm figure is displayed in the center of the booth, creating an eye-catching display. • The character is displayed on an 80-inch LCD panel. • Acrylic Stands • Chibi Figures (Deformed) • Body Pillows (Large, Full-Length Character Print) • Jigsaw Puzzles (Using Character Artwork) • Stationery (Notebooks, Pens, Clear Files, etc.) • Desk Pads • Plush Toys (Deformed) Exhibition/Display: • Goods neatly arranged throughout the booth, creating a unified look. • Utilizing desks and shelves reminiscent of doujinshi sales events, the layout encourages fans to pick up items. • With the energy of the visitors as a backdrop, the venue is presented as a special \"fan sanctuary.\" Overall Tone: A dreamlike sales space. While emphasizing cuteness and pop, the space evokes the unique enthusiasm of doujin events and the feeling of a \"sanctuary for fan activities.\" Swarms of people. Image Quality: Photorealistic, 4K (4000px x 3000px)",
+      "negative_prompt": "",
+      "tags": [
+        "comic convention",
+        "merchandise display",
+        "cosplay",
+        "doujin event",
+        "photorealistic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Line Art to Doodle Drawing",
+      "prompt": "Make the uploaded picture book look as if it was drawn by a five-year-old child.",
+      "negative_prompt": "",
+      "tags": [
+        "doodle art",
+        "child-like drawing",
+        "picture book",
+        "style transfer"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Contemporary Art Exhibition Space",
+      "prompt": "An avant-garde contemporary art exhibition space themed around the reference image. The entire exhibition hall (20.0 m x 20.0 m x 8.0 m) integrates architecture, lighting, flooring, walls, and ceiling into the artistic expression. At the far end of the hall stands a massive wall 20 meters wide and 8 meters high. In the center of this wall, the theme from the reference image is presented in a monumental artistic form. The image is vivid and three-dimensional, rising toward the viewer, becoming the focal point of the entire space. A system-generated exhibition title plaque is installed below the central wall. The title must be abstract, symbolic, and poetic, and must reflect a contemporary artwork. No price display is provided. The floor is polished granite with a reflectance of 0.35–0.40. Patterns and light derived from the reference image cascade across the surface of the work, resonating with the entire space as if responding to the footsteps of visitors. Tactile paving bricks are in a similar color, seamlessly integrated, but only 5 mm high, providing a clear texture. The work extends in a straight line from the entrance to the wall, creating a pause point before the artwork. After viewing, visitors are naturally guided to an opening on the right side (3 m wide x 3 m high). In emergencies, floor-level emergency lighting ensures illumination of 1 lux. The left and right walls and the ceiling each reinterpret an abstract element from the reference image, transforming the entire space into a single artwork. The flow of color, form, and light unifies the experience into an artistic whole. Visitor capacity is limited to 8–25 people. All visitors face the large wall, moving in a straight line and pausing at the designated point. No one looks back toward the entrance. Only one staff member is stationed near the right-side entrance beside the wall. All faces are blurred to ensure anonymity. The composition is stable, with the central vanishing point always aligned with the center of the wall. Verticality is within ±0.5°. Floor reflections are precise, human figures appear natural. Hands always show five fingers, eyes are symmetrical within a 3% margin. Fabrics remain flat with no deformation. Forbidden content: Elements unrelated to the reference image, missing or broken tactile paving, visitors facing the entrance, logos or watermarks, overcrowding, toy-like gloss, 2D flat projections, neon glow, teal-orange tones, oversaturation, perspective collapse, mismatched reflections, anatomical anomalies, extra limbs, distorted faces, excessive outlines, banding, or vignetting. DoD: The entire venue will be a contemporary artwork centered on the theme of the reference image, with the innermost structure forming a unified experience. The tactile paving synchronizes perfectly with the flow of light, creating a clear pause point. Visitors are immersed in the space itself, and even in reproduction, SSIM will remain stable at 0.95 or above.",
+      "negative_prompt": "Elements unrelated to the reference image, missing or broken tactile paving, visitors facing the entrance, logos or watermarks, overcrowding, toy-like gloss, 2D flat projections, neon glow, teal-orange tones, oversaturation, perspective collapse, mismatched reflections, anatomical anomalies, extra limbs, distorted faces, excessive outlines, banding, or vignetting.",
+      "tags": [
+        "art exhibition",
+        "contemporary art",
+        "architectural rendering",
+        "abstract design",
+        "immersive experience"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Dark Gothic Tarot Card",
+      "prompt": "Generate a dark gothic tarot card featuring me from this image. Include [“AI Artist - Shira”] and [coffee, white fluffy chubby cat with pink bow, laptop, phone, headphones] as symbols, with moody shadows, intricate gothic borders, and mystical dark fantasy vibes.",
+      "negative_prompt": "",
+      "tags": [
+        "tarot card",
+        "gothic art",
+        "dark fantasy",
+        "personalized art",
+        "mystical"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Black and White Evolution Chart",
+      "prompt": "Generate an evolutionary progression chart in a minimalist black-and-white style, showing the evolution from the earliest apes to humans and finally into a banana.",
+      "negative_prompt": "",
+      "tags": [
+        "evolution chart",
+        "black and white",
+        "minimalist",
+        "infographic",
+        "scientific illustration"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Glass Bottle Souvenir",
+      "prompt": "A 1/7 scale commercialized collectible figure of the character from the photo, crafted in a highly realistic style. The figure is placed in a detailed beach environment with sand, seashells, and gentle ocean waves. The entire toy display is enclosed inside a clear souvenir glass bottle, giving it a premium miniature diorama look, with realistic lighting and shadows",
+      "negative_prompt": "",
+      "tags": [
+        "collectible figure",
+        "diorama",
+        "miniature",
+        "product photography",
+        "souvenir"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Miniature Store",
+      "prompt": "Tiny diorama shop for [BRAND]. Roof made of oversized [PRODUCT], big [BRAND] logo sign above the window, vendor handing a [PRODUCT] to a customer, ground covered with many [PRODUCT]. Hand-made polymer-clay look, studio macro photo, soft light, shallow depth of field, vertical 3:4",
+      "negative_prompt": "",
+      "tags": [
+        "diorama",
+        "miniature shop",
+        "polymer clay",
+        "product visualization",
+        "macro photography"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Become a Vtuber",
+      "prompt": "Create a fictional Vtuber and their streaming screen using the original image. The Vtuber's hairstyle and clothing will be faithfully reproduced from the original image. The Vtuber image will be 2.5D-like, so it is not necessary to perfectly reproduce the style of the original image. A moderate sense of three-dimensionality is also necessary. The Vtuber's facial expression and pose may be changed from the original image. Have the Vtuber hold a game controller. Place only the Vtuber's upper body in the bottom right of the screen. Place the streaming screen of the game being played in the center of the screen. Place the chat screen on the left side of the screen. The screen ratio is set to a larger size for the game screen, and the upper half of the Vtuber's body is displayed smaller. The background of the original image is completely ignored, as well as the original image pose. Add a fictional streaming platform and browser UI to the top and bottom of the screen. The aspect ratio of the generated image is independent of that of the original image.",
+      "negative_prompt": "",
+      "tags": [
+        "vtuber",
+        "streaming interface",
+        "character design",
+        "2.5d art",
+        "gaming"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Train Station Movie Poster",
+      "prompt": "Create a movie poster using the original image. The genre of the movie will be determined based on the atmosphere of the original image. Regardless of whether the original image is anime or live-action, the style and character design of the original image will be maintained as perfectly as possible. However, poses and expressions may be changed to match the poster design. Other people and objects may also be added at this time. The final generated image will be photorealistic. This does not apply to the poster design, as it will be based on the original image. The scenery of the underground passage of a Japanese station where the poster is posted will be recreated in a realistic image. People passing through the underground passage will be added. The reflection of the poster is angled to make it look more realistic.",
+      "negative_prompt": "",
+      "tags": [
+        "movie poster",
+        "photorealistic",
+        "train station",
+        "japanese scenery",
+        "genre adaptation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Old Photo Colorization",
+      "prompt": "restore and colorize this photo.",
+      "negative_prompt": "",
+      "tags": [
+        "photo restoration",
+        "colorization",
+        "historical photos"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Math Problem Reasoning",
+      "prompt": "Write the answer to the problem in the corresponding position based on the question",
+      "negative_prompt": "",
+      "tags": [
+        "math",
+        "problem-solving",
+        "education",
+        "annotation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Cook Based on Ingredients",
+      "prompt": "make me a delicious lunch with these ingredients, and put it on a plate , zoomed in view of the plate, remove the other plates and ingredients.",
+      "negative_prompt": "",
+      "tags": [
+        "food photography",
+        "cooking",
+        "recipe visualization"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Custom Marble Sculpture",
+      "prompt": "A photorealistic image of an ultra-detailed sculpture of the subject in image made of shining marble. The sculpture should display smooth and reflective marble surface, emphasizing its luster and artistic craftsmanship. The design is elegant, highlighting the beauty and depth of marble. The lighting in the image should enhance the sculpture's contours and textures, creating a visually stunning and mesmerizing effect",
+      "negative_prompt": "",
+      "tags": [
+        "sculpture",
+        "marble",
+        "photorealistic",
+        "artistic rendering"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Model Annotation Explanation Diagram",
+      "prompt": "Draw [3D human organ model display example heart] for academic presentation, with annotations and explanations, suitable for showcasing its principles and [each organ's] functions, very realistic, highly detailed, with extremely fine design.",
+      "negative_prompt": "",
+      "tags": [
+        "3d model",
+        "annotation",
+        "medical illustration",
+        "academic"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Change Multiple Hairstyles",
+      "prompt": "Generate avatars of this person with different hairstyles in a 3x3 grid format",
+      "negative_prompt": "",
+      "tags": [
+        "hairstyle change",
+        "portrait editing",
+        "avatar generation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Article Infographic",
+      "prompt": "Generate an infographic for the article content Requirements: 1. Translate the content into English and extract key information from the article 2. Keep the content in the image concise, only retaining the main title 3. Use English text in the image 4. Add rich and cute cartoon characters and elements",
+      "negative_prompt": "",
+      "tags": [
+        "infographic",
+        "data visualization",
+        "article summary"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Color Line Art with Color Palette",
+      "prompt": "Accurately use the color palette from Figure 2 to color the character in Figure 1",
+      "negative_prompt": "",
+      "tags": [
+        "colorization",
+        "line art",
+        "color palette"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Generate Character Design",
+      "prompt": "Generate character design for me (Character Design) Proportion design (different height comparisons, head-to-body ratio, etc.) Three views (front, side, back) Expression design (Expression Sheet) → like the image you sent Pose design (Pose Sheet) → various common poses Costume design (Costume Design)",
+      "negative_prompt": "",
+      "tags": [
+        "character design",
+        "concept art",
+        "model sheet"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Anime to Real Coser",
+      "prompt": "Generate a photo of a girl cosplaying this illustration, with the background set at Comiket",
+      "negative_prompt": "",
+      "tags": [
+        "anime to real",
+        "cosplay",
+        "character transformation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Custom Character Stickers",
+      "prompt": "Help me turn the character into a white outline sticker similar to Figure 2. The character needs to be transformed into a web illustration style, and add a playful white outline short phrase describing Figure 1.",
+      "negative_prompt": "",
+      "tags": [
+        "sticker generation",
+        "character art",
+        "web illustration"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Cross-View Image Generation",
+      "prompt": "Convert the photo to a top-down view and mark the location of the photographer.",
+      "negative_prompt": "",
+      "tags": [
+        "view conversion",
+        "top-down",
+        "photography"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Hand Drawing Controls Multi-Character Poses",
+      "prompt": "Have these two characters fight using the pose from Figure 3. Add appropriate visual backgrounds and scene interactions,Generated image ratio is 16:9",
+      "negative_prompt": "",
+      "tags": [
+        "pose control",
+        "multi-character",
+        "scene generation",
+        "fighting"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Automatic Photo Editing",
+      "prompt": "This photo is very boring and plain. Enhance it! Increase the contrast, boost the colors, and improve the lighting to make it richer,You can crop and delete details that affect the composition.",
+      "negative_prompt": "",
+      "tags": [
+        "photo enhancement",
+        "color correction",
+        "lighting adjustment"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Multi-Reference Image Generation",
+      "prompt": "A model is posing and leaning against a pink bmw. She is wearing the following items, the scene is against a light grey background. The green alien is a keychain and it's attached to the pink handbag. The model also has a pink parrot on her shoulder. There is a pug sitting next to her wearing a pink collar and gold headphones.",
+      "negative_prompt": "",
+      "tags": [
+        "multi-reference",
+        "scene composition",
+        "product placement"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Photos of Yourself in Different Eras",
+      "prompt": "Change the characer's style to [1970]'s classical [male] style Add [long curly] hair, [long mustache], change the background to the iconic [californian summer landscape] Don't change the character's face",
+      "negative_prompt": "",
+      "tags": [
+        "era transformation",
+        "portrait editing",
+        "hairstyle change",
+        "historical"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Extract 3D Buildings/Make Isometric Models",
+      "prompt": "Make Image Daytime and Isometric [Building Only]",
+      "negative_prompt": "",
+      "tags": [
+        "3d rendering",
+        "isometric",
+        "architecture",
+        "daytime conversion"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Real World AR Information",
+      "prompt": "you are a location-based AR experience generator. highlight [point of interest] in this image and annotate relevant information about it.",
+      "negative_prompt": "",
+      "tags": [
+        "augmented reality",
+        "annotation",
+        "location-based"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Generate Ground View from Map Arrow",
+      "prompt": "draw what the red arrow sees / draw the real world view from the red circle in the direction of the arrow.",
+      "negative_prompt": "",
+      "tags": [
+        "map conversion",
+        "ground view",
+        "navigation"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    },
+    {
+      "name": "Illustration to Figure",
+      "prompt": "turn this photo into a character figure. Behind it, place a box with the character's image printed on it, and a computer showing the Blender modeling process on its screen. In front of the box, add a round plastic base with the character figure standing on it. set the scene indoors if possible",
+      "negative_prompt": "",
+      "tags": [
+        "character design",
+        "3d model",
+        "blender",
+        "product visualization"
+      ],
+      "model": "Nano-Banana",
+      "images": []
+    }
+  ]
+}

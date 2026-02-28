@@ -1,0 +1,17 @@
+{
+  "id": "1768917885807",
+  "sourceUrl": "https://x.com/TAB_TAB_HH/status/2011741588213412331",
+  "extractedPrompt": "{ \"prompt_structure\": { \"subject\": { \"type\": \"Young woman\", \"appearance\": \"Natural beauty, flawless skin texture with visible pores, soft matte makeup, nude lipstick, long wavy chestnut brown hair cascading over shoulders\" } } }",
+  "mediaType": "text",
+  "timestamp": 1768917885807,
+  "tags": [
+    "Young woman",
+    "Natural beauty",
+    "Chestnut brown hair",
+    "JSON prompt",
+    "Photorealistic",
+    "Portrait"
+  ],
+  "platform": "x.com",
+  "extractionMethod": "reconstructed"
+}

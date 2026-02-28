@@ -1,0 +1,20 @@
+{
+  "title": "Manus Agent Loop Mechanics",
+  "promptText": "Enter the <agent_loop>. For every step: 1. Plan: Define the immediate sub-goal. 2. Action: Execute a tool or command. 3. Observation: Analyze the result from the environment. 4. Thought: Update the internal state and decide if the goal is achieved.",
+  "platform": "GitHub",
+  "tags": [
+    "Manus",
+    "Agent-Loop",
+    "Autonomous"
+  ],
+  "engagementMetrics": {
+    "likes": 950,
+    "views": 11000
+  },
+  "intendedModel": "Claude 3.5 Sonnet",
+  "promptStyle": "Workflow",
+  "promptType": "Agentic",
+  "sourceUrl": "https://github.com/dontriskit/awesome-ai-system-prompts",
+  "id": "1097907d-e9e3-4a5d-9bcc-15aa07d9416e",
+  "category": "Uncategorized"
+}

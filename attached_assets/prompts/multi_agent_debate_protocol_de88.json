@@ -1,0 +1,21 @@
+{
+  "title": "Multi-Agent Debate Protocol",
+  "promptText": "Agent A, provide a solution for {problem}. Agent B, identify three flaws in Agent A's proposal. Agent A, respond to the flaws and refine the solution. Facilitator, summarize the final consensus and list remaining risks.",
+  "platform": "r/ChatGPT",
+  "tags": [
+    "Debate",
+    "Consensus",
+    "Multi-Agent",
+    "Reasoning"
+  ],
+  "engagementMetrics": {
+    "likes": 2100,
+    "views": 89000
+  },
+  "intendedModel": "GPT-4",
+  "promptStyle": "Workflow",
+  "promptType": "Agentic",
+  "sourceUrl": "https://www.reddit.com/r/ChatGPT/comments/18x9k2p/multiagent_debate_prompts_actually_work/",
+  "id": "de8894f6-da88-4554-97af-0f2f8926e8cf",
+  "category": "Uncategorized"
+}
