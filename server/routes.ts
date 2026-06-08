@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
+import { marketplaceGuard } from "./config/features";
 import { insertPromptSchema, insertProjectSchema, insertCollectionSchema, insertPromptRatingSchema, insertCommunitySchema, insertUserCommunitySchema, insertUserSchema, bulkOperationSchema, bulkOperationResultSchema, insertCategorySchema, insertPromptTypeSchema, insertPromptStyleSchema, insertPromptStyleRuleTemplateSchema, insertIntendedGeneratorSchema, insertRecommendedModelSchema, insertMarketplaceListingSchema, insertSellerProfileSchema, insertMarketplaceOrderSchema, insertDigitalLicenseSchema, marketplaceOrders, digitalLicenses, marketplaceListings, sellerProfiles, insertMarketplaceDisputeSchema, insertDisputeMessageSchema, type UserRole, type CommunityRole } from "@shared/schema";
 import Stripe from "stripe";
 import { eq, sql } from "drizzle-orm";
@@ -125,6 +126,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Auth middleware
   await setupAuth(app);
+
+  // Block all marketplace-related actions at the server while the
+  // marketplace feature is disabled (mirrors the client MARKETPLACE_ENABLED
+  // flag). These prefix guards intercept buying, selling, credits, payouts,
+  // listings, disputes, and reviews. Stripe/PayPal webhooks live under
+  // /api/webhooks and are intentionally NOT guarded so existing data and
+  // payment lifecycle events remain intact.
+  app.use('/api/marketplace', marketplaceGuard);
+  app.use('/api/credits', marketplaceGuard);
+  app.use('/api/seller', marketplaceGuard);
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
@@ -3844,7 +3855,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Admin: Process manual payout batch
-  app.post('/api/admin/payouts/process', isAuthenticated, isSuperAdmin, async (req: any, res) => {
+  app.post('/api/admin/payouts/process', marketplaceGuard, isAuthenticated, isSuperAdmin, async (req: any, res) => {
     try {
       const { payoutMethod = 'stripe', limit = 100 } = req.body;
       
@@ -3960,7 +3971,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Process PayPal payouts manually
-  app.post('/api/admin/paypal-payouts/process', isAuthenticated, isSuperAdmin, async (req: any, res) => {
+  app.post('/api/admin/paypal-payouts/process', marketplaceGuard, isAuthenticated, isSuperAdmin, async (req: any, res) => {
     try {
       const { paymentService } = await import('./services/paymentService');
       
