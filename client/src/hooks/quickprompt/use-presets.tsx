@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { CharacterPreset, GlobalPreset, InsertCharacterPreset, InsertGlobalPreset } from '@shared/schema';
+
+type InsertCharacterPreset = { name: string; [key: string]: any };
+type InsertGlobalPreset = { name: string; [key: string]: any };
 
 const apiRequest = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, {

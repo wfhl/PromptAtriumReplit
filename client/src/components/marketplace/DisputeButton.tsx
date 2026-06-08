@@ -18,7 +18,7 @@ export function DisputeButton({ order, onOpenDispute, onViewDispute }: DisputeBu
   const [disputeReason, setDisputeReason] = useState("");
   
   // Check if order is within 30 days
-  const orderDate = new Date(order.createdAt);
+  const orderDate = new Date(order.createdAt as any);
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const isWithinDisputeWindow = orderDate >= thirtyDaysAgo;

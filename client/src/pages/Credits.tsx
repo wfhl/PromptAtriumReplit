@@ -118,7 +118,7 @@ export default function Credits() {
     mutationFn: async () => {
       return await apiRequest('POST', '/api/credits/claim-daily');
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/credits/balance'] });
       queryClient.invalidateQueries({ queryKey: ['/api/credits/history'] });
       

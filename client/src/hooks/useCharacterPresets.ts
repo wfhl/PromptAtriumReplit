@@ -39,7 +39,7 @@ export function useCharacterPresets() {
   // Create preset mutation
   const createPreset = useMutation({
     mutationFn: async (preset: Omit<CharacterPreset, 'id'>) => {
-      return apiRequest('/api/system-data/character-presets', {
+      return (apiRequest as any)('/api/system-data/character-presets', {
         method: 'POST',
         body: JSON.stringify(preset),
       });
@@ -63,7 +63,7 @@ export function useCharacterPresets() {
   // Update preset mutation
   const updatePreset = useMutation({
     mutationFn: async ({ id, ...data }: CharacterPreset) => {
-      return apiRequest(`/api/system-data/character-presets/${id}`, {
+      return (apiRequest as any)(`/api/system-data/character-presets/${id}`, {
         method: 'PUT',
         body: JSON.stringify(data),
       });
@@ -83,7 +83,7 @@ export function useCharacterPresets() {
   // Delete preset mutation
   const deletePreset = useMutation({
     mutationFn: async (id: string) => {
-      return apiRequest(`/api/system-data/character-presets/${id}`, {
+      return (apiRequest as any)(`/api/system-data/character-presets/${id}`, {
         method: 'DELETE',
       });
     },
@@ -106,7 +106,7 @@ export function useCharacterPresets() {
   // Toggle favorite mutation
   const toggleFavorite = useMutation({
     mutationFn: async (id: string) => {
-      return apiRequest(`/api/system-data/character-presets/${id}/favorite`, {
+      return (apiRequest as any)(`/api/system-data/character-presets/${id}/favorite`, {
         method: 'POST',
       });
     },

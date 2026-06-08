@@ -199,7 +199,7 @@ export function DisputesList({ userId, isAdmin }: DisputesListProps) {
                     </TableCell>
                     <TableCell>
                       <div className="text-sm">
-                        <p>{format(new Date(dispute.createdAt), 'MMM d, yyyy')}</p>
+                        <p>{format(new Date(dispute.createdAt as any), 'MMM d, yyyy')}</p>
                         {dispute.lastRespondedAt && (
                           <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
                             <Clock className="h-3 w-3" />

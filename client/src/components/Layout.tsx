@@ -299,7 +299,7 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
         <div className="container mx-auto px-1 sm:px-1 md:px-1 py-1 flex items-center justify-between">
           <AppHeader 
             location={location}
-            user={user}
+            user={user as any}
             userCommunityMemberships={userCommunityMemberships}
             navRef={navRef}
             linkRefs={linkRefs}

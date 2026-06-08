@@ -197,7 +197,7 @@ export function SystemOverview() {
             </p>
             <p className="text-xs mt-1">
               <span className={stats?.users.growth && stats.users.growth > 0 ? "text-green-500" : "text-red-500"}>
-                {stats?.users.growth > 0 ? "+" : ""}{stats?.users.growth}%
+                {(stats?.users.growth as number) > 0 ? "+" : ""}{stats?.users.growth}%
               </span>
               {" "}vs last week
             </p>

@@ -131,7 +131,7 @@ export default function MarketplaceManagement() {
   const { data: settings, isLoading: settingsLoading } = useQuery({
     queryKey: ['/api/admin/marketplace/settings'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/marketplace/settings', { method: 'GET' });
+      const response = await (apiRequest as any)('/api/admin/marketplace/settings', { method: 'GET' });
       return response as MarketplaceSettings;
     }
   });
@@ -140,7 +140,7 @@ export default function MarketplaceManagement() {
   const { data: stats } = useQuery({
     queryKey: ['/api/admin/marketplace/stats'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/marketplace/stats', { method: 'GET' });
+      const response = await (apiRequest as any)('/api/admin/marketplace/stats', { method: 'GET' });
       return response;
     }
   });
@@ -149,7 +149,7 @@ export default function MarketplaceManagement() {
   const { data: sellers } = useQuery({
     queryKey: ['/api/admin/marketplace/sellers'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/marketplace/sellers', { method: 'GET' });
+      const response = await (apiRequest as any)('/api/admin/marketplace/sellers', { method: 'GET' });
       return response as SellerData[];
     }
   });
@@ -158,7 +158,7 @@ export default function MarketplaceManagement() {
   const { data: listings } = useQuery({
     queryKey: ['/api/admin/marketplace/listings'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/marketplace/listings', { method: 'GET' });
+      const response = await (apiRequest as any)('/api/admin/marketplace/listings', { method: 'GET' });
       return response as ListingData[];
     }
   });
@@ -218,7 +218,7 @@ export default function MarketplaceManagement() {
     mutationFn: async (method: 'stripe' | 'paypal') => {
       return await apiRequest('POST', '/api/admin/payouts/process', { payoutMethod: method });
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/payouts/batches'] });
       toast({
         title: "Success",

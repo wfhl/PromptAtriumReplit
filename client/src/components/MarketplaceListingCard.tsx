@@ -46,7 +46,7 @@ export function MarketplaceListingCard({ listing }: MarketplaceListingCardProps)
   const { user } = useAuth();
   
   // Check if user has already purchased this listing
-  const { data: purchases } = useQuery({
+  const { data: purchases } = useQuery<any>({
     queryKey: ["/api/marketplace/purchases"],
     enabled: !!user,
   });

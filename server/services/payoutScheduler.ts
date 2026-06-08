@@ -5,7 +5,7 @@ import { paymentService } from './paymentService';
 
 export class PayoutScheduler {
   private isProcessing = false;
-  private scheduleInterval: NodeJS.Timer | null = null;
+  private scheduleInterval: NodeJS.Timeout | null = null;
 
   /**
    * Start the payout scheduler
@@ -18,7 +18,7 @@ export class PayoutScheduler {
       .where(eq(platformSettings.key, 'payout_frequency'))
       .limit(1);
     
-    const frequency = frequencySetting[0]?.value ? JSON.parse(frequencySetting[0].value) : 'weekly';
+    const frequency = frequencySetting[0]?.value ? JSON.parse(frequencySetting[0].value as string) : 'weekly';
     
     // Set interval based on frequency
     const intervalMs = this.getIntervalMs(frequency);
@@ -88,7 +88,7 @@ export class PayoutScheduler {
         .limit(1);
       
       const autoPayoutsEnabled = autoPayoutSetting[0]?.value === 'true' || 
-                                  JSON.parse(autoPayoutSetting[0]?.value || 'false');
+                                  JSON.parse((autoPayoutSetting[0]?.value as string) || 'false');
       
       if (!autoPayoutsEnabled) {
         console.log('Auto payouts disabled, skipping scheduled processing');
@@ -103,7 +103,7 @@ export class PayoutScheduler {
         .limit(1);
       
       const delayDays = delayDaysSetting[0]?.value ? 
-        Number(JSON.parse(delayDaysSetting[0].value)) : 7;
+        Number(JSON.parse(delayDaysSetting[0].value as string)) : 7;
       
       // Calculate cutoff date (transactions older than delay days)
       const cutoffDate = new Date();
@@ -136,28 +136,28 @@ export class PayoutScheduler {
         .limit(1);
       
       const minPayoutCents = minPayoutSetting[0]?.value ? 
-        Number(JSON.parse(minPayoutSetting[0].value)) : 1000;
+        Number(JSON.parse(minPayoutSetting[0].value as string)) : 1000;
       
       // Find sellers with Stripe accounts who have pending payouts
       const eligibleSellers = await db
         .select({
-          sellerId: transactionLedger.userId,
-          totalAmount: sql<number>`SUM(${transactionLedger.amount})`,
+          sellerId: (transactionLedger as any).userId,
+          totalAmount: sql<number>`SUM(${(transactionLedger as any).amount})`,
           stripeAccountId: sellerProfiles.stripeAccountId,
         })
         .from(transactionLedger)
-        .innerJoin(sellerProfiles, eq(transactionLedger.userId, sellerProfiles.userId))
+        .innerJoin(sellerProfiles, eq((transactionLedger as any).userId, sellerProfiles.userId))
         .where(
           and(
             eq(transactionLedger.type, 'purchase'),
             eq(transactionLedger.status, 'completed'),
             eq(transactionLedger.paymentMethod, 'stripe'),
             lte(transactionLedger.createdAt, cutoffDate),
-            isNull(transactionLedger.payoutBatchId)
+            isNull((transactionLedger as any).payoutBatchId)
           )
         )
-        .groupBy(transactionLedger.userId, sellerProfiles.stripeAccountId)
-        .having(sql`SUM(${transactionLedger.amount}) >= ${minPayoutCents}`);
+        .groupBy((transactionLedger as any).userId, sellerProfiles.stripeAccountId)
+        .having(sql`SUM(${(transactionLedger as any).amount}) >= ${minPayoutCents}`);
       
       if (eligibleSellers.length === 0) {
         console.log('No eligible Stripe sellers for payout');
@@ -176,7 +176,7 @@ export class PayoutScheduler {
             scheduled: true,
             cutoffDate: cutoffDate.toISOString(),
           },
-        })
+        } as any)
         .returning();
       
       const batchId = batch[0].id;
@@ -190,17 +190,17 @@ export class PayoutScheduler {
             .from(transactionLedger)
             .where(
               and(
-                eq(transactionLedger.userId, seller.sellerId),
+                eq((transactionLedger as any).userId, seller.sellerId),
                 eq(transactionLedger.type, 'purchase'),
                 eq(transactionLedger.status, 'completed'),
                 eq(transactionLedger.paymentMethod, 'stripe'),
                 lte(transactionLedger.createdAt, cutoffDate),
-                isNull(transactionLedger.payoutBatchId)
+                isNull((transactionLedger as any).payoutBatchId)
               )
             );
           
           // Create Stripe transfer
-          const transferId = await paymentService.createStripeTransfer(
+          const transferId = await (paymentService as any).createStripeTransfer(
             seller.stripeAccountId!,
             seller.totalAmount,
             transactions.map(t => t.orderId!).filter(Boolean)
@@ -213,15 +213,15 @@ export class PayoutScheduler {
               payoutBatchId: batchId,
               stripeTransferId: transferId,
               processedAt: new Date(),
-            })
+            } as any)
             .where(
               and(
-                eq(transactionLedger.userId, seller.sellerId),
+                eq((transactionLedger as any).userId, seller.sellerId),
                 eq(transactionLedger.type, 'purchase'),
                 eq(transactionLedger.status, 'completed'),
                 eq(transactionLedger.paymentMethod, 'stripe'),
                 lte(transactionLedger.createdAt, cutoffDate),
-                isNull(transactionLedger.payoutBatchId)
+                isNull((transactionLedger as any).payoutBatchId)
               )
             );
           
@@ -258,28 +258,28 @@ export class PayoutScheduler {
         .limit(1);
       
       const minPayoutCents = minPayoutSetting[0]?.value ? 
-        Number(JSON.parse(minPayoutSetting[0].value)) : 1000;
+        Number(JSON.parse(minPayoutSetting[0].value as string)) : 1000;
       
       // Find sellers with PayPal accounts who have pending payouts
       const eligibleSellers = await db
         .select({
-          sellerId: transactionLedger.userId,
-          totalAmount: sql<number>`SUM(${transactionLedger.amount})`,
+          sellerId: (transactionLedger as any).userId,
+          totalAmount: sql<number>`SUM(${(transactionLedger as any).amount})`,
           paypalEmail: sellerProfiles.paypalEmail,
         })
         .from(transactionLedger)
-        .innerJoin(sellerProfiles, eq(transactionLedger.userId, sellerProfiles.userId))
+        .innerJoin(sellerProfiles, eq((transactionLedger as any).userId, sellerProfiles.userId))
         .where(
           and(
             eq(transactionLedger.type, 'purchase'),
             eq(transactionLedger.status, 'completed'),
             eq(transactionLedger.paymentMethod, 'paypal'),
             lte(transactionLedger.createdAt, cutoffDate),
-            isNull(transactionLedger.payoutBatchId)
+            isNull((transactionLedger as any).payoutBatchId)
           )
         )
-        .groupBy(transactionLedger.userId, sellerProfiles.paypalEmail)
-        .having(sql`SUM(${transactionLedger.amount}) >= ${minPayoutCents}`);
+        .groupBy((transactionLedger as any).userId, sellerProfiles.paypalEmail)
+        .having(sql`SUM(${(transactionLedger as any).amount}) >= ${minPayoutCents}`);
       
       if (eligibleSellers.length === 0) {
         console.log('No eligible PayPal sellers for payout');
@@ -298,7 +298,7 @@ export class PayoutScheduler {
             scheduled: true,
             cutoffDate: cutoffDate.toISOString(),
           },
-        })
+        } as any)
         .returning();
       
       const batchId = batch[0].id;
@@ -312,15 +312,15 @@ export class PayoutScheduler {
           .set({
             payoutBatchId: batchId,
             processedAt: new Date(),
-          })
+          } as any)
           .where(
             and(
-              eq(transactionLedger.userId, seller.sellerId),
+              eq((transactionLedger as any).userId, seller.sellerId),
               eq(transactionLedger.type, 'purchase'),
               eq(transactionLedger.status, 'completed'),
               eq(transactionLedger.paymentMethod, 'paypal'),
               lte(transactionLedger.createdAt, cutoffDate),
-              isNull(transactionLedger.payoutBatchId)
+              isNull((transactionLedger as any).payoutBatchId)
             )
           );
         
@@ -365,7 +365,7 @@ export class PayoutScheduler {
         .limit(1);
       
       const delayDays = delayDaysSetting[0]?.value ? 
-        Number(JSON.parse(delayDaysSetting[0].value)) : 7;
+        Number(JSON.parse(delayDaysSetting[0].value as string)) : 7;
       
       // Get payout frequency
       const frequencySetting = await db
@@ -375,7 +375,7 @@ export class PayoutScheduler {
         .limit(1);
       
       const frequency = frequencySetting[0]?.value ? 
-        JSON.parse(frequencySetting[0].value) : 'weekly';
+        JSON.parse(frequencySetting[0].value as string) : 'weekly';
       
       // Calculate next payout date based on frequency
       const today = new Date();
@@ -411,16 +411,16 @@ export class PayoutScheduler {
       // Get pending amount
       const pendingResult = await db
         .select({
-          totalAmount: sql<number>`SUM(${transactionLedger.amount})`,
+          totalAmount: sql<number>`SUM(${(transactionLedger as any).amount})`,
         })
         .from(transactionLedger)
         .where(
           and(
-            eq(transactionLedger.userId, sellerId),
+            eq((transactionLedger as any).userId, sellerId),
             eq(transactionLedger.type, 'purchase'),
             eq(transactionLedger.status, 'completed'),
             lte(transactionLedger.createdAt, cutoffDate),
-            isNull(transactionLedger.payoutBatchId)
+            isNull((transactionLedger as any).payoutBatchId)
           )
         );
       

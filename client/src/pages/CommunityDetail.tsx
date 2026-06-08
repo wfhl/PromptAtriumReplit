@@ -76,7 +76,7 @@ export default function CommunityDetail() {
   });
 
   // Fetch community members
-  const { data: members = [], isLoading: membersLoading } = useQuery({
+  const { data: members = [], isLoading: membersLoading } = useQuery<any[]>({
     queryKey: [`/api/communities/${id}/members`],
     enabled: !!membership,
   });
@@ -88,7 +88,7 @@ export default function CommunityDetail() {
   });
 
   // Fetch community prompts
-  const { data: prompts = [], isLoading: promptsLoading } = useQuery({
+  const { data: prompts = [], isLoading: promptsLoading } = useQuery<any[]>({
     queryKey: [`/api/prompts?communityId=${id}`],
     enabled: !!membership,
   });
@@ -108,7 +108,7 @@ export default function CommunityDetail() {
       return apiRequest("POST", `/api/communities/${id}/invites`, data);
     },
     onSuccess: (invite) => {
-      const inviteLink = `${window.location.origin}/join-community/${invite.token}`;
+      const inviteLink = `${window.location.origin}/join-community/${(invite as any).token}`;
       setGeneratedInviteLink(inviteLink);
       refetchInvites();
       toast({

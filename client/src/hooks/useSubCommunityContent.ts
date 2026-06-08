@@ -107,7 +107,13 @@ export function useSubCommunityContent({
     data: collectionsData,
     isLoading: loadingCollections,
     error: collectionsError,
-  } = useQuery({
+  } = useQuery<{
+    items: Prompt[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  }>({
     queryKey: [`/api/sub-communities/${subCommunityId}/collections?${queryParams}`],
     enabled: false, // Disabled until implemented
   });
@@ -117,7 +123,13 @@ export function useSubCommunityContent({
     data: discussionsData,
     isLoading: loadingDiscussions,
     error: discussionsError,
-  } = useQuery({
+  } = useQuery<{
+    items: Prompt[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  }>({
     queryKey: [`/api/sub-communities/${subCommunityId}/discussions?${queryParams}`],
     enabled: false, // Disabled until implemented
   });

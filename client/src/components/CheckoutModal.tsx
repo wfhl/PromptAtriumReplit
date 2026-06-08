@@ -92,7 +92,7 @@ function StripePaymentForm({
       if (paymentIntent?.status === "succeeded") {
         // Complete the order on the backend
         const response = await apiRequest(
-          `/api/marketplace/orders/${paymentIntent.metadata?.orderId}/complete`,
+          `/api/marketplace/orders/${(paymentIntent as any).metadata?.orderId}/complete`,
           "POST",
           { paymentIntentId: paymentIntent.id }
         );
@@ -135,7 +135,7 @@ export function CheckoutModal({ isOpen, onClose, listing }: CheckoutModalProps) 
   const [, navigate] = useLocation();
   
   // Get user's credit balance
-  const { data: userCredits } = useQuery({
+  const { data: userCredits } = useQuery<any>({
     queryKey: ["/api/credits/balance"],
     enabled: isOpen && listing.acceptsCredits
   });
@@ -146,9 +146,9 @@ export function CheckoutModal({ isOpen, onClose, listing }: CheckoutModalProps) 
       const response = await apiRequest("/api/marketplace/checkout/stripe", "POST", {
         listingId: listing.id
       });
-      return response;
+      return response as any;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       setClientSecret(data.clientSecret);
       setOrderId(data.orderId);
     },

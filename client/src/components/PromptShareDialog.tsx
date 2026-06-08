@@ -214,8 +214,8 @@ export function PromptShareDialog({
       // Invalidate relevant queries
       queryClient.invalidateQueries({
         predicate: (query) =>
-          query.queryKey[0]?.toString().includes("/sub-communities") &&
-          query.queryKey[0]?.toString().includes("/prompts"),
+          (query.queryKey[0]?.toString().includes("/sub-communities") &&
+          query.queryKey[0]?.toString().includes("/prompts")) as boolean,
       });
     },
     onError: () => {

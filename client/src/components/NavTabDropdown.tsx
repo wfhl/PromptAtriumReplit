@@ -264,7 +264,7 @@ export function NavTabDropdown({ page, isOpen, onClose, buttonRef }: NavTabDropd
               {/* Tab Options */}
               <div className="py-1 max-h-[60vh] overflow-y-auto">
                 {config.tabs.map((tab) => {
-                  const TabIcon = tab.icon;
+                  const TabIcon = (tab as any).icon;
                   
                   // Generate the appropriate href based on the page type
                   let href = '';

@@ -6,7 +6,7 @@ import { marketplaceOrders, transactionLedger, sellerProfiles } from '@shared/sc
 import { paymentService } from '../services/paymentService';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-10-28.acacia',
+  apiVersion: '2024-10-28.acacia' as any,
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
@@ -36,7 +36,7 @@ export async function handleStripeWebhook(req: Request, res: Response) {
   console.log('Stripe webhook received:', event.type);
 
   try {
-    switch (event.type) {
+    switch (event.type as string) {
       case 'payment_intent.succeeded':
         await handlePaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent);
         break;
@@ -245,12 +245,12 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
   // Calculate refund amounts (proportional commission refund)
   const refundAmount = charge.amount_refunded;
   const refundPercentage = refundAmount / charge.amount;
-  const commissionRefund = Math.floor(originalTransaction.platformFee * refundPercentage);
+  const commissionRefund = Math.floor((originalTransaction as any).platformFee * refundPercentage);
   
   // Create refund entry in ledger
   await db.insert(transactionLedger).values({
     orderId,
-    userId: originalTransaction.userId,
+    userId: (originalTransaction as any).userId,
     type: 'refund',
     amount: -refundAmount, // Negative for refund
     platformFee: -commissionRefund, // Negative commission refund
@@ -260,7 +260,7 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     description: 'Refund processed via Stripe webhook',
     createdAt: new Date(),
     processedAt: new Date(),
-  });
+  } as any);
 
   // Update the order status to refunded
   await db
@@ -268,7 +268,7 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     .set({
       status: 'refunded',
       updatedAt: new Date(),
-    })
+    } as any)
     .where(eq(marketplaceOrders.id, orderId));
 
   console.log('Refund recorded in ledger for order:', orderId, 'Amount:', refundAmount);

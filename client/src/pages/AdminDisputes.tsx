@@ -43,7 +43,7 @@ interface DisputeStats {
 }
 
 export function AdminDisputes() {
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth() as ReturnType<typeof useAuth> & { loading?: boolean };
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   
@@ -60,7 +60,7 @@ export function AdminDisputes() {
   });
   
   // Fetch recent disputes for quick overview
-  const { data: recentDisputes } = useQuery({
+  const { data: recentDisputes } = useQuery<any>({
     queryKey: ["/api/marketplace/admin/disputes", { limit: 5, status: "open", escalatedOnly: true }],
     enabled: !!user && (user.role === 'super_admin' || user.role === 'community_admin' || user.role === 'developer'),
   });
@@ -137,8 +137,8 @@ export function AdminDisputes() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
-                {stats?.total > 0 
-                  ? Math.round((stats.resolved / stats.total) * 100)
+                {(stats?.total ?? 0) > 0 
+                  ? Math.round((stats!.resolved / stats!.total) * 100)
                   : 0}%
               </div>
               <p className="text-xs text-muted-foreground mt-1">

@@ -85,7 +85,7 @@ export function AchievementBadges({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // Fetch all achievements with user progress
-  const { data: achievementData, isLoading } = useQuery({
+  const { data: achievementData, isLoading } = useQuery<{ achievements: Achievement[]; userProgress: UserAchievement[] }>({
     queryKey: ["/api/achievements", userId],
     enabled: true,
   });

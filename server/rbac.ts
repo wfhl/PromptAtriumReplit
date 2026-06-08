@@ -286,7 +286,7 @@ export const canAccessCollection = async (userId: string, collectionId: string):
     }
 
     // Global collections can be accessed by community admins and developers
-    if (collection.type === "global" && (userRole === "community_admin" || userRole === "developer")) {
+    if (collection.type === "global" && ((userRole as string) === "community_admin" || (userRole as string) === "developer")) {
       return true;
     }
 
@@ -596,8 +596,8 @@ export const requireSubCommunityPromptAccess = (promptIdParam = "promptId"): Req
       // If prompt doesn't have a subCommunityId, no sub-community access control needed
       if (!prompt.subCommunityId) {
         // Check regular community access if communityId exists
-        if (prompt.communityId) {
-          const isMember = await storage.isCommunityMember(userId, prompt.communityId);
+        if ((prompt as any).communityId) {
+          const isMember = await storage.isCommunityMember(userId, (prompt as any).communityId);
           if (isMember || prompt.isPublic) {
             req.userRole = userRole;
             return next();
@@ -799,7 +799,7 @@ export const canAccessSubCommunityContent = async (userId: string, subCommunityI
       const isParentMember = await storage.isCommunityMember(userId, subCommData.parentCommunityId);
       
       // Parent community members can access public sub-community content
-      if (isParentMember && subCommData.isPublic) {
+      if (isParentMember && (subCommData as any).isPublic) {
         return true;
       }
 
@@ -809,7 +809,7 @@ export const canAccessSubCommunityContent = async (userId: string, subCommunityI
         for (const ancestorId of pathParts) {
           if (ancestorId !== subCommunityId) {
             const isAncestorMember = await storage.isCommunityMember(userId, ancestorId);
-            if (isAncestorMember && subCommData.isPublic) {
+            if (isAncestorMember && (subCommData as any).isPublic) {
               return true;
             }
           }
@@ -864,7 +864,7 @@ export const checkSubCommunityPermission = async (
           return true;
         }
         // Check if it's a public sub-community and user is authenticated
-        return subCommData.isPublic;
+        return (subCommData as any).isPublic;
 
       case 'write':
         // Members, sub-community admins, parent admins
@@ -1000,7 +1000,7 @@ export const requireSubCommunityMemberEnhanced = (subCommunityIdParam = "subComm
       }
 
       // Check if user is a member of the parent community (limited access for public sub-communities)
-      if (subCommData.parentCommunityId && subCommData.isPublic) {
+      if (subCommData.parentCommunityId && (subCommData as any).isPublic) {
         const isParentMember = await storage.isCommunityMember(userId, subCommData.parentCommunityId);
         
         if (isParentMember) {

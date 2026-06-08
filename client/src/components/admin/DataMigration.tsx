@@ -69,13 +69,13 @@ export function DataMigration() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   // Check current migration status
-  const { data: statusData, isLoading: statusLoading, refetch: refetchStatus } = useQuery({
+  const { data: statusData, isLoading: statusLoading, refetch: refetchStatus } = useQuery<any>({
     queryKey: ["/api/admin/migrate-sub-communities/status"],
     retry: false,
   });
 
   // Preview migration (dry run)
-  const { data: previewData, isLoading: previewLoading, refetch: refetchPreview } = useQuery({
+  const { data: previewData, isLoading: previewLoading, refetch: refetchPreview } = useQuery<any>({
     queryKey: ["/api/admin/migrate-sub-communities/preview"],
     retry: false,
   });
@@ -87,7 +87,7 @@ export function DataMigration() {
       return response;
     },
     onSuccess: (data) => {
-      setMigrationReport(data.report);
+      setMigrationReport((data as any).report);
       setShowReport(true);
       setShowConfirmDialog(false);
       // Refetch status after migration

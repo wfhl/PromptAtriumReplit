@@ -78,19 +78,19 @@ export function PurchaseHistory() {
   const [viewDisputeId, setViewDisputeId] = useState<string | null>(null);
   
   // Fetch purchase history
-  const { data: purchases, isLoading, error } = useQuery({
+  const { data: purchases, isLoading, error } = useQuery<any>({
     queryKey: ["/api/marketplace/purchases", { limit: 50, offset: 0 }],
     enabled: !!user,
   });
   
   // Fetch user's reviews to check which purchases have been reviewed
-  const { data: userReviews } = useQuery({
+  const { data: userReviews } = useQuery<any>({
     queryKey: ["/api/marketplace/reviews/user"],
     enabled: !!user,
   });
   
   // Fetch disputes to check dispute status for orders
-  const { data: disputes } = useQuery({
+  const { data: disputes } = useQuery<any>({
     queryKey: ["/api/marketplace/disputes"],
     enabled: !!user,
   });

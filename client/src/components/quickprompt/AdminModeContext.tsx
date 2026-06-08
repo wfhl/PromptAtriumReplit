@@ -37,7 +37,7 @@ export const AdminModeProvider: React.FC<AdminModeProviderProps> = ({ children }
   const { user } = useAuth();
 
   // Check if user has developer or system administrator role
-  const canAccessAdmin = user?.roles?.some(role => 
+  const canAccessAdmin = (user as any)?.roles?.some((role: any) => 
     role.role_name === 'Developer' || 
     role.role_name === 'developer' ||
     role.role_name === 'System Administrator' || 

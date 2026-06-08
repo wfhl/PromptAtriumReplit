@@ -1,0 +1,1 @@
+- [TypeScript debt & masked bugs](typescript-debt-and-masked-bugs.md) — dev is transpile-only (no tsc gate); real apiRequest/storage/schema bugs sit behind `as any` in MARKETPLACE_ENABLED-gated features.

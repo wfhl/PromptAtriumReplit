@@ -169,7 +169,7 @@ export function InviteManager({ subCommunityId, existingInvites }: InviteManager
       return { label: "Expired", variant: "destructive" as const, icon: Clock };
     }
     
-    if (invite.maxUses && invite.currentUses >= invite.maxUses) {
+    if (invite.maxUses && invite.currentUses! >= invite.maxUses) {
       return { label: "Used Up", variant: "secondary" as const, icon: XCircle };
     }
     

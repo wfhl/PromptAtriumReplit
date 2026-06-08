@@ -7,6 +7,7 @@ interface CustomVisionOptions {
   prompt?: string;
   captionStyle?: string;
   captionLength?: string;
+  customPrompt?: string;
 }
 
 interface CustomVisionResult {
@@ -16,6 +17,7 @@ interface CustomVisionResult {
   metadata?: any;
   confidence?: number;
   serverOnline?: boolean;
+  debugInfo?: any;
 }
 
 // Custom Vision Server configuration

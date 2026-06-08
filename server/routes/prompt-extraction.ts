@@ -238,13 +238,13 @@ router.post('/scout', isAuthenticated, async (req: any, res) => {
     ]);
     
     // Helper to find matching type/style from database or use original
-    const matchType = (scoutType: string) => {
+    const matchType = (scoutType: string | undefined) => {
       const lower = (scoutType || '').toLowerCase();
       const found = availableTypes.find(t => t.name.toLowerCase() === lower);
       return found ? found.name : (scoutType || 'Image');
     };
     
-    const matchStyle = (scoutStyle: string) => {
+    const matchStyle = (scoutStyle: string | undefined) => {
       const lower = (scoutStyle || '').toLowerCase();
       const found = availableStyles.find(s => s.name.toLowerCase() === lower);
       return found ? found.name : (scoutStyle || 'Unknown');

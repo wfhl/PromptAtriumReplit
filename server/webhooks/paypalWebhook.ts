@@ -154,7 +154,7 @@ async function handlePayoutSuccess(webhookData: any) {
         completedAt: new Date(),
         updatedAt: new Date(),
       })
-      .where(eq(transactionLedger.payoutBatchId, batch.id));
+      .where(eq((transactionLedger as any).payoutBatchId, batch.id));
 
     console.log(`[PayPal Webhook] Batch ${paypalBatchId} marked as completed`);
   } catch (error: any) {
@@ -204,7 +204,7 @@ async function handlePayoutFailed(webhookData: any) {
         status: 'failed',
         updatedAt: new Date(),
       })
-      .where(eq(transactionLedger.payoutBatchId, batch.id));
+      .where(eq((transactionLedger as any).payoutBatchId, batch.id));
 
     console.log(`[PayPal Webhook] Batch ${paypalBatchId} marked as failed`);
   } catch (error: any) {

@@ -516,7 +516,7 @@ export class MetadataExtractor {
     const metadata: Partial<ImageMetadata> = {};
     
     // Extract prompt (everything before "Negative prompt:" or "Steps:")
-    const promptMatch = params.match(/^(.*?)(?:Negative prompt:|Steps:|$)/s);
+    const promptMatch = params.match(new RegExp('^(.*?)(?:Negative prompt:|Steps:|$)', 's'));
     if (promptMatch) {
       const prompt = promptMatch[1].trim();
       if (prompt && !prompt.includes('--v ') && !prompt.includes('Job ID:')) {
@@ -525,7 +525,7 @@ export class MetadataExtractor {
     }
     
     // Extract negative prompt
-    const negPromptMatch = params.match(/Negative prompt:\s*(.*?)(?:Steps:|$)/s);
+    const negPromptMatch = params.match(new RegExp('Negative prompt:\\s*(.*?)(?:Steps:|$)', 's'));
     if (negPromptMatch) {
       metadata.negativePrompt = negPromptMatch[1].trim();
     }

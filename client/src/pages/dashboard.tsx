@@ -1015,7 +1015,7 @@ export default function Dashboard() {
                 <CollapsibleContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" data-testid="section-featured-marketplace">
                     {featuredListings.slice(0, 4).map((listing) => (
-                      <MarketplaceListingCard key={listing.id} listing={listing} />
+                      <MarketplaceListingCard key={listing.id} listing={listing as any} />
                     ))}
                   </div>
                 </CollapsibleContent>

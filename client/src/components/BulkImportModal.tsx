@@ -741,8 +741,8 @@ export function BulkImportModal({ open, onOpenChange, collections }: BulkImportM
         
         if (rows.length > 0) {
           // Analyze headers and get field mappings
-          const headers = Object.keys(rows[0]);
-          const smartResult = analyzeCSVHeaders(headers, rows[0]);
+          const headers = Object.keys(rows[0] as any);
+          const smartResult = analyzeCSVHeaders(headers, rows[0] as any) as any;
           
           // Apply the mappings to parse the data
           parsed = applyFieldMappings(rows, smartResult.fieldMappings);

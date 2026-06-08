@@ -47,7 +47,7 @@ interface FilterState {
 
 export default function SubCommunityContentPage() {
   const [params] = useRoute("/sub-community/:id/content");
-  const subCommunityId = params?.id;
+  const subCommunityId = (params as any)?.id;
   const { user } = useAuth();
   
   // State management
@@ -75,7 +75,7 @@ export default function SubCommunityContentPage() {
   });
 
   // Check user's role in the sub-community
-  const { data: membershipData } = useQuery({
+  const { data: membershipData } = useQuery<any>({
     queryKey: [`/api/sub-communities/${subCommunityId}/membership`],
     enabled: !!subCommunityId && !!user,
   });

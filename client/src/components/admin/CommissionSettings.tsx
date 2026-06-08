@@ -48,7 +48,7 @@ export default function CommissionSettings() {
   const { data: settings, isLoading } = useQuery({
     queryKey: ['/api/admin/platform-settings'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/platform-settings', { method: 'GET' });
+      const response = await apiRequest('/api/admin/platform-settings', { method: 'GET' } as any) as any;
       const settingsMap: Record<string, any> = {};
       response.forEach((setting: PlatformSetting) => {
         settingsMap[setting.key] = JSON.parse(setting.value);
@@ -64,7 +64,7 @@ export default function CommissionSettings() {
       return apiRequest('/api/admin/platform-settings', {
         method: 'PUT',
         body: JSON.stringify({ key, value }),
-      });
+      } as any);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/platform-settings'] });
@@ -271,7 +271,7 @@ export default function CommissionSettings() {
                     apiRequest('/api/admin/payouts/process', {
                       method: 'POST',
                       body: JSON.stringify({ payoutMethod: 'stripe' })
-                    }).then(() => {
+                    } as any).then(() => {
                       toast({
                         title: "Payouts Processing",
                         description: "Stripe payouts have been initiated",
@@ -289,7 +289,7 @@ export default function CommissionSettings() {
                     apiRequest('/api/admin/payouts/process', {
                       method: 'POST',
                       body: JSON.stringify({ payoutMethod: 'paypal' })
-                    }).then(() => {
+                    } as any).then(() => {
                       toast({
                         title: "Payouts Processing",
                         description: "PayPal payouts have been initiated",

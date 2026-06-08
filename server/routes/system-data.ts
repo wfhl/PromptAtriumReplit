@@ -191,7 +191,7 @@ Create wonder and imagination.`,
     }
 
     // Map database templates to expected format
-    const formattedTemplates = templates.map(t => ({
+    const formattedTemplates = templates.map((t: any) => ({
       id: t.id,
       template_id: t.template_id,
       name: t.name,

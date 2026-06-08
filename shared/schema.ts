@@ -14,6 +14,7 @@ import {
   serial,
   unique,
   primaryKey,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -93,7 +94,7 @@ export const communities = pgTable("communities", {
   imageUrl: varchar("image_url"),
   isActive: boolean("is_active").default(true),
   // Hierarchy fields - parentCommunityId = null means global community, otherwise it's a private community
-  parentCommunityId: varchar("parent_community_id").references(() => communities.id),
+  parentCommunityId: varchar("parent_community_id").references((): AnyPgColumn => communities.id),
   level: integer("level").default(0),
   path: text("path"),
   // Creator tracking
@@ -1734,10 +1735,6 @@ export type InsertIntendedGenerator = z.infer<typeof insertIntendedGeneratorSche
 export type IntendedGenerator = typeof intendedGenerators.$inferSelect;
 export type InsertRecommendedModel = z.infer<typeof insertRecommendedModelSchema>;
 export type RecommendedModel = typeof recommendedModels.$inferSelect;
-export type InsertCommunity = z.infer<typeof insertCommunitySchema>;
-export type Community = typeof communities.$inferSelect;
-export type InsertUserCommunity = z.infer<typeof insertUserCommunitySchema>;
-export type UserCommunity = typeof userCommunities.$inferSelect;
 export type InsertPromptHistory = z.infer<typeof insertPromptHistorySchema>;
 export type PromptHistory = typeof promptHistory.$inferSelect;
 export type InsertCommunityAdmin = z.infer<typeof insertCommunityAdminSchema>;

@@ -13,7 +13,7 @@ const openai = new OpenAI({
 
 interface AuthenticatedRequest extends Request {
   user?: {
-    claims: {
+    claims?: {
       sub: string;
     };
   };
@@ -195,11 +195,11 @@ router.post('/chat', isAuthenticated, async (req: AuthenticatedRequest, res: Res
         initialPrompt: currentPrompt || null,
         currentPrompt: currentPrompt || null,
         isActive: true,
-      });
+      } as any);
     }
 
     const userMemory = await storage.getUserPromptMemory(userId);
-    const systemPrompt = buildSystemPrompt(userMemory, currentPrompt || conversation.currentPrompt, templateInfo);
+    const systemPrompt = buildSystemPrompt(userMemory, currentPrompt || (conversation as any).currentPrompt, templateInfo);
 
     await storage.createRefinementMessage({
       conversationId: conversation.id,
@@ -232,7 +232,7 @@ router.post('/chat', isAuthenticated, async (req: AuthenticatedRequest, res: Res
     if (refinedPrompt) {
       await storage.updateRefinementConversation(conversation.id, {
         currentPrompt: refinedPrompt,
-      });
+      } as any);
     }
 
     res.json({
@@ -372,10 +372,10 @@ router.post('/learn-preferences', isAuthenticated, async (req: AuthenticatedRequ
     };
 
     const updatedMemory = await storage.upsertUserPromptMemory(userId, {
-      preferredStyles: mergeUnique(currentMemory?.preferredStyles, extractedPrefs.styles),
-      preferredThemes: mergeUnique(currentMemory?.preferredThemes, extractedPrefs.themes),
-      preferredModifiers: mergeUnique(currentMemory?.preferredModifiers, extractedPrefs.modifiers),
-      avoidedTerms: mergeUnique(currentMemory?.avoidedTerms, extractedPrefs.avoidedTerms),
+      preferredStyles: mergeUnique(currentMemory?.preferredStyles as string[] | undefined, extractedPrefs.styles),
+      preferredThemes: mergeUnique(currentMemory?.preferredThemes as string[] | undefined, extractedPrefs.themes),
+      preferredModifiers: mergeUnique(currentMemory?.preferredModifiers as string[] | undefined, extractedPrefs.modifiers),
+      avoidedTerms: mergeUnique(currentMemory?.avoidedTerms as string[] | undefined, extractedPrefs.avoidedTerms),
     });
 
     res.json({

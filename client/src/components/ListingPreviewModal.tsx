@@ -52,19 +52,19 @@ export function ListingPreviewModal({ listingId, open, onOpenChange }: ListingPr
   const { user } = useAuth();
   
   // Fetch listing details with preview
-  const { data: listing, isLoading, error } = useQuery({
+  const { data: listing, isLoading, error } = useQuery<any>({
     queryKey: [`/api/marketplace/listings/${listingId}`],
     enabled: open && !!listingId,
   });
   
   // Check if user has already purchased this listing
-  const { data: purchases } = useQuery({
+  const { data: purchases } = useQuery<any>({
     queryKey: ["/api/marketplace/purchases"],
     enabled: !!user && open,
   });
   
   // Check if user can review this listing
-  const { data: reviewStatus } = useQuery({
+  const { data: reviewStatus } = useQuery<any>({
     queryKey: [`/api/marketplace/reviews/can-review/${listingId}`],
     enabled: !!user && !!listingId && open,
   });

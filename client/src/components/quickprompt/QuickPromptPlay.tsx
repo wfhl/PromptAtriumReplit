@@ -12,11 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Link as WouterLink } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ShareToLibraryModal } from "@/components/ui/ShareToLibraryModal";
+import { ShareToLibraryModal } from "./ShareToLibraryModal";
 import { apiRequest } from "@/lib/queryClient";
-import { useCreateCharacterPreset } from "@/hooks/use-presets";
+import { useCreateCharacterPreset } from "@/hooks/quickprompt/use-presets";
 import { useAuth } from "@/hooks/useAuth";
-import { useAdminMode } from "@/context/AdminModeContext";
+import { useAdminMode } from "./AdminModeContext";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { RefineWithAIButton } from "./PromptRefinementChat";
 
@@ -432,7 +432,7 @@ export default function QuickPromptPlay() {
         additionalDetails: '',
         loraDescription: customCharacterInput.trim() // Also in character_data
       }
-    });
+    } as any);
   };
 
   // Handle character selection change to show/hide custom input
@@ -529,7 +529,7 @@ export default function QuickPromptPlay() {
   const createCharacterPresetMutation = useCreateCharacterPreset();
   const saveCharacterMutation = useMutation({
     mutationFn: createCharacterPresetMutation.mutateAsync,
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['/api/character-presets'] });
       setCustomCharacterInput("");
       setShowCustomCharacterInput(false);
@@ -1631,11 +1631,11 @@ export default function QuickPromptPlay() {
             name: subject ? `Quick Prompt: ${subject.slice(0, 30)}${subject.length > 30 ? '...' : ''}` : 'Quick Prompt',
             positive_prompt: generatedPrompt,
             negative_prompt: '',
-            tags: [subject, character === 'no-character' ? null : character].filter(Boolean),
+            tags: [subject, character === 'no-character' ? null : character].filter(Boolean) as string[],
             template_name: dbRuleTemplates.find(t => t.id.toString() === template)?.name,
-            character_preset: character === 'no-character' ? null : character
+            character_preset: (character === 'no-character' ? null : character) as any
           }}
-          onShare={(shareData) => {
+          onShare={(shareData: any) => {
             // Get the template data for saving
             const selectedTemplate = dbRuleTemplates.find(t => t.id.toString() === template);
             

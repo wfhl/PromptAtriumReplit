@@ -63,7 +63,7 @@ export default function Marketplace() {
   });
 
   // Fetch featured listings
-  const { data: featuredListings = [], isLoading: featuredLoading } = useQuery({
+  const { data: featuredListings = [], isLoading: featuredLoading } = useQuery<any[]>({
     queryKey: ["/api/marketplace/featured"],
     staleTime: 5 * 60 * 1000,
   });
@@ -338,7 +338,7 @@ export default function Marketplace() {
                   </label>
                   <Slider
                     value={priceRange}
-                    onValueChange={setPriceRange}
+                    onValueChange={setPriceRange as (value: number[]) => void}
                     min={0}
                     max={100}
                     step={5}
@@ -355,7 +355,7 @@ export default function Marketplace() {
                   </label>
                   <Slider
                     value={creditsRange}
-                    onValueChange={setCreditsRange}
+                    onValueChange={setCreditsRange as (value: number[]) => void}
                     min={0}
                     max={10000}
                     step={100}

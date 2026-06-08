@@ -67,7 +67,7 @@ export default function TransactionDashboard() {
         startDate: dateRange.from.toISOString(),
         endDate: dateRange.to.toISOString(),
       });
-      return apiRequest(`/api/admin/transactions/summary?${params}`, { method: 'GET' });
+      return (apiRequest as any)(`/api/admin/transactions/summary?${params}`, { method: 'GET' });
     },
   });
 
@@ -75,7 +75,7 @@ export default function TransactionDashboard() {
   const { data: payoutBatches } = useQuery({
     queryKey: ['/api/admin/payouts/batches'],
     queryFn: async () => {
-      return apiRequest('/api/admin/payouts/batches', { method: 'GET' });
+      return (apiRequest as any)('/api/admin/payouts/batches', { method: 'GET' });
     },
   });
 
@@ -86,7 +86,7 @@ export default function TransactionDashboard() {
       format: exportFormat,
     });
     
-    const response = await apiRequest(`/api/admin/transactions/export?${params}`, {
+    const response = await (apiRequest as any)(`/api/admin/transactions/export?${params}`, {
       method: 'GET',
     });
 
@@ -283,7 +283,7 @@ export default function TransactionDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {summary?.recentTransactions?.map((transaction) => (
+                  {summary?.recentTransactions?.map((transaction: any) => (
                     <TableRow key={transaction.id}>
                       <TableCell className="text-sm">
                         {format(new Date(transaction.createdAt), 'MMM dd, yyyy HH:mm')}
@@ -338,7 +338,7 @@ export default function TransactionDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {summary?.topSellers?.map((seller, index) => (
+                  {summary?.topSellers?.map((seller: any, index: number) => (
                     <TableRow key={seller.userId}>
                       <TableCell className="font-medium">#{index + 1}</TableCell>
                       <TableCell className="font-medium">

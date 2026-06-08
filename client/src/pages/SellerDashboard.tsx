@@ -107,7 +107,7 @@ export default function SellerDashboard() {
   const { data: stripeBalance, isLoading: balanceLoading } = useQuery({
     queryKey: ["/api/marketplace/seller/balance"],
     enabled: !!sellerProfile?.stripeAccountId && sellerProfile.onboardingStatus === 'completed',
-  }) as { data: { available?: number; pending?: number } | undefined; isLoading: boolean };
+  }) as { data: { available?: any[]; pending?: any[] } | undefined; isLoading: boolean };
   
   // Fetch Stripe payouts
   const { data: stripePayouts = [], isLoading: payoutsLoading } = useQuery({
@@ -224,7 +224,7 @@ export default function SellerDashboard() {
         });
         // Redirect to Stripe Connect onboarding
         setTimeout(() => {
-          window.location.href = data.stripeOnboardingUrl;
+          window.location.href = data.stripeOnboardingUrl!;
         }, 1500);
       } else {
         toast({ 

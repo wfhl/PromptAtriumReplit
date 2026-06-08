@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,7 +54,7 @@ interface Transaction {
 }
 
 export default function SellerTransactionDashboard() {
-  const { user } = useAuthContext();
+  const { user } = useAuth();
   const [dateRange, setDateRange] = useState({
     from: startOfMonth(new Date()),
     to: endOfMonth(new Date()),
@@ -69,7 +69,7 @@ export default function SellerTransactionDashboard() {
         startDate: dateRange.from.toISOString(),
         endDate: dateRange.to.toISOString(),
       });
-      return apiRequest(`/api/seller/stats?${params}`, { method: 'GET' });
+      return (apiRequest as any)(`/api/seller/stats?${params}`, { method: 'GET' });
     },
     enabled: !!user?.id,
   });
@@ -82,7 +82,7 @@ export default function SellerTransactionDashboard() {
         startDate: dateRange.from.toISOString(),
         endDate: dateRange.to.toISOString(),
       });
-      return apiRequest(`/api/user/transactions?${params}`, { method: 'GET' });
+      return (apiRequest as any)(`/api/user/transactions?${params}`, { method: 'GET' });
     },
     enabled: !!user?.id,
   });
@@ -91,7 +91,7 @@ export default function SellerTransactionDashboard() {
   const { data: payoutStatus } = useQuery({
     queryKey: ['/api/seller/payout-status', user?.id],
     queryFn: async () => {
-      return apiRequest('/api/seller/payout-status', { method: 'GET' });
+      return (apiRequest as any)('/api/seller/payout-status', { method: 'GET' });
     },
     enabled: !!user?.id,
   });
@@ -103,7 +103,7 @@ export default function SellerTransactionDashboard() {
       format: exportFormat,
     });
     
-    const response = await apiRequest(`/api/user/transactions/export?${params}`, {
+    const response = await (apiRequest as any)(`/api/user/transactions/export?${params}`, {
       method: 'GET',
     });
 

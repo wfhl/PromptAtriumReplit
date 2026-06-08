@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const CardBeamAnimation = () => {
-  const containerRef = useRef(null);
-  const cardStreamRef = useRef(null);
-  const cardLineRef = useRef(null);
-  const particleCanvasRef = useRef(null);
-  const scannerCanvasRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardStreamRef = useRef<HTMLDivElement>(null);
+  const cardLineRef = useRef<HTMLDivElement>(null);
+  const particleCanvasRef = useRef<HTMLCanvasElement>(null);
+  const scannerCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const [speed, setSpeed] = useState(120);
   const [isAnimating, setIsAnimating] = useState(true);
@@ -27,8 +27,8 @@ const CardBeamAnimation = () => {
   });
 
   // Particle systems refs
-  const particleSystemRef = useRef(null);
-  const particleScannerRef = useRef(null);
+  const particleSystemRef = useRef<ParticleSystem | null>(null);
+  const particleScannerRef = useRef<ParticleScanner | null>(null);
 
   // Card data with code content only - images generated inline
   const cardData = [
@@ -472,7 +472,7 @@ fantasy concept art --ar 21:9\`;
   ];
 
   // Format text for display
-  const formatTextForDisplay = (text, width, height) => {
+  const formatTextForDisplay = (text: string, width: number, height: number) => {
     const lines = text.split('\n');
     let formattedLines = [];
 
@@ -502,7 +502,7 @@ fantasy concept art --ar 21:9\`;
   };
 
   // Calculate code dimensions
-  const calculateCodeDimensions = (cardWidth, cardHeight) => {
+  const calculateCodeDimensions = (cardWidth: number, cardHeight: number) => {
     const fontSize = 11;
     const lineHeight = 13;
     const charWidth = 6;
@@ -512,11 +512,11 @@ fantasy concept art --ar 21:9\`;
   };
 
   // Create canvas image inline
-  const createCardImage = (category, colors) => {
+  const createCardImage = (category: string, colors: string[]) => {
     const canvas = document.createElement("canvas");
     canvas.width = 400;
     canvas.height = 250;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d")!;
 
     // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, 400, 250);
@@ -544,10 +544,10 @@ fantasy concept art --ar 21:9\`;
   };
 
   // Create card wrapper
-  const createCardWrapper = (index) => {
+  const createCardWrapper = (index: number) => {
     const wrapper = document.createElement("div");
     wrapper.className = "card-wrapper";
-    wrapper.setAttribute("data-card-index", index);
+    wrapper.setAttribute("data-card-index", index as unknown as string);
 
     const normalCard = document.createElement("div");
     normalCard.className = "card card-normal";
@@ -614,15 +614,15 @@ fantasy concept art --ar 21:9\`;
     let anyScanningActive = false;
 
     if (cardLineRef.current) {
-      const wrappers = cardLineRef.current.querySelectorAll(".card-wrapper");
+      const wrappers = cardLineRef.current.querySelectorAll<HTMLElement>(".card-wrapper");
       wrappers.forEach((wrapper) => {
         const rect = wrapper.getBoundingClientRect();
         const cardLeft = rect.left;
         const cardRight = rect.right;
         const cardWidth = rect.width;
 
-        const normalCard = wrapper.querySelector(".card-normal");
-        const asciiCard = wrapper.querySelector(".card-ascii");
+        const normalCard = wrapper.querySelector(".card-normal") as HTMLElement;
+        const asciiCard = wrapper.querySelector(".card-ascii") as HTMLElement;
 
         if (cardLeft < scannerRight && cardRight > scannerLeft) {
           anyScanningActive = true;
@@ -702,7 +702,7 @@ fantasy concept art --ar 21:9\`;
   };
 
   // Event handlers
-  const startDrag = (e) => {
+  const startDrag = (e: any) => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -727,7 +727,7 @@ fantasy concept art --ar 21:9\`;
     document.body.style.cursor = "grabbing";
   };
 
-  const onDrag = (e) => {
+  const onDrag = (e: any) => {
     if (!animationState.current.isDragging) return;
     if (e && e.preventDefault) {
       e.preventDefault();
@@ -767,7 +767,7 @@ fantasy concept art --ar 21:9\`;
     document.body.style.cursor = "";
   };
 
-  const onWheel = (e) => {
+  const onWheel = (e: any) => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -819,11 +819,11 @@ fantasy concept art --ar 21:9\`;
   // Update ASCII content with subtle glitch effects
   const updateAsciiContent = () => {
     if (cardLineRef.current) {
-      const wrappers = cardLineRef.current.querySelectorAll(".card-wrapper");
+      const wrappers = cardLineRef.current.querySelectorAll<HTMLElement>(".card-wrapper");
       wrappers.forEach((wrapper) => {
         const content = wrapper.querySelector(".ascii-content");
         if (content && Math.random() < 0.15) {
-          const cardIndex = parseInt(wrapper.getAttribute("data-card-index"));
+          const cardIndex = parseInt(wrapper.getAttribute("data-card-index")!);
           const cardInfo = cardData[cardIndex % cardData.length];
           const { width, height } = calculateCodeDimensions(400, 250);
 
@@ -846,10 +846,20 @@ fantasy concept art --ar 21:9\`;
 
   // Particle System Class
   class ParticleSystem {
-    constructor(canvas) {
-      this.scene = null;
-      this.camera = null;
-      this.renderer = null;
+    scene!: THREE.Scene;
+    camera!: THREE.OrthographicCamera;
+    renderer!: THREE.WebGLRenderer;
+    particles: THREE.Points | null;
+    particleCount: number;
+    canvas: HTMLCanvasElement;
+    animationId: number | null;
+    velocities!: Float32Array;
+    alphas!: Float32Array;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.scene = null as any;
+      this.camera = null as any;
+      this.renderer = null as any;
       this.particles = null;
       this.particleCount = 400;
       this.canvas = canvas;
@@ -904,7 +914,7 @@ fantasy concept art --ar 21:9\`;
       const canvas = document.createElement("canvas");
       canvas.width = 100;
       canvas.height = 100;
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d")!;
 
       const half = canvas.width / 2;
       const hue = 217;
@@ -1041,16 +1051,43 @@ fantasy concept art --ar 21:9\`;
       if (this.particles) {
         this.scene.remove(this.particles);
         this.particles.geometry.dispose();
-        this.particles.material.dispose();
+        (this.particles.material as THREE.Material).dispose();
       }
     }
   }
 
   // Particle Scanner Class
   class ParticleScanner {
-    constructor(canvas) {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    animationId: number | null;
+    w!: number;
+    h!: number;
+    particles!: any[];
+    count!: number;
+    maxParticles!: number;
+    intensity!: number;
+    lightBarX!: number;
+    lightBarWidth!: number;
+    fadeZone!: number;
+    scanTargetIntensity!: number;
+    scanTargetParticles!: number;
+    scanTargetFadeZone!: number;
+    scanningActive!: boolean;
+    baseIntensity!: number;
+    baseMaxParticles!: number;
+    baseFadeZone!: number;
+    currentIntensity!: number;
+    currentMaxParticles!: number;
+    currentFadeZone!: number;
+    transitionSpeed!: number;
+    currentGlowIntensity!: number;
+    gradientCanvas!: HTMLCanvasElement;
+    gradientCtx!: CanvasRenderingContext2D;
+
+    constructor(canvas: HTMLCanvasElement) {
       this.canvas = canvas;
-      this.ctx = this.canvas.getContext("2d");
+      this.ctx = this.canvas.getContext("2d")!;
       this.animationId = null;
 
       this.w = window.innerWidth;
@@ -1102,7 +1139,7 @@ fantasy concept art --ar 21:9\`;
 
     createGradientCache() {
       this.gradientCanvas = document.createElement("canvas");
-      this.gradientCtx = this.gradientCanvas.getContext("2d");
+      this.gradientCtx = this.gradientCanvas.getContext("2d")!;
       this.gradientCanvas.width = 16;
       this.gradientCanvas.height = 16;
 
@@ -1119,7 +1156,7 @@ fantasy concept art --ar 21:9\`;
       this.gradientCtx.fill();
     }
 
-    randomFloat(min, max) {
+    randomFloat(min: number, max: number) {
       return Math.random() * (max - min) + min;
     }
 
@@ -1155,7 +1192,7 @@ fantasy concept art --ar 21:9\`;
       }
     }
 
-    updateParticle(particle) {
+    updateParticle(particle: any) {
       particle.x += particle.vx;
       particle.y += particle.vy;
       particle.time++;
@@ -1171,7 +1208,7 @@ fantasy concept art --ar 21:9\`;
       }
     }
 
-    resetParticle(particle) {
+    resetParticle(particle: any) {
       particle.x = this.lightBarX + this.randomFloat(-this.lightBarWidth / 2, this.lightBarWidth / 2);
       particle.y = this.randomFloat(0, this.h);
       particle.vx = this.randomFloat(0.2, 1.0);
@@ -1183,7 +1220,7 @@ fantasy concept art --ar 21:9\`;
       particle.startX = particle.x;
     }
 
-    drawParticle(particle) {
+    drawParticle(particle: any) {
       if (particle.life <= 0) return;
 
       let fadeAlpha = 1;
@@ -1346,7 +1383,7 @@ fantasy concept art --ar 21:9\`;
       this.animationId = requestAnimationFrame(() => this.animate());
     }
 
-    setScanningActive(active) {
+    setScanningActive(active: boolean) {
       this.scanningActive = active;
     }
 
@@ -1390,9 +1427,9 @@ fantasy concept art --ar 21:9\`;
       clippingUpdateLoop();
 
       // Event listeners
-      const handleMouseMove = (e) => onDrag(e);
+      const handleMouseMove = (e: any) => onDrag(e);
       const handleMouseUp = () => endDrag();
-      const handleTouchMove = (e) => onDrag(e.touches[0]);
+      const handleTouchMove = (e: any) => onDrag(e.touches[0]);
       const handleTouchEnd = () => endDrag();
       const handleResize = () => calculateDimensions();
 
@@ -1422,8 +1459,8 @@ fantasy concept art --ar 21:9\`;
   }, []);
 
   // Handle card line events
-  const handleCardLineMouseDown = (e) => startDrag(e);
-  const handleCardLineTouchStart = (e) => {
+  const handleCardLineMouseDown = (e: any) => startDrag(e);
+  const handleCardLineTouchStart = (e: any) => {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -1431,7 +1468,7 @@ fantasy concept art --ar 21:9\`;
       startDrag(e.touches[0]);
     }
   };
-  const handleCardLineWheel = (e) => onWheel(e);
+  const handleCardLineWheel = (e: any) => onWheel(e);
 
   return (
     <div className="prompt-beam-container" style={{ 

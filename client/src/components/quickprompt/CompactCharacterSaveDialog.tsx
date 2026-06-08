@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle } from './dialog';
-import { Button } from './button';
-import { Input } from './input';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
@@ -130,7 +130,7 @@ export default function CompactCharacterSaveDialog({
         <div className="space-y-4 mt-4">
           <Input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="e.g., Anime Girl, Business Woman"
             className="bg-gray-800 border-gray-600 text-white"

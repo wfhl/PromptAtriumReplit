@@ -83,7 +83,7 @@ router.post('/api/ai/analyze-fields', async (req, res) => {
     console.error('AI field analysis error:', error);
     res.status(500).json({ 
       error: 'Failed to analyze fields', 
-      details: error.message 
+      details: (error as any).message 
     });
   }
 });
@@ -109,7 +109,7 @@ router.post('/api/ai/analyze-unstructured', async (req, res) => {
     console.error('Unstructured analysis error:', error);
     res.status(500).json({ 
       error: 'Failed to analyze unstructured content', 
-      details: error.message 
+      details: (error as any).message 
     });
   }
 });
@@ -135,7 +135,7 @@ router.post('/api/ai/detect-content-type', async (req, res) => {
     console.error('Content type detection error:', error);
     res.status(500).json({ 
       error: 'Failed to detect content type', 
-      details: error.message 
+      details: (error as any).message 
     });
   }
 });

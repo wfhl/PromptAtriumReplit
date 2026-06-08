@@ -96,14 +96,14 @@ export default function CollectionsPage() {
     enabled: !!user,
     staleTime: 5 * 60 * 1000, // 5 minutes
     cacheTime: 10 * 60 * 1000, // 10 minutes
-    retry: (failureCount, error) => {
+    retry: (failureCount: number, error: any) => {
       // Don't retry on 401/403 errors
-      if (error?.message?.includes("401") || error?.message?.includes("403")) {
+      if ((error as any)?.message?.includes("401") || (error as any)?.message?.includes("403")) {
         return false;
       }
       return failureCount < 2;
     },
-  });
+  } as any);
 
   // Create collection mutation
   const createCollectionMutation = useMutation({

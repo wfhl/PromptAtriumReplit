@@ -74,6 +74,7 @@ interface TopListing extends MarketplaceListing {
   salesCount: number;
   revenue: number;
   conversionRate: number;
+  views?: number;
 }
 
 interface ChartDataPoint {

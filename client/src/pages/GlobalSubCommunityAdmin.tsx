@@ -105,7 +105,7 @@ export function GlobalSubCommunityAdmin() {
       return invite.isActive && (!invite.expiresAt || new Date(invite.expiresAt) > new Date());
     }
     if (inviteFilter === "used") {
-      return invite.currentUses > 0;
+      return invite.currentUses! > 0;
     }
     if (inviteFilter === "expired") {
       return invite.expiresAt && new Date(invite.expiresAt) <= new Date();
@@ -259,7 +259,7 @@ export function GlobalSubCommunityAdmin() {
   const getInviteStatus = (invite: SubCommunityInvite) => {
     const now = new Date();
     const expired = invite.expiresAt && new Date(invite.expiresAt) <= now;
-    const maxUsesReached = invite.maxUses && invite.currentUses >= invite.maxUses;
+    const maxUsesReached = invite.maxUses && invite.currentUses! >= invite.maxUses;
     
     if (!invite.isActive) {
       return { label: "Deactivated", variant: "secondary" as const, icon: XCircle };
@@ -325,7 +325,7 @@ export function GlobalSubCommunityAdmin() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {allInvites.reduce((sum, invite) => sum + invite.currentUses, 0)}
+              {allInvites.reduce((sum, invite) => sum + invite.currentUses!, 0)}
             </div>
           </CardContent>
         </Card>
@@ -444,7 +444,7 @@ export function GlobalSubCommunityAdmin() {
                             </TableCell>
                             <TableCell>
                               <span className="text-sm">
-                                {format(new Date(invite.createdAt), "MMM d, yyyy")}
+                                {format(new Date(invite.createdAt as any), "MMM d, yyyy")}
                               </span>
                             </TableCell>
                             <TableCell>

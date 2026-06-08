@@ -409,7 +409,7 @@ export default function Communities() {
         <TabsContent value="browser" className="space-y-4">
           <SubCommunityBrowser
             onSelectCommunity={handleSelectCommunity}
-            selectedCommunityId={selectedCommunityId}
+            selectedCommunityId={selectedCommunityId as any}
             showMembershipIndicators={true}
           />
         </TabsContent>

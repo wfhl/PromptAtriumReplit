@@ -93,7 +93,7 @@ export function ContentModerationHub() {
   });
 
   // Fetch moderation statistics
-  const { data: stats } = useQuery({
+  const { data: stats } = useQuery<any>({
     queryKey: ["/api/admin/moderation/stats"],
   });
 

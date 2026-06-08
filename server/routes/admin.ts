@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { z } from "zod";
 import { db } from "../db";
 import { storage } from "../storage";
@@ -10,8 +10,7 @@ import {
   promptLikes,
   communityAdmins,
   subCommunityAdmins,
-  collections,
-  prompts_to_collections
+  collections
 } from "@shared/schema";
 import { 
   requireSuperAdmin, 
@@ -44,7 +43,7 @@ router.get("/system-stats", isAuthenticated, requireSuperAdmin, async (req, res)
     
     const active24h = await db.select({ count: count() })
       .from(users)
-      .where(gte(users.lastActive, subDays(now, 1)));
+      .where(gte((users as any).lastActive, subDays(now, 1)));
     
     // Calculate growth percentage
     const previousWeekUsers = await db.select({ count: count() })
@@ -65,7 +64,7 @@ router.get("/system-stats", isAuthenticated, requireSuperAdmin, async (req, res)
       .where(gte(prompts.createdAt, startOfDay(now)));
     const featuredPrompts = await db.select({ count: count() })
       .from(prompts)
-      .where(eq(prompts.is_featured, true));
+      .where(eq((prompts as any).is_featured, true));
 
     // Storage statistics (mock data for now - would need actual storage metrics)
     const storageUsed = Math.floor(Math.random() * 50000000000); // Mock: 0-50GB
@@ -349,7 +348,7 @@ router.get("/analytics", isAuthenticated, requireCommunityManager, async (req: a
 
     const activeUsersResult = await db.select({ count: count() })
       .from(users)
-      .where(gte(users.lastActive, startDate));
+      .where(gte((users as any).lastActive, startDate));
     const activeUsersCount = activeUsersResult[0]?.count || 0;
 
     // Calculate user growth
@@ -684,7 +683,7 @@ router.post("/audit-log", isAuthenticated, requireCommunityManager, async (req: 
 });
 
 // Community settings endpoints
-router.get("/communities/:id/settings", isAuthenticated, requireCommunityAdminRole, async (req, res) => {
+router.get("/communities/:id/settings", isAuthenticated, requireCommunityAdminRole, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     
@@ -735,7 +734,7 @@ router.get("/communities/:id/settings", isAuthenticated, requireCommunityAdminRo
   }
 });
 
-router.put("/communities/:id/settings", isAuthenticated, requireCommunityAdminRole, async (req, res) => {
+router.put("/communities/:id/settings", isAuthenticated, requireCommunityAdminRole, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const updates = req.body;

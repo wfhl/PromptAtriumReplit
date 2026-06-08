@@ -246,7 +246,7 @@ export default function InviteAcceptPage() {
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
                 <span>
-                  Created {formatDistanceToNow(new Date(invite.subCommunity.createdAt))} ago
+                  Created {formatDistanceToNow(new Date(invite.subCommunity.createdAt as any))} ago
                 </span>
               </div>
             </div>

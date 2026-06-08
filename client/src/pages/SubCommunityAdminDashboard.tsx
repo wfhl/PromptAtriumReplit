@@ -76,7 +76,7 @@ export default function SubCommunityAdminDashboard() {
   });
 
   // Fetch prompts shared to this sub-community
-  const { data: prompts = [], isLoading: promptsLoading } = useQuery<Prompt[]>({
+  const { data: prompts = [], isLoading: promptsLoading } = useQuery<any[]>({
     queryKey: [`/api/sub-communities/${id}/prompts`],
     enabled: !!id && isAuthenticated,
   });

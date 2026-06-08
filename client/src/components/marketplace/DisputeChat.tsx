@@ -190,7 +190,7 @@ export function DisputeChat({ disputeId, currentUserId, isAdmin, onClose, onReso
           </div>
           <div>
             <span className="text-muted-foreground">Created:</span>
-            <p className="font-medium">{format(new Date(dispute.createdAt), 'MMM d, yyyy')}</p>
+            <p className="font-medium">{format(new Date(dispute.createdAt as any), 'MMM d, yyyy')}</p>
           </div>
         </div>
         
@@ -247,7 +247,7 @@ export function DisputeChat({ disputeId, currentUserId, isAdmin, onClose, onReso
                         <p className="text-sm mt-1">{msg.message}</p>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        {format(new Date(msg.createdAt), 'MMM d, h:mm a')}
+                        {format(new Date(msg.createdAt as any), 'MMM d, h:mm a')}
                       </p>
                     </div>
                   </div>
@@ -265,13 +265,13 @@ export function DisputeChat({ disputeId, currentUserId, isAdmin, onClose, onReso
                 <p className="text-sm text-green-700">{dispute.resolution}</p>
                 {(dispute.refundAmountCents || dispute.creditRefundAmount) && (
                   <div className="mt-2 space-y-1">
-                    {dispute.refundAmountCents > 0 && (
+                    {dispute.refundAmountCents! > 0 && (
                       <p className="text-sm text-green-700">
                         <DollarSign className="h-3 w-3 inline mr-1" />
-                        Refunded: ${(dispute.refundAmountCents / 100).toFixed(2)}
+                        Refunded: ${(dispute.refundAmountCents! / 100).toFixed(2)}
                       </p>
                     )}
-                    {dispute.creditRefundAmount > 0 && (
+                    {dispute.creditRefundAmount! > 0 && (
                       <p className="text-sm text-green-700">
                         <CreditCard className="h-3 w-3 inline mr-1" />
                         Credits Refunded: {dispute.creditRefundAmount}

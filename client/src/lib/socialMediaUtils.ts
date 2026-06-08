@@ -97,7 +97,7 @@ export const fetchSocialContext = async (url: string): Promise<SocialContext | n
         // Attempt metadata fetch
         try {
           const meta = await fetchNoEmbed(cleanUrl);
-          isGeneric = !meta || meta.title === "Instagram" || meta.title?.includes("Login");
+          isGeneric = (!meta || meta.title === "Instagram" || meta.title?.includes("Login")) as boolean;
 
           if (meta && !isGeneric) {
             title = meta.title || title;

@@ -37,8 +37,8 @@ export default function PayPalConfiguration() {
   const { data: config, isLoading } = useQuery({
     queryKey: ['/api/admin/paypal-config'],
     queryFn: async () => {
-      const response = await apiRequest('/api/admin/paypal-config', { method: 'GET' });
-      return response as PayPalConfig;
+      const response = await apiRequest('/api/admin/paypal-config', { method: 'GET' } as any);
+      return response as unknown as PayPalConfig;
     },
   });
 
@@ -48,7 +48,7 @@ export default function PayPalConfiguration() {
       return apiRequest('/api/admin/paypal-config', {
         method: 'PUT',
         body: JSON.stringify(config),
-      });
+      } as any);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/paypal-config'] });
@@ -70,7 +70,7 @@ export default function PayPalConfiguration() {
   const testConnectionMutation = useMutation({
     mutationFn: async () => {
       setTestingConnection(true);
-      return apiRequest('/api/admin/paypal-test', { method: 'POST' });
+      return apiRequest('/api/admin/paypal-test', { method: 'POST' } as any);
     },
     onSuccess: (data: any) => {
       setTestingConnection(false);
@@ -92,7 +92,7 @@ export default function PayPalConfiguration() {
   // Process manual PayPal payouts
   const processPayoutsMutation = useMutation({
     mutationFn: async () => {
-      return apiRequest('/api/admin/paypal-payouts/process', { method: 'POST' });
+      return apiRequest('/api/admin/paypal-payouts/process', { method: 'POST' } as any);
     },
     onSuccess: (data: any) => {
       toast({

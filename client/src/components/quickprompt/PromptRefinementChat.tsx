@@ -104,7 +104,7 @@ export function PromptRefinementChat({
       currentPrompt?: string;
       templateInfo?: { name: string; category: string };
     }) => {
-      return apiRequest('/api/prompt-refinement/chat', {
+      return (apiRequest as any)('/api/prompt-refinement/chat', {
         method: 'POST',
         body: JSON.stringify(data),
       });
@@ -136,7 +136,7 @@ export function PromptRefinementChat({
 
   const learnPreferencesMutation = useMutation({
     mutationFn: async (conversationId: string) => {
-      return apiRequest('/api/prompt-refinement/learn-preferences', {
+      return (apiRequest as any)('/api/prompt-refinement/learn-preferences', {
         method: 'POST',
         body: JSON.stringify({ conversationId }),
       });
@@ -159,7 +159,7 @@ export function PromptRefinementChat({
 
   const clearMemoryMutation = useMutation({
     mutationFn: async () => {
-      return apiRequest('/api/prompt-refinement/memory', {
+      return (apiRequest as any)('/api/prompt-refinement/memory', {
         method: 'DELETE',
       });
     },
@@ -186,7 +186,7 @@ export function PromptRefinementChat({
 
   const loadConversation = async (id: string) => {
     try {
-      const response = await apiRequest(`/api/prompt-refinement/conversations/${id}`);
+      const response = await (apiRequest as any)(`/api/prompt-refinement/conversations/${id}`);
       if (response.messages) {
         setMessages(response.messages.map((m: any) => ({
           id: m.id,
