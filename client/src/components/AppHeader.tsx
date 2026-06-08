@@ -18,9 +18,12 @@ import {
   Wand2, 
   Download, 
   FileText, 
-  Users 
+  Users,
+  PanelLeft,
+  PanelLeftClose
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { User, UserCommunity } from "@shared/schema";
 import { MARKETPLACE_ENABLED } from "@/config/features";
@@ -36,6 +39,8 @@ interface AppHeaderProps {
   positionTo: (el?: HTMLElement | null, path?: string) => void;
   handleOpenIntroduction: () => void;
   toast: any;
+  sidebarOpen: boolean;
+  onToggleSidebar: () => void;
 }
 
 // ============================================================
@@ -54,6 +59,8 @@ export function AppHeader({
   positionTo,
   handleOpenIntroduction,
   toast,
+  sidebarOpen,
+  onToggleSidebar,
 }: AppHeaderProps) {
   const setLinkRef = (key: string) => (el: HTMLDivElement | null) => {
     linkRefs.current[key] = el;
@@ -62,7 +69,19 @@ export function AppHeader({
   const typedUser = user as User;
 
   return (
-    <div className="flex items-center space-x-4 md:space-x-8">
+    <div className="flex items-center space-x-2 md:space-x-4">
+      {user && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 flex-shrink-0 text-gray-300 hover:text-cyan-400 hover:bg-white/5"
+          onClick={onToggleSidebar}
+          data-testid="button-toggle-sidebar"
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {sidebarOpen ? <PanelLeftClose className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
+        </Button>
+      )}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}

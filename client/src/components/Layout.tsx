@@ -308,6 +308,8 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
             positionTo={positionTo}
             handleOpenIntroduction={handleOpenIntroduction}
             toast={toast}
+            sidebarOpen={collectionsSidebarOpen}
+            onToggleSidebar={() => setCollectionsSidebarOpen((prev) => !prev)}
           />
 
           <div className="flex items-center space-x-2 md:space-x-4">
@@ -741,7 +743,6 @@ export function Layout({ children, onCreatePrompt }: LayoutProps) {
       {/* Collections Sidebar */}
       <CollectionsSidebar
         isOpen={collectionsSidebarOpen}
-        onToggle={() => setCollectionsSidebarOpen(!collectionsSidebarOpen)}
         onCreateCollection={() => setCreateCollectionModalOpen(true)}
       />
 

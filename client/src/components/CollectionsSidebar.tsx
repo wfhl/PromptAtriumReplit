@@ -22,8 +22,6 @@ import {
   FileText, 
   ChevronRight, 
   ChevronDown, 
-  PanelLeftClose, 
-  PanelLeft,
   FolderPlus,
   Lock,
   Globe,
@@ -54,7 +52,6 @@ import type { Collection, Prompt, User } from "@shared/schema";
 
 interface CollectionsSidebarProps {
   isOpen: boolean;
-  onToggle: () => void;
   onCreateCollection?: () => void;
 }
 
@@ -62,7 +59,7 @@ interface CollectionWithPrompts extends Collection {
   promptCount?: number;
 }
 
-export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: CollectionsSidebarProps) {
+export function CollectionsSidebar({ isOpen, onCreateCollection }: CollectionsSidebarProps) {
   const { user, isAuthenticated } = useAuth();
   const typedUser = user as User | null;
   const [location, setLocation] = useLocation();
@@ -125,37 +122,7 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
             role="navigation"
             aria-label="Collections sidebar"
           >
-            {/* Header with logo - matching main header */}
-            <div className="px-4 pt-5 pb-4">
-              <div className="flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-orange-100/20 rounded-lg blur-lg"></div>
-                    <div className="w-8 h-8 relative">
-                      <img 
-                        src="/ATRIUM2 090725.png" 
-                        alt="PromptAtrium Logo" 
-                        className="w-8 h-8 object-contain relative z-10"
-                      />
-                    </div>
-                  </div>
-                  <span className="text-lg font-bold bg-gradient-to-b from-orange-400 to-purple-200 to-orange-400 bg-clip-text text-transparent">
-                    PromptAtrium
-                  </span>
-                </Link>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 text-[#a0a0a0] hover:text-white hover:bg-white/5"
-                  onClick={onToggle}
-                  data-testid="button-close-sidebar"
-                >
-                  <PanelLeftClose className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <ScrollArea className="flex-1 px-4">
+            <ScrollArea className="flex-1 px-4 pt-5">
               <SidebarNav location={location} />
 
               {/* Divider */}
@@ -332,28 +299,6 @@ export function CollectionsSidebar({ isOpen, onToggle, onCreateCollection }: Col
               </DropdownMenu>
             </div>
           </motion.aside>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.div
-            key="open-button"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="fixed left-3 top-[4.5rem] z-30 h-8 w-8 bg-[#1c1c1c] border border-black/30 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.03)] hover:bg-[#252525] text-[#a0a0a0]"
-              onClick={onToggle}
-              data-testid="button-open-sidebar"
-              aria-label="Open collections sidebar"
-            >
-              <PanelLeft className="h-4 w-4" />
-            </Button>
-          </motion.div>
         )}
       </AnimatePresence>
     </>
