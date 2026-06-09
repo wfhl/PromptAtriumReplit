@@ -67,6 +67,11 @@ export const users = pgTable("users", {
   showStats: boolean("show_stats").default(true),
   showBirthday: boolean("show_birthday").default(false),
   showNsfw: boolean("show_nsfw").default(true),
+
+  // Preferences
+  defaultLandingPage: varchar("default_landing_page", {
+    enum: ["dashboard", "my-prompts"]
+  }).default("dashboard"),
   
   // Onboarding tracking
   hasCompletedIntro: boolean("has_completed_intro").default(false),

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Switch, Route, Redirect } from "wouter";
+import { Switch, Route, Redirect, useLocation } from "wouter";
 import { useMarketplaceEnabled } from "@/config/features";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -59,7 +59,22 @@ function Router() {
   const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const { isAuthenticated, isLoading, user } = useAuth();
   useDynamicManifest();
+  const [location, setLocation] = useLocation();
   const [showIntroModal, setShowIntroModal] = useState(false);
+
+  // On initial load/login, honor the user's preferred default landing page.
+  // Only redirect once per user per session so users can still navigate to the
+  // Dashboard manually afterward (the flag is keyed by user id so a different
+  // user logging in within the same browser session still gets redirected).
+  useEffect(() => {
+    if (isLoading || !isAuthenticated || !user) return;
+    const flagKey = `landing-redirect-done:${(user as User).id}`;
+    if (sessionStorage.getItem(flagKey)) return;
+    sessionStorage.setItem(flagKey, "1");
+    if (location === "/" && (user as User).defaultLandingPage === "my-prompts") {
+      setLocation("/library");
+    }
+  }, [isLoading, isAuthenticated, user, location, setLocation]);
   
   useEffect(() => {
     // Show intro modal if user is authenticated and hasn't completed intro

@@ -26,7 +26,7 @@ import { z } from "zod";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Lightbulb, Plus, X, Link2, Calendar, User as UserIcon, Shield, Globe, ChevronDown, Crown, Settings, LogOut, Moon, Sun, Eye, Mail } from "lucide-react";
+import { Lightbulb, Plus, X, Link2, Calendar, User as UserIcon, Shield, Globe, ChevronDown, Crown, Settings, LogOut, Moon, Sun, Eye, Mail, Home } from "lucide-react";
 import type { User } from "@shared/schema";
 import { ProfilePictureUpload } from "@/components/ProfilePictureUpload";
 import { InviteAcceptanceForm } from "@/components/InviteAcceptanceForm";
@@ -60,6 +60,7 @@ const profileSchema = z.object({
   showStats: z.boolean().default(true),
   showBirthday: z.boolean().default(false),
   showNsfw: z.boolean().default(true),
+  defaultLandingPage: z.enum(["dashboard", "my-prompts"]).default("dashboard"),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -80,6 +81,7 @@ export default function ProfileSettings() {
       emailVisibility: false,
       showStats: true,
       showBirthday: false,
+      defaultLandingPage: "dashboard",
     },
   });
 
@@ -107,6 +109,7 @@ export default function ProfileSettings() {
         showStats: typedUser.showStats !== false, // Default to true
         showBirthday: typedUser.showBirthday || false,
         showNsfw: typedUser.showNsfw !== false, // Default to true
+        defaultLandingPage: typedUser.defaultLandingPage || "dashboard",
       });
 
       if (typedUser.customSocials && Array.isArray(typedUser.customSocials)) {
@@ -454,6 +457,36 @@ export default function ProfileSettings() {
                     Add
                   </Button>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Preferences */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Home className="h-5 w-5" />
+                <span>Preferences</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="defaultLandingPage">Default Page</Label>
+                  <p className="text-sm text-muted-foreground">Choose which page loads when you log in</p>
+                </div>
+                <Select
+                  value={form.watch("defaultLandingPage")}
+                  onValueChange={(value: "dashboard" | "my-prompts") => form.setValue("defaultLandingPage", value)}
+                >
+                  <SelectTrigger className="w-40" data-testid="select-default-landing-page">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dashboard">Dashboard</SelectItem>
+                    <SelectItem value="my-prompts">My Prompts</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>
