@@ -1,4 +1,45 @@
-import { GoogleGenAI, Type } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
+
+/**
+ * Extract a JSON array from a model text response. Handles raw JSON as well as
+ * responses wrapped in markdown code fences or surrounded by stray prose, which
+ * can happen when grounding (googleSearch) is enabled and structured output is
+ * therefore unavailable.
+ */
+const extractJsonArray = (text: string): any[] => {
+  if (!text) return [];
+
+  const tryParse = (candidate: string): any[] | null => {
+    try {
+      const parsed = JSON.parse(candidate);
+      return Array.isArray(parsed) ? parsed : null;
+    } catch {
+      return null;
+    }
+  };
+
+  // 1. Direct parse (model obeyed "raw JSON array").
+  const direct = tryParse(text.trim());
+  if (direct) return direct;
+
+  // 2. Strip markdown code fences (```json ... ``` or ``` ... ```).
+  const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenceMatch) {
+    const fenced = tryParse(fenceMatch[1].trim());
+    if (fenced) return fenced;
+  }
+
+  // 3. Fall back to the first top-level [ ... ] block in the text.
+  const start = text.indexOf("[");
+  const end = text.lastIndexOf("]");
+  if (start !== -1 && end !== -1 && end > start) {
+    const sliced = tryParse(text.slice(start, end + 1));
+    if (sliced) return sliced;
+  }
+
+  console.error("Failed to parse scout response as JSON array.");
+  return [];
+};
 
 export interface ScoutedPrompt {
   id: string;
@@ -51,19 +92,27 @@ export const searchTrendingPrompts = async (topic: string): Promise<ScoutResult>
 
     Goal: Find up to 10 HIGH-QUALITY, verifiable results. It is better to return 5 real links than 10 broken ones.
 
-    Output Schema:
-    - title: Short descriptive title.
-    - promptText: The raw prompt.
-    - platform: Source platform.
-    - sourceUrl: The verifiable link.
-    - promptType: 'Image', 'Video', 'Writing', 'Code', '3D'.
-    - promptStyle: 'Photorealistic', 'Anime', 'Surreal', 'JSON', 'Agentic'.
-    - intendedModel: 'Midjourney', 'Flux', 'SDXL', 'DALL-E 3', etc.
-    - engagementMetrics: { likes, views } (Only if found).
-    - tags: []
+    OUTPUT FORMAT (CRITICAL):
+    Respond with ONLY a raw JSON array. No prose, no explanation, no markdown code fences.
+    Each array element must be an object with these fields:
+    - title: Short descriptive title. (string)
+    - promptText: The raw prompt. (string)
+    - platform: Source platform. (string)
+    - sourceUrl: The verifiable link. (string)
+    - promptType: 'Image', 'Video', 'Writing', 'Code', '3D'. (string)
+    - promptStyle: 'Photorealistic', 'Anime', 'Surreal', 'JSON', 'Agentic'. (string)
+    - intendedModel: 'Midjourney', 'Flux', 'SDXL', 'DALL-E 3', etc. (string)
+    - engagementMetrics: { likes, views } (numbers, only if found, otherwise omit or use 0)
+    - tags: array of strings.
+
+    If you find no verifiable results, return an empty array: []
   `;
 
   try {
+    // NOTE: Gemini does NOT support responseMimeType/responseSchema (structured
+    // output) together with the googleSearch grounding tool — combining them
+    // returns a 400 INVALID_ARGUMENT. We rely on the prompt to request JSON and
+    // parse it out of the grounded text response below.
     const response = await ai.models.generateContent({
       model: modelId,
       contents: searchPrompt,
@@ -72,47 +121,10 @@ export const searchTrendingPrompts = async (topic: string): Promise<ScoutResult>
         // Pro model handles complex extraction better with a slightly non-zero temp
         // but kept low to prevent creative writing.
         temperature: 0.1,
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              title: { type: Type.STRING },
-              promptText: { type: Type.STRING },
-              platform: { type: Type.STRING },
-              sourceUrl: { type: Type.STRING, description: "The EXACT, clickable URL found in the search result." },
-              promptType: { type: Type.STRING },
-              promptStyle: { type: Type.STRING },
-              intendedModel: { type: Type.STRING },
-              engagementMetrics: {
-                type: Type.OBJECT,
-                properties: {
-                  likes: { type: Type.NUMBER },
-                  views: { type: Type.NUMBER }
-                }
-              },
-              tags: {
-                type: Type.ARRAY,
-                items: { type: Type.STRING }
-              }
-            },
-            required: ["title", "promptText", "platform", "sourceUrl", "tags"]
-          }
-        }
       },
     });
 
-    let parsedPrompts: any[] = [];
-    try {
-      parsedPrompts = JSON.parse(response.text || "[]");
-      if (!Array.isArray(parsedPrompts)) {
-        parsedPrompts = [];
-      }
-    } catch (parseError) {
-      console.error("Failed to parse scout response:", parseError);
-      parsedPrompts = [];
-    }
+    const parsedPrompts = extractJsonArray(response.text || "");
 
     const promptsWithIds: ScoutedPrompt[] = parsedPrompts.map((p: any) => ({
       ...p,
