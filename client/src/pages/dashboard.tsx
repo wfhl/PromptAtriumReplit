@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Link, useLocation } from "wouter";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 import { queryClient, prefetchCommonData, apiRequest } from "@/lib/queryClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,7 @@ interface DashboardProps {
 }
 
 export default function Dashboard() {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [, setLocation] = useLocation();

@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
-import { marketplaceGuard } from "./config/features";
+import { marketplaceGuard, isMarketplaceEnabled, invalidateMarketplaceCache } from "./config/features";
 import { insertPromptSchema, insertProjectSchema, insertCollectionSchema, insertPromptRatingSchema, insertCommunitySchema, insertUserCommunitySchema, insertUserSchema, bulkOperationSchema, bulkOperationResultSchema, insertCategorySchema, insertPromptTypeSchema, insertPromptStyleSchema, insertPromptStyleRuleTemplateSchema, insertIntendedGeneratorSchema, insertRecommendedModelSchema, insertMarketplaceListingSchema, insertSellerProfileSchema, insertMarketplaceOrderSchema, insertDigitalLicenseSchema, marketplaceOrders, digitalLicenses, marketplaceListings, sellerProfiles, insertMarketplaceDisputeSchema, insertDisputeMessageSchema, type UserRole, type CommunityRole } from "@shared/schema";
 import Stripe from "stripe";
 import { eq, sql } from "drizzle-orm";
@@ -136,6 +136,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/marketplace', marketplaceGuard);
   app.use('/api/credits', marketplaceGuard);
   app.use('/api/seller', marketplaceGuard);
+
+  // Public platform feature flags. Lets the client decide which marketplace
+  // UI surfaces to render based on the DB-controlled marketplace switch.
+  app.get('/api/features', async (_req, res) => {
+    try {
+      res.json({ marketplaceEnabled: await isMarketplaceEnabled() });
+    } catch (error) {
+      console.error("Error reading platform features:", error);
+      res.json({ marketplaceEnabled: false });
+    }
+  });
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
@@ -3996,6 +4007,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/admin/marketplace/settings', isAuthenticated, isSuperAdmin, async (req: any, res) => {
     try {
       const settings = await storage.getPlatformSettings([
+        'marketplace_enabled',
         'commission_rate',
         'payout_frequency',
         'minimum_payout_amount',
@@ -4015,6 +4027,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ]);
       
       res.json({
+        marketplaceEnabled: settings['marketplace_enabled'] === 'true',
         commissionRate: Number(settings['commission_rate'] || 15),
         payoutFrequency: settings['payout_frequency'] || 'weekly',
         minimumPayoutAmount: Number(settings['minimum_payout_amount'] || 1000),
@@ -4043,6 +4056,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const updates: Record<string, string> = {};
       const {
+        marketplaceEnabled,
         commissionRate,
         payoutFrequency,
         minimumPayoutAmount,
@@ -4061,6 +4075,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         buyerProtectionEnabled
       } = req.body;
       
+      if (marketplaceEnabled !== undefined) updates['marketplace_enabled'] = String(marketplaceEnabled);
       if (commissionRate !== undefined) updates['commission_rate'] = String(commissionRate);
       if (payoutFrequency !== undefined) updates['payout_frequency'] = payoutFrequency;
       if (minimumPayoutAmount !== undefined) updates['minimum_payout_amount'] = String(minimumPayoutAmount);
@@ -4079,6 +4094,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (buyerProtectionEnabled !== undefined) updates['buyer_protection_enabled'] = String(buyerProtectionEnabled);
       
       await storage.updatePlatformSettings(updates);
+
+      // Refresh the cached marketplace on/off state so the guard and the
+      // public /api/features endpoint reflect the change immediately.
+      if (marketplaceEnabled !== undefined) {
+        invalidateMarketplaceCache();
+      }
       
       res.json({ message: "Settings updated successfully" });
     } catch (error) {

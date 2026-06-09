@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 
 interface SidebarNavProps {
   location: string;
@@ -34,6 +34,7 @@ export const SIDEBAR_NAV_BACKGROUND =
   "bg-gradient-to-br from-gray-900/10 to-purple-900/10 backdrop-blur-md";
 
 export function SidebarNav({ location }: SidebarNavProps) {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const [, setLocation] = useLocation();
 
   const containerVariants = {

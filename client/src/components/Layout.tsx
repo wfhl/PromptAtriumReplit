@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { NotificationBell } from "@/components/NotificationBell";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 import { NotificationModal } from "@/components/NotificationModal";
 import {
   DropdownMenu,
@@ -49,6 +49,7 @@ const collectionSchema = z.object({
 type CollectionFormData = z.infer<typeof collectionSchema>;
 
 export function Layout({ children, onCreatePrompt }: LayoutProps) {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const { user, isLoading, isAuthenticated } = useAuth();
   const typedUser = user as User;
   const { toast } = useToast();

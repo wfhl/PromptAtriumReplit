@@ -1,1 +1,3 @@
 - [TypeScript debt & masked bugs](typescript-debt-and-masked-bugs.md) — dev is transpile-only (no tsc gate); real apiRequest/storage/schema bugs sit behind `as any` in MARKETPLACE_ENABLED-gated features.
+- [platform_settings unique-key drift](platform-settings-constraint-drift.md) — `key` declared `.unique()` in schema but dev DB lacked the constraint, silently breaking `onConflictDoUpdate` upserts.
+- [Marketplace runtime flag](marketplace-runtime-flag.md) — marketplace on/off lives in platform_settings (key `marketplace_enabled`, default off); server caches it, client reads `/api/features`.

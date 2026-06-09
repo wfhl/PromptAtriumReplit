@@ -7,9 +7,10 @@ import { NavTabDropdown } from "./NavTabDropdown";
 import { useAuth } from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import type { User, UserCommunity } from "@shared/schema";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 
 export function MobilePageNav() {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const { user, isAuthenticated } = useAuth();
   const typedUser = user as User;
   const [location, setLocation] = useLocation();

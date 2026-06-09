@@ -26,7 +26,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { User, UserCommunity } from "@shared/schema";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 
 interface AppHeaderProps {
   location: string;
@@ -62,6 +62,7 @@ export function AppHeader({
   sidebarOpen,
   onToggleSidebar,
 }: AppHeaderProps) {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const setLinkRef = (key: string) => (el: HTMLDivElement | null) => {
     linkRefs.current[key] = el;
   };

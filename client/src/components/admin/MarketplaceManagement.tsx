@@ -36,6 +36,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useMarketplaceEnabled } from "@/config/features";
 import { 
   Settings,
   DollarSign,
@@ -69,6 +70,7 @@ import {
 import { format } from "date-fns";
 
 interface MarketplaceSettings {
+  marketplaceEnabled: boolean;
   commissionRate: number;
   payoutFrequency: string;
   minimumPayoutAmount: number;
@@ -120,6 +122,7 @@ interface ListingData {
 
 export default function MarketplaceManagement() {
   const { toast } = useToast();
+  const marketplaceEnabled = useMarketplaceEnabled();
   const [selectedTab, setSelectedTab] = useState("overview");
   const [selectedSeller, setSelectedSeller] = useState<SellerData | null>(null);
   const [selectedListing, setSelectedListing] = useState<ListingData | null>(null);
@@ -170,6 +173,8 @@ export default function MarketplaceManagement() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/marketplace/settings'] });
+      // Refresh the public feature flag so all marketplace UI reacts immediately.
+      queryClient.invalidateQueries({ queryKey: ['/api/features'] });
       setEditSettingsOpen(false);
       toast({
         title: "Success",
@@ -602,6 +607,55 @@ export default function MarketplaceManagement() {
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-4">
+          <Card className={marketplaceEnabled ? "border-green-500/40" : "border-yellow-500/40"}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                {marketplaceEnabled ? (
+                  <Play className="h-5 w-5 text-green-500" />
+                ) : (
+                  <Pause className="h-5 w-5 text-yellow-500" />
+                )}
+                Marketplace Status
+              </CardTitle>
+              <CardDescription>
+                Turn the entire marketplace on or off. When off, all buying,
+                selling, credits, and payout features are hidden and blocked at
+                the server for everyone.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">
+                      Marketplace is currently
+                    </span>
+                    <Badge variant={marketplaceEnabled ? "default" : "secondary"}>
+                      {marketplaceEnabled ? "Enabled" : "Disabled"}
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Changes take effect immediately for all users.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Label htmlFor="marketplace-enabled" className="text-sm">
+                    {marketplaceEnabled ? "On" : "Off"}
+                  </Label>
+                  <Switch
+                    id="marketplace-enabled"
+                    checked={marketplaceEnabled}
+                    disabled={updateSettings.isPending}
+                    onCheckedChange={(checked) =>
+                      updateSettings.mutate({ marketplaceEnabled: checked })
+                    }
+                    data-testid="switch-marketplace-enabled"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader>
               <CardTitle>Marketplace Settings</CardTitle>

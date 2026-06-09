@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "wouter";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -56,6 +56,7 @@ import { useDynamicManifest } from "@/hooks/useDynamicManifest";
 import type { User } from "@shared/schema";
 
 function Router() {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const { isAuthenticated, isLoading, user } = useAuth();
   useDynamicManifest();
   const [showIntroModal, setShowIntroModal] = useState(false);

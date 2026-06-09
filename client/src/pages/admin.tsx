@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
-import { MARKETPLACE_ENABLED } from "@/config/features";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -633,12 +632,10 @@ export default function AdminPage() {
                     <Settings className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span>Settings</span>
                   </TabsTrigger>
-                  {MARKETPLACE_ENABLED && (
-                    <TabsTrigger value="marketplace" className="flex-shrink-0 flex items-center justify-center gap-1 text-xs sm:text-sm px-3 py-2 sm:px-2">
-                      <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span>Marketplace</span>
-                    </TabsTrigger>
-                  )}
+                  <TabsTrigger value="marketplace" className="flex-shrink-0 flex items-center justify-center gap-1 text-xs sm:text-sm px-3 py-2 sm:px-2">
+                    <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+                    <span>Marketplace</span>
+                  </TabsTrigger>
                 </>
               )}
             </TabsList>
@@ -979,8 +976,9 @@ export default function AdminPage() {
             />
           </TabsContent>
 
-          {/* Marketplace Tab - Only for Super Admins */}
-          {MARKETPLACE_ENABLED && isSuperAdmin && (
+          {/* Marketplace Tab - Only for Super Admins. Always available so the
+              marketplace can be switched on/off even while it is disabled. */}
+          {isSuperAdmin && (
             <TabsContent value="marketplace" className="space-y-6">
               <MarketplaceManagement />
             </TabsContent>

@@ -25,7 +25,7 @@ import { PromptImageCarousel } from "./PromptImageCarousel";
 import { AddExampleImagesDialog } from "./AddExampleImagesDialog";
 import { AddToCollectionDialog } from "./AddToCollectionDialog";
 import { ImageLightbox } from "./ImageLightbox";
-import { MARKETPLACE_ENABLED } from "@/config/features";
+import { useMarketplaceEnabled } from "@/config/features";
 
 interface PromptCardProps {
   prompt: Prompt;
@@ -57,6 +57,7 @@ export function PromptCard({
   isProfilePage = false,
   compact = false
 }: PromptCardProps) {
+  const MARKETPLACE_ENABLED = useMarketplaceEnabled();
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { user } = useAuth();
