@@ -37,6 +37,32 @@ const extractJsonArray = (text: string): any[] => {
     if (sliced) return sliced;
   }
 
+  // 4. Last resort: salvage complete top-level {...} objects from a truncated /
+  //    malformed array (e.g. response cut off by a token limit).
+  if (start !== -1) {
+    const salvaged: any[] = [];
+    let depth = 0;
+    let objStart = -1;
+    for (let i = start; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === "{") {
+        if (depth === 0) objStart = i;
+        depth++;
+      } else if (ch === "}") {
+        depth--;
+        if (depth === 0 && objStart !== -1) {
+          try {
+            salvaged.push(JSON.parse(text.slice(objStart, i + 1)));
+          } catch {
+            /* skip malformed fragment */
+          }
+          objStart = -1;
+        }
+      }
+    }
+    if (salvaged.length > 0) return salvaged;
+  }
+
   console.error("Failed to parse scout response as JSON array.");
   return [];
 };
@@ -121,10 +147,22 @@ export const searchTrendingPrompts = async (topic: string): Promise<ScoutResult>
         // Pro model handles complex extraction better with a slightly non-zero temp
         // but kept low to prevent creative writing.
         temperature: 0.1,
+        // Pro is a "thinking" model; give it ample headroom so the JSON payload
+        // isn't truncated (truncated JSON would fail to parse -> 0 results).
+        maxOutputTokens: 8192,
       },
     });
 
-    const parsedPrompts = extractJsonArray(response.text || "");
+    const rawText = response.text || "";
+    const finishReason = response.candidates?.[0]?.finishReason;
+    const parsedPrompts = extractJsonArray(rawText);
+    console.log(
+      `[Scout] topic="${topic}" model=${modelId} textLen=${rawText.length} ` +
+      `finish=${finishReason ?? "n/a"} parsed=${parsedPrompts.length}`
+    );
+    if (rawText.length > 0 && parsedPrompts.length === 0) {
+      console.warn(`[Scout] could not parse any prompts. Raw preview: ${rawText.slice(0, 400)}`);
+    }
 
     const promptsWithIds: ScoutedPrompt[] = parsedPrompts.map((p: any) => ({
       ...p,
