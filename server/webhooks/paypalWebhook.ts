@@ -6,6 +6,26 @@ import { payoutBatches, transactionLedger } from '@shared/schema';
 import crypto from 'crypto';
 import axios from 'axios';
 
+// Allowlist of trusted PayPal certificate URL hostnames.
+// PayPal only issues certs from these domains; reject any other host to prevent SSRF.
+const PAYPAL_CERT_ALLOWED_HOSTS = new Set([
+  'api.paypal.com',
+  'api.sandbox.paypal.com',
+  'api-m.paypal.com',
+  'api-m.sandbox.paypal.com',
+]);
+
+function isAllowedPayPalCertUrl(rawUrl: string): boolean {
+  try {
+    const parsed = new URL(rawUrl);
+    // Must use HTTPS and be on an approved PayPal host
+    if (parsed.protocol !== 'https:') return false;
+    return PAYPAL_CERT_ALLOWED_HOSTS.has(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 // Verify PayPal webhook signature
 async function verifyPayPalWebhook(req: Request): Promise<boolean> {
   try {
@@ -22,13 +42,19 @@ async function verifyPayPalWebhook(req: Request): Promise<boolean> {
       return false;
     }
 
+    // Reject cert URLs that are not on the PayPal allowlist to prevent SSRF
+    if (!isAllowedPayPalCertUrl(certUrl)) {
+      console.error('[PayPal Webhook] Cert URL not on allowlist:', certUrl);
+      return false;
+    }
+
     // In development/sandbox mode, optionally skip verification
     if (process.env.PAYPAL_MODE === 'sandbox' && process.env.SKIP_PAYPAL_WEBHOOK_VERIFICATION === 'true') {
       console.warn('[PayPal Webhook] Skipping verification in sandbox mode');
       return true;
     }
 
-    // Fetch the certificate from PayPal
+    // Fetch the certificate from PayPal (safe: URL validated against allowlist above)
     const certResponse = await axios.get(certUrl);
     const cert = certResponse.data;
 

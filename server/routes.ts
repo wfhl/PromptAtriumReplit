@@ -4490,18 +4490,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Payment intent ID is required" });
       }
       
-      // Verify the payment intent with Stripe
-      if (stripe) {
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        if (paymentIntent.status !== 'succeeded') {
-          return res.status(400).json({ message: "Payment not successful" });
-        }
-      }
-      
-      // Get the order
+      // Get the order first so we can bind the payment intent to it
       const order = await storage.getOrderById(orderId);
       if (!order) {
         return res.status(404).json({ message: "Order not found" });
+      }
+      
+      // Verify the payment intent with Stripe and bind it to the order
+      if (stripe) {
+        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+        
+        // The supplied intent must be the one stored on this order to prevent
+        // payment bypass by reusing a succeeded intent from a different purchase.
+        if (!order.stripePaymentIntentId || paymentIntent.id !== order.stripePaymentIntentId) {
+          console.error(`[Order Complete] PaymentIntent mismatch for order ${orderId}: supplied=${paymentIntent.id}, stored=${order.stripePaymentIntentId}`);
+          return res.status(400).json({ message: "Payment intent does not match this order" });
+        }
+        
+        if (paymentIntent.status !== 'succeeded') {
+          return res.status(400).json({ message: "Payment not successful" });
+        }
       }
       
       if (order.status === 'completed') {
