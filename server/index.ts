@@ -7,9 +7,10 @@ import { validateEnvironment, logValidationResults } from "./startup-validation"
 import { errorHandler, notFoundHandler, StructuredLogger } from "./errorHandler";
 
 const app = express();
-// Increase body size limit to 50MB to handle image data
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: false, limit: '50mb' }));
+// Limit body size to 10MB; sufficient for base64-encoded images while
+// preventing oversized request abuse on public and AI endpoints.
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();

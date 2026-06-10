@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { nanoid } from 'nanoid';
 import OpenAI from 'openai';
+import { isAuthenticated } from '../replitAuth';
+import { strictApiLimiter } from '../rateLimit';
 
 const router = Router();
 
@@ -78,7 +80,7 @@ async function generateSocialCaption(
  * POST /api/caption/generate
  * Generate caption for an uploaded image
  */
-router.post('/generate', async (req, res) => {
+router.post('/generate', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { 
       image, 
@@ -229,7 +231,7 @@ router.get('/server-status', async (req, res) => {
  * POST /api/caption/social
  * Generate social media caption from existing analysis
  */
-router.post('/social', async (req, res) => {
+router.post('/social', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { imageAnalysis, tone = 'professional' } = req.body;
 

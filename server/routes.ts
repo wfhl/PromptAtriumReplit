@@ -7557,7 +7557,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use('/api/prompts', promptExtractionRouter);
   
   // Generate prompt metadata endpoint for ShareToLibraryModal
-  app.post('/api/generate-prompt-metadata', async (req, res) => {
+  app.post('/api/generate-prompt-metadata', isAuthenticated, strictApiLimiter, async (req, res) => {
     try {
       const { prompt, characterPreset, templateName } = req.body;
       

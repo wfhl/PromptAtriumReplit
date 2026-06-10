@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { isAuthenticated } from '../replitAuth';
+import { strictApiLimiter } from '../rateLimit';
 
 const router = Router();
 
@@ -181,7 +183,7 @@ function addHappyTalk(prompt: string): string {
  * POST /api/enhance-prompt
  * Enhance a prompt using LLM
  */
-router.post('/', async (req, res) => {
+router.post('/', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const {
       prompt,
@@ -358,13 +360,21 @@ router.post('/', async (req, res) => {
  * POST /api/enhance-prompt/batch
  * Enhance multiple prompts at once
  */
-router.post('/batch', async (req, res) => {
+router.post('/batch', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { prompts, ...settings } = req.body;
 
     if (!prompts || !Array.isArray(prompts)) {
       return res.status(400).json({
         error: 'No prompts array provided',
+        success: false
+      });
+    }
+
+    const BATCH_LIMIT = 10;
+    if (prompts.length > BATCH_LIMIT) {
+      return res.status(400).json({
+        error: `Batch size exceeds limit. Maximum ${BATCH_LIMIT} prompts per request.`,
         success: false
       });
     }

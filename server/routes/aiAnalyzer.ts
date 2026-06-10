@@ -8,11 +8,13 @@ import {
   extractPromptFromImage,
   generatePromptMetadata
 } from '../aiFieldAnalyzer';
+import { isAuthenticated } from '../replitAuth';
+import { strictApiLimiter } from '../rateLimit';
 
 const router = Router();
 
 // Test endpoint to verify Gemini API is working
-router.get('/api/ai/test', async (req, res) => {
+router.get('/api/ai/test', isAuthenticated, async (req, res) => {
   try {
     // Check if API key exists
     if (!process.env.GEMINI_API_KEY) {
@@ -46,7 +48,7 @@ router.get('/api/ai/test', async (req, res) => {
 });
 
 // Analyze CSV/structured data fields
-router.post('/api/ai/analyze-fields', async (req, res) => {
+router.post('/api/ai/analyze-fields', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { headers, sampleRows, fileType } = req.body;
 
@@ -89,7 +91,7 @@ router.post('/api/ai/analyze-fields', async (req, res) => {
 });
 
 // Analyze unstructured content
-router.post('/api/ai/analyze-unstructured', async (req, res) => {
+router.post('/api/ai/analyze-unstructured', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { content, fileType } = req.body;
 
@@ -115,7 +117,7 @@ router.post('/api/ai/analyze-unstructured', async (req, res) => {
 });
 
 // Detect if content is a prompt or description
-router.post('/api/ai/detect-content-type', async (req, res) => {
+router.post('/api/ai/detect-content-type', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { text } = req.body;
 
@@ -141,7 +143,7 @@ router.post('/api/ai/detect-content-type', async (req, res) => {
 });
 
 // Extract prompt from image
-router.post('/api/ai/extract-prompt-from-image', async (req, res) => {
+router.post('/api/ai/extract-prompt-from-image', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { imageBase64, extractionMode } = req.body;
 
@@ -188,7 +190,7 @@ router.post('/api/ai/extract-prompt-from-image', async (req, res) => {
 });
 
 // Generate prompt metadata
-router.post('/api/ai/generate-prompt-metadata', async (req, res) => {
+router.post('/api/ai/generate-prompt-metadata', isAuthenticated, strictApiLimiter, async (req, res) => {
   try {
     const { promptContent, generationMode } = req.body;
 
