@@ -165,6 +165,8 @@ export interface IStorage {
     userId?: string;
     isPublic?: boolean;
     isFeatured?: boolean;
+    isLiteFeatured?: boolean;
+    isLitePreview?: boolean;
     category?: string;
     tags?: string[];
     search?: string;
@@ -688,6 +690,8 @@ export class DatabaseStorage implements IStorage {
     userId?: string;
     isPublic?: boolean;
     isFeatured?: boolean;
+    isLiteFeatured?: boolean;
+    isLitePreview?: boolean;
     category?: string;
     status?: string;
     statusNotEqual?: string;
@@ -721,6 +725,16 @@ export class DatabaseStorage implements IStorage {
     
     if (options.isFeatured) {
       conditions.push(eq(prompts.isFeatured, true));
+    }
+    
+    if (options.isLiteFeatured) {
+      conditions.push(eq(prompts.isLiteFeatured, true));
+      conditions.push(eq(prompts.isHidden, false));
+    }
+    
+    if (options.isLitePreview) {
+      conditions.push(eq(prompts.isLitePreview, true));
+      conditions.push(eq(prompts.isHidden, false));
     }
     
     if (options.category) {

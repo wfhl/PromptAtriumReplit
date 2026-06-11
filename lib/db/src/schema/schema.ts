@@ -477,6 +477,8 @@ export const prompts = pgTable("prompts", {
   tagsNormalized: text("tags_normalized").array(),
   isPublic: boolean("is_public").default(true),
   isFeatured: boolean("is_featured").default(false),
+  isLiteFeatured: boolean("is_lite_featured").default(false),
+  isLitePreview: boolean("is_lite_preview").default(false),
   isHidden: boolean("is_hidden").default(false),
   isNsfw: boolean("is_nsfw").default(false),
   status: varchar("status", { enum: ["draft", "published", "archived"] }).default("draft"),
@@ -525,6 +527,33 @@ export const prompts = pgTable("prompts", {
   index("idx_prompts_public_created").on(table.isPublic, table.createdAt),
   // Partial index for featured prompts
   index("idx_prompts_featured").on(table.isFeatured).where(sql`${table.isFeatured} = true`),
+  // Partial indexes for PromptAtriumLite discover/teaser flags
+  index("idx_prompts_lite_featured").on(table.isLiteFeatured).where(sql`${table.isLiteFeatured} = true`),
+  index("idx_prompts_lite_preview").on(table.isLitePreview).where(sql`${table.isLitePreview} = true`),
+]);
+
+// Feature types lookup table - named feature buckets (lite_featured, trending, sponsored, ...)
+export const featureTypes = pgTable("feature_types", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: varchar("name").notNull().unique(),
+  displayName: varchar("display_name"),
+  description: text("description"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Prompt features join table - many-to-many between prompts and feature types
+export const promptFeatures = pgTable("prompt_features", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  promptId: char("prompt_id", { length: 10 }).notNull().references(() => prompts.id, { onDelete: "cascade" }),
+  featureTypeId: varchar("feature_type_id").notNull().references(() => featureTypes.id, { onDelete: "cascade" }),
+  sortOrder: integer("sort_order").default(0),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  unique("prompt_features_prompt_feature_unique").on(table.promptId, table.featureTypeId),
+  index("idx_prompt_features_prompt_id").on(table.promptId),
+  index("idx_prompt_features_feature_type_id").on(table.featureTypeId),
 ]);
 
 // Prompt likes table - tracks individual likes/hearts
@@ -1753,6 +1782,8 @@ export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type Category = typeof categories.$inferSelect;
 export type InsertPromptType = z.infer<typeof insertPromptTypeSchema>;
 export type PromptType = typeof promptTypes.$inferSelect;
+export type FeatureType = typeof featureTypes.$inferSelect;
+export type PromptFeature = typeof promptFeatures.$inferSelect;
 export type InsertPromptStyle = z.infer<typeof insertPromptStyleSchema>;
 export type PromptStyle = typeof promptStyles.$inferSelect;
 export type InsertPromptStyleRuleTemplate = z.infer<typeof insertPromptStyleRuleTemplateSchema>;

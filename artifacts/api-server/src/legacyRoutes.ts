@@ -1026,6 +1026,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ---------------------------------------------------------------------------
+  // PromptAtriumLite public (no-auth) discover endpoints.
+  // Uses a distinct /api/lite/* prefix so it is NOT shadowed by /api/prompts/:id.
+  // Anonymous-safe: forces isPublic=true and excludes NSFW + hidden prompts.
+  // ---------------------------------------------------------------------------
+  const fetchLitePrompts = async (
+    flag: 'featured' | 'preview',
+    req: any,
+    res: Response,
+  ) => {
+    try {
+      const limit = Math.min(
+        Math.max(parseInt((req.query.limit as string) || '30', 10) || 30, 1),
+        50,
+      );
+      const offset = Math.max(
+        parseInt((req.query.offset as string) || '0', 10) || 0,
+        0,
+      );
+      const results = await storage.getPrompts({
+        isPublic: true,
+        showNsfw: false,
+        isLiteFeatured: flag === 'featured' ? true : undefined,
+        isLitePreview: flag === 'preview' ? true : undefined,
+        limit,
+        offset,
+      });
+      const payload = (results || []).map((p: any) => {
+        if (process.env.NODE_ENV === 'development') {
+          return {
+            ...p,
+            imageUrls: p.imageUrls?.map((url: any) => resolvePublicImageUrl(url)),
+            exampleImagesUrl: p.exampleImagesUrl?.map((url: any) =>
+              resolvePublicImageUrl(url),
+            ),
+          };
+        }
+        return p;
+      });
+      res.json(payload);
+    } catch (error) {
+      req.log?.error({ err: error }, `Failed to fetch lite ${flag} prompts`);
+      res.status(500).json({ message: `Failed to fetch ${flag} prompts` });
+    }
+  };
+
+  app.get('/api/lite/featured', strictApiLimiter, (req: any, res) =>
+    fetchLitePrompts('featured', req, res),
+  );
+
+  app.get('/api/lite/preview', strictApiLimiter, (req: any, res) =>
+    fetchLitePrompts('preview', req, res),
+  );
+
   app.post('/api/prompts', isAuthenticated, promptCreationLimiter, async (req: any, res) => {
     try {
       const userId = (req.user as any).claims.sub;
@@ -2048,6 +2102,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error toggling featured status:", error);
       res.status(500).json({ message: "Failed to toggle featured status" });
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // PromptAtriumLite seed / admin endpoint (super admin only).
+  // Idempotently ensures the lite lookup rows exist and flips the lite flags.
+  // Primary use: seed PRODUCTION after a publish, since publishing migrates the
+  // schema but not the data. mode 'auto' mirrors the dev seed; 'manual' takes
+  // explicit prompt id arrays.
+  // ---------------------------------------------------------------------------
+  app.post('/api/admin/lite/seed', requireSuperAdmin, strictApiLimiter, async (req: any, res) => {
+    try {
+      const mode = req.body?.mode === 'manual' ? 'manual' : 'auto';
+
+      // 1. Idempotently ensure lookup rows exist.
+      await db.execute(sql`
+        INSERT INTO feature_types (name, display_name, description) VALUES
+          ('lite_featured', 'Lite Featured', 'Curated prompts surfaced in PromptAtriumLite Discover'),
+          ('lite_preview', 'Lite Preview', 'Locked teaser prompts nudging upgrade to full app'),
+          ('marketplace_featured', 'Marketplace Featured', 'Featured marketplace listings'),
+          ('trending', 'Trending', 'Trending prompts by engagement'),
+          ('sponsored', 'Sponsored', 'Sponsored or promoted prompts')
+        ON CONFLICT (name) DO NOTHING
+      `);
+      await db.execute(sql`
+        INSERT INTO prompt_types (name, description, type, is_active) VALUES
+          ('skill', 'Reusable skill prompt', 'global', true),
+          ('rule', 'Rule or guardrail prompt', 'global', true),
+          ('agent', 'Autonomous agent prompt', 'global', true),
+          ('plugin', 'Plugin or tool prompt', 'global', true)
+        ON CONFLICT (name) DO NOTHING
+      `);
+
+      let featured = 0;
+      let preview = 0;
+
+      if (mode === 'manual') {
+        const idRe = /^[A-Za-z0-9]{10}$/;
+        const featuredIds: string[] = Array.isArray(req.body?.featuredIds)
+          ? req.body.featuredIds
+              .filter((id: any) => typeof id === 'string' && idRe.test(id))
+              .slice(0, 500)
+          : [];
+        const previewIds: string[] = Array.isArray(req.body?.previewIds)
+          ? req.body.previewIds
+              .filter((id: any) => typeof id === 'string' && idRe.test(id))
+              .slice(0, 500)
+          : [];
+        if (featuredIds.length) {
+          const r = await db.execute(
+            sql`UPDATE prompts SET is_lite_featured = true WHERE id = ANY(${featuredIds}::text[])`,
+          );
+          featured = r.rowCount ?? featuredIds.length;
+        }
+        if (previewIds.length) {
+          const r = await db.execute(
+            sql`UPDATE prompts SET is_lite_preview = true WHERE id = ANY(${previewIds}::text[])`,
+          );
+          preview = r.rowCount ?? previewIds.length;
+        }
+      } else {
+        const featuredN = Math.min(
+          Math.max(parseInt(String(req.body?.featuredCount ?? 15), 10) || 15, 1),
+          50,
+        );
+        const previewN = Math.min(
+          Math.max(parseInt(String(req.body?.previewCount ?? 8), 10) || 8, 1),
+          50,
+        );
+        const rf = await db.execute(sql`
+          WITH ranked AS (
+            SELECT id, row_number() OVER (
+              ORDER BY coalesce(likes,0) + coalesce(usage_count,0) DESC, updated_at DESC
+            ) AS rn
+            FROM prompts
+            WHERE is_public = true
+              AND coalesce(is_hidden,false) = false
+              AND coalesce(is_nsfw,false) = false
+              AND name NOT ILIKE '%test%'
+          )
+          UPDATE prompts p SET is_lite_featured = true
+          FROM ranked r WHERE p.id = r.id AND r.rn <= ${featuredN}
+        `);
+        featured = rf.rowCount ?? 0;
+        const rp = await db.execute(sql`
+          WITH ranked AS (
+            SELECT id, row_number() OVER (
+              ORDER BY coalesce(likes,0) + coalesce(usage_count,0) DESC, updated_at DESC
+            ) AS rn
+            FROM prompts
+            WHERE is_public = true
+              AND coalesce(is_hidden,false) = false
+              AND coalesce(is_nsfw,false) = false
+              AND name NOT ILIKE '%test%'
+          )
+          UPDATE prompts p SET is_lite_preview = true
+          FROM ranked r WHERE p.id = r.id AND r.rn > ${featuredN} AND r.rn <= ${featuredN + previewN}
+        `);
+        preview = rp.rowCount ?? 0;
+      }
+
+      res.json({ ok: true, mode, featured, preview });
+    } catch (error) {
+      req.log?.error({ err: error }, 'Failed to seed lite data');
+      res.status(500).json({ message: 'Failed to seed lite data' });
     }
   });
 
