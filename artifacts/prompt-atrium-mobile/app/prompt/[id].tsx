@@ -7,7 +7,9 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import React, { useLayoutEffect, useState } from "react";
 import {
+  Alert,
   Dimensions,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -27,8 +29,18 @@ export default function PromptDetailScreen() {
   const colors = useColors();
   const navigation = useNavigation();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: prompt, isLoading, isError, error, refetch } = usePrompt(id);
-  const { isSaved, toggle } = useSaved();
+  // Locally-created prompts (generated / mined / imported) live only in the
+  // saved store and have no server record, so we read them from there and
+  // skip the network query entirely.
+  const isLocal = !!id && id.startsWith("local-");
+  const { isSaved, toggle, saved: savedList } = useSaved();
+  const query = usePrompt(isLocal ? undefined : id);
+  const localPrompt = isLocal ? savedList.find((p) => p.id === id) : undefined;
+  const prompt = isLocal ? localPrompt : query.data;
+  const isLoading = isLocal ? false : query.isLoading;
+  const isError = isLocal ? !localPrompt : query.isError;
+  const error = query.error;
+  const refetch = isLocal ? undefined : query.refetch;
   const saved = prompt ? isSaved(prompt.id) : false;
 
   const [copied, setCopied] = useState<string | null>(null);
@@ -43,7 +55,20 @@ export default function PromptDetailScreen() {
           <Pressable
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              toggle(prompt);
+              if (isLocal && saved) {
+                const msg =
+                  "This prompt was created in the app and isn't stored anywhere else. Removing it deletes it permanently.";
+                if (Platform.OS === "web") {
+                  if (typeof window !== "undefined" && window.confirm(msg)) toggle(prompt);
+                } else {
+                  Alert.alert("Remove from library?", msg, [
+                    { text: "Cancel", style: "cancel" },
+                    { text: "Remove", style: "destructive", onPress: () => toggle(prompt) },
+                  ]);
+                }
+              } else {
+                toggle(prompt);
+              }
             }}
             hitSlop={10}
           >
@@ -55,7 +80,12 @@ export default function PromptDetailScreen() {
 
   if (isLoading) return <LoadingState label="Loading prompt…" />;
   if (isError || !prompt)
-    return <ErrorState message={(error as Error)?.message} onRetry={() => refetch()} />;
+    return (
+      <ErrorState
+        message={isLocal ? "This prompt is no longer in your library." : (error as Error)?.message}
+        onRetry={refetch ? () => refetch() : undefined}
+      />
+    );
   if (blocked)
     return (
       <EmptyState

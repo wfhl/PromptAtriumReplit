@@ -17,6 +17,10 @@ interface SavedContextValue {
   isSaved: (id: string) => boolean;
   toggle: (prompt: Prompt) => void;
   remove: (id: string) => void;
+  /** Add (or move to top) a single prompt — used by Generate/Miner/Import. */
+  add: (prompt: Prompt) => void;
+  /** Add many prompts at once, de-duplicating by id — used by Import. */
+  addMany: (prompts: Prompt[]) => void;
 }
 
 const SavedContext = createContext<SavedContextValue | null>(null);
@@ -72,8 +76,31 @@ export function SavedProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const add = useCallback((prompt: Prompt) => {
+    setSaved((prev) => {
+      const next = [{ ...prompt }, ...prev.filter((p) => p.id !== prompt.id)];
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
+
+  const addMany = useCallback((prompts: Prompt[]) => {
+    setSaved((prev) => {
+      const incoming = new Map(prompts.map((p) => [p.id, p]));
+      // New items first, then existing ones not being replaced.
+      const next = [
+        ...prompts.map((p) => ({ ...p })),
+        ...prev.filter((p) => !incoming.has(p.id)),
+      ];
+      AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(next)).catch(() => {});
+      return next;
+    });
+  }, []);
+
   return (
-    <SavedContext.Provider value={{ saved, ready, isSaved, toggle, remove }}>
+    <SavedContext.Provider
+      value={{ saved, ready, isSaved, toggle, remove, add, addMany }}
+    >
       {children}
     </SavedContext.Provider>
   );

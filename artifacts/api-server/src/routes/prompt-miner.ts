@@ -1,9 +1,18 @@
 import { Router, Request, Response } from "express";
 import { randomUUID } from "crypto";
+import { strictApiLimiter } from "../rateLimit";
 import { isAuthenticated } from "../replitAuth";
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 
 const router = Router();
+
+// `/analyze` is public (no login) so the mobile companion can extract prompts.
+// strictApiLimiter (10/min/IP) plus the caps below contain cost/abuse.
+// `/generate-image` stays authenticated — the mobile app never calls it and it
+// is the most expensive endpoint here (Gemini image generation).
+const MAX_TEXT_CHARS = 8000;
+const MAX_BASE64_CHARS = 8_000_000; // ~6MB binary, under the global 10mb body cap
+const MAX_GENERATE_PROMPT_CHARS = 2000;
 
 interface PromptImage {
   id: string;
@@ -68,7 +77,7 @@ const PROMPT_EXTRACTION_SCHEMA: Schema = {
 
 const SYSTEM_INSTRUCTION = "You are an expert AI Data Parser specialized in extracting generative AI metadata and prompts from mixed media.";
 
-router.post("/analyze", isAuthenticated, async (req: Request, res: Response) => {
+router.post("/analyze", strictApiLimiter, async (req: Request, res: Response) => {
   console.log("[PromptMiner] Analyze request received:", { taskType: req.body.taskType, name: req.body.name });
   try {
     const { taskType, data, name, mimeType, base64 } = req.body;
@@ -76,6 +85,13 @@ router.post("/analyze", isAuthenticated, async (req: Request, res: Response) => 
     if (!taskType || !name) {
       console.log("[PromptMiner] Missing required fields");
       return res.status(400).json({ error: "Missing required fields: taskType and name" });
+    }
+
+    if (typeof data === "string" && data.length > MAX_TEXT_CHARS) {
+      return res.status(400).json({ error: `Text too long. Maximum ${MAX_TEXT_CHARS} characters.` });
+    }
+    if (typeof base64 === "string" && base64.length > MAX_BASE64_CHARS) {
+      return res.status(400).json({ error: "Image too large. Please use a smaller image." });
     }
 
     const ai = getAI();
@@ -190,12 +206,15 @@ router.post("/analyze", isAuthenticated, async (req: Request, res: Response) => 
   }
 });
 
-router.post("/generate-image", isAuthenticated, async (req: Request, res: Response) => {
+router.post("/generate-image", isAuthenticated, strictApiLimiter, async (req: Request, res: Response) => {
   try {
     const { prompt } = req.body;
     
-    if (!prompt) {
+    if (!prompt || typeof prompt !== "string") {
       return res.status(400).json({ error: "Missing prompt" });
+    }
+    if (prompt.length > MAX_GENERATE_PROMPT_CHARS) {
+      return res.status(400).json({ error: `Prompt too long. Maximum ${MAX_GENERATE_PROMPT_CHARS} characters.` });
     }
 
     const ai = getAI();

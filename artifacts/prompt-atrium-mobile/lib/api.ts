@@ -47,7 +47,7 @@ async function apiGet<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-async function apiPost<T>(path: string, body: unknown): Promise<T> {
+export async function apiPost<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { Accept: "application/json", "Content-Type": "application/json" },
@@ -263,4 +263,96 @@ export function displayName(user?: PromptUser | null): string {
 export function initials(user?: PromptUser | null): string {
   const name = displayName(user);
   return name.slice(0, 1).toUpperCase();
+}
+
+// ---- AI tools (public, no-auth endpoints) ----
+
+export type LlmProvider = "openai" | "google";
+
+export interface EnhancePromptInput {
+  prompt: string;
+  llmProvider?: LlmProvider;
+  llmModel?: string;
+  useHappyTalk?: boolean;
+  customBasePrompt?: string;
+  subject?: string;
+  character?: string;
+}
+
+export interface EnhancePromptResult {
+  success: boolean;
+  enhancedPrompt: string;
+  metadata?: { provider?: string; model?: string };
+}
+
+/**
+ * Enhance / generate a prompt via the public enhance-prompt endpoint.
+ * Defaults to Gemini, which is the configured/working provider here; callers
+ * can still override `llmProvider`/`llmModel` (the server allowlists models).
+ */
+export function enhancePrompt(input: EnhancePromptInput): Promise<EnhancePromptResult> {
+  return apiPost<EnhancePromptResult>("/api/enhance-prompt", {
+    llmProvider: "google",
+    llmModel: "gemini-2.5-flash",
+    ...input,
+  });
+}
+
+export interface MinerInput {
+  taskType: "text" | "image";
+  name: string;
+  data?: string; // text content (taskType "text")
+  base64?: string; // base64 image payload (taskType "image")
+  mimeType?: string;
+}
+
+export interface MinedPrompt {
+  id: string;
+  title: string;
+  content: string;
+  negativePrompt?: string;
+  model?: string;
+  tags?: string[];
+  source?: string;
+  images?: string[];
+}
+
+/** Extract structured prompts from pasted text or an image via PromptMiner. */
+export function minerAnalyze(input: MinerInput): Promise<{ prompts: MinedPrompt[] }> {
+  return apiPost<{ prompts: MinedPrompt[] }>("/api/prompt-miner/analyze", input);
+}
+
+export interface PromptTemplate {
+  id: string;
+  name: string;
+  description?: string | null;
+  template_type?: string | null;
+  master_prompt?: string | null;
+  llm_provider?: string | null;
+  llm_model?: string | null;
+  use_happy_talk?: boolean | null;
+  compress_prompt?: boolean | null;
+  compression_level?: string | null;
+}
+
+export function useTemplates() {
+  return useQuery<PromptTemplate[]>({
+    queryKey: ["/api/system-data/prompt-templates"],
+    queryFn: () => apiGet<PromptTemplate[]>("/api/system-data/prompt-templates"),
+  });
+}
+
+export interface CharacterPreset {
+  id: string;
+  name: string;
+  gender?: string | null;
+  role?: string | null;
+  description?: string | null;
+}
+
+export function usePresets() {
+  return useQuery<CharacterPreset[]>({
+    queryKey: ["/api/system-data/character-presets"],
+    queryFn: () => apiGet<CharacterPreset[]>("/api/system-data/character-presets"),
+  });
 }

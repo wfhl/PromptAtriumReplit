@@ -6,6 +6,31 @@ import { strictApiLimiter } from '../rateLimit';
 
 const router = Router();
 
+// Public (unauthenticated) callers can reach POST '/' so the mobile companion
+// can use the prompt generator without login. To contain cost/abuse we never
+// forward an arbitrary client-supplied model to the provider — we coerce to a
+// known-good allowlist — and we cap input length. `/batch` stays authenticated.
+const ALLOWED_MODELS: Record<string, string[]> = {
+  openai: ['gpt-4o', 'gpt-4o-mini'],
+  google: ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-flash-latest'],
+};
+const DEFAULT_MODEL: Record<string, string> = {
+  openai: 'gpt-4o',
+  google: 'gemini-2.5-flash',
+};
+const MAX_PROMPT_CHARS = 4000;
+
+function sanitizeProvider(provider: unknown): 'openai' | 'google' {
+  return provider === 'google' ? 'google' : 'openai';
+}
+
+function sanitizeModel(provider: 'openai' | 'google', model: unknown): string {
+  if (typeof model === 'string' && ALLOWED_MODELS[provider].includes(model)) {
+    return model;
+  }
+  return DEFAULT_MODEL[provider];
+}
+
 /**
  * Clean LLM response to remove unwanted formatting
  */
@@ -82,7 +107,9 @@ async function enhanceWithGemini(
   systemPrompt: string,
   model: string = 'gemini-pro'
 ): Promise<string> {
-  const apiKey = process.env.GOOGLE_AI_API_KEY;
+  // GOOGLE_AI_API_KEY and GEMINI_API_KEY are both AI Studio keys; accept either
+  // so the Gemini path works wherever one of them is configured.
+  const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error('Google AI API key not configured');
   }
@@ -183,12 +210,12 @@ function addHappyTalk(prompt: string): string {
  * POST /api/enhance-prompt
  * Enhance a prompt using LLM
  */
-router.post('/', isAuthenticated, strictApiLimiter, async (req, res) => {
+router.post('/', strictApiLimiter, async (req, res) => {
   try {
     const {
       prompt,
-      llmProvider = 'openai',
-      llmModel = 'gpt-4o',
+      llmProvider: rawProvider = 'openai',
+      llmModel: rawModel = 'gpt-4o',
       useHappyTalk = false,
       compressPrompt: shouldCompress = false,
       compressionLevel = 'medium',
@@ -198,12 +225,24 @@ router.post('/', isAuthenticated, strictApiLimiter, async (req, res) => {
       character
     } = req.body;
 
-    if (!prompt) {
+    if (!prompt || typeof prompt !== 'string') {
       return res.status(400).json({
         error: 'No prompt provided',
         success: false
       });
     }
+
+    if (prompt.length > MAX_PROMPT_CHARS ||
+        (typeof customBasePrompt === 'string' && customBasePrompt.length > MAX_PROMPT_CHARS)) {
+      return res.status(400).json({
+        error: `Prompt too long. Maximum ${MAX_PROMPT_CHARS} characters.`,
+        success: false
+      });
+    }
+
+    // Never forward an arbitrary client-supplied model/provider to the provider.
+    const llmProvider = sanitizeProvider(rawProvider);
+    const llmModel = sanitizeModel(llmProvider, rawModel);
 
     const startTime = Date.now();
     const diagnostics: any = {

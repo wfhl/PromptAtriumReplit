@@ -6,3 +6,4 @@
 - [Marketplace runtime flag](marketplace-runtime-flag.md) — marketplace on/off lives in platform_settings (key `marketplace_enabled`, default off); server caches it, client reads `/api/features`.
 - [Dev image serving](dev-image-serving.md) — dev uploads go to local disk not GCS; serve route needs a NODE_ENV-gated dev fallback; serve URLs arrive in several shapes; devStorage.getFile has no traversal guard.
 - [Mobile public-API gotchas](mobile-public-api-gotchas.md) — unauth clients: wildcard CORS forbids credentials; server ignores sortBy & serves NSFW; filter/sort client-side.
+- [Expo native-only APIs crash web preview](expo-web-preview-native-apis.md) — unguarded native calls (e.g. expo-notifications) redbox the whole web dev preview; Platform-guard them.

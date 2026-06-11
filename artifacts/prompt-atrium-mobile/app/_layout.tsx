@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 import React, { useEffect, useRef } from "react";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -43,6 +44,11 @@ function RootLayoutNav() {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="prompt/[id]" options={{ title: "Prompt", headerBackTitle: "Back" }} />
       <Stack.Screen name="tools/aspect-ratio" options={{ title: "Aspect Ratio" }} />
+      <Stack.Screen name="tools/prompting-guides" options={{ title: "Prompting Guides" }} />
+      <Stack.Screen name="tools/metadata-analyzer" options={{ title: "Image Metadata" }} />
+      <Stack.Screen name="tools/generate-prompt" options={{ title: "Generate Prompt" }} />
+      <Stack.Screen name="tools/prompt-miner" options={{ title: "PromptMiner" }} />
+      <Stack.Screen name="tools/import-prompts" options={{ title: "Import Prompts" }} />
       <Stack.Screen name="codex" options={{ title: "Codex" }} />
     </Stack>
   );
@@ -76,6 +82,8 @@ export default function RootLayout() {
   // Deep-link when a notification is tapped, whether the app was already open
   // or launched from a cold start by the tap.
   useEffect(() => {
+    if (Platform.OS === "web") return;
+
     function navigateFromData(data: Record<string, unknown> | undefined) {
       const target = deepLinkTarget(data);
       if (target) router.push(target as never);

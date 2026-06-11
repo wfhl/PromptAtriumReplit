@@ -56,6 +56,41 @@ export default function ToolsScreen() {
       <Header title="Tools" subtitle="Utilities for crafting prompts" />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <ToolCard
+          icon="zap"
+          title="Generate Prompt"
+          description="Turn a quick idea into a rich, detailed AI image prompt."
+          colorsGradient={gradients.library as [string, string]}
+          onPress={() => router.push("/tools/generate-prompt")}
+        />
+        <ToolCard
+          icon="search"
+          title="PromptMiner"
+          description="Extract structured prompts from pasted text or an image."
+          colorsGradient={gradients.community as [string, string]}
+          onPress={() => router.push("/tools/prompt-miner")}
+        />
+        <ToolCard
+          icon="image"
+          title="Image Metadata Analyzer"
+          description="Read AI generation data embedded in an image."
+          colorsGradient={gradients.tools as [string, string]}
+          onPress={() => router.push("/tools/metadata-analyzer")}
+        />
+        <ToolCard
+          icon="book"
+          title="Prompting Guides"
+          description="Learn syntax, anatomy, and model-specific techniques."
+          colorsGradient={gradients.codex as [string, string]}
+          onPress={() => router.push("/tools/prompting-guides")}
+        />
+        <ToolCard
+          icon="download"
+          title="Import Prompts"
+          description="Bring in prompts from JSON, JSONL, or CSV into your library."
+          colorsGradient={gradients.library as [string, string]}
+          onPress={() => router.push("/tools/import-prompts")}
+        />
+        <ToolCard
           icon="maximize"
           title="Aspect Ratio Calculator"
           description="Find exact pixel dimensions for any ratio and resolution."
