@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import { PromptContent } from "@/components/PromptContent";
 
 interface PromptWithUser extends Prompt {
   user?: Partial<User>;
@@ -441,7 +442,7 @@ export default function PromptDetail() {
             {/* Prompt content with matching PromptCard styling */}
             <div className="relative text-sm text-gray-200/70 bg-green-900/20 p-2 rounded border border-green-700/30 leading-relaxed hover:border-green-600/40 transition-colors rounded-md p-2 md:p-3 text-xs md:text-sm font-mono group">
               <div className="pr-8 max-h-[10rem] md:max-h-none overflow-y-auto">
-                {prompt.promptContent}
+                <PromptContent content={prompt.promptContent} />
               </div>
               <Button
                 size="sm"

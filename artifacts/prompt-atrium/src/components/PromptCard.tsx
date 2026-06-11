@@ -25,6 +25,7 @@ import { PromptImageCarousel } from "./PromptImageCarousel";
 import { AddExampleImagesDialog } from "./AddExampleImagesDialog";
 import { AddToCollectionDialog } from "./AddToCollectionDialog";
 import { ImageLightbox } from "./ImageLightbox";
+import { PromptContent } from "./PromptContent";
 import { useMarketplaceEnabled } from "@/config/features";
 
 interface PromptCardProps {
@@ -1878,18 +1879,7 @@ export function PromptCard({
 
         <div className="relative text-sm text-gray-200/70 bg-slate-950/50 p-3 rounded-xl border border-border/50 leading-relaxed font-mono group" data-testid={`text-content-${prompt.id}`}>
           <div className="pr-8 max-h-[20rem] overflow-y-auto custom-scrollbar">
-            {(() => {
-              try {
-                const parsed = JSON.parse(prompt.promptContent);
-                return (
-                  <pre className="text-xs sm:text-sm whitespace-pre-wrap break-words text-slate-300">
-                    {JSON.stringify(parsed, null, 2)}
-                  </pre>
-                );
-              } catch (e) {
-                return <span className="text-slate-300">{prompt.promptContent}</span>;
-              }
-            })()}
+            <PromptContent content={prompt.promptContent} />
           </div>
           <Button
             size="sm"
