@@ -1,0 +1,20 @@
+{
+  "name": "@workspace/prompt-crud",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "peerDependencies": {
+    "@expo/vector-icons": ">=15",
+    "react": ">=19",
+    "react-native": ">=0.80"
+  },
+  "devDependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "@types/react": "~19.1.10",
+    "react": "catalog:",
+    "react-native": "0.81.5"
+  }
+}

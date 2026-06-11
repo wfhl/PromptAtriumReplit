@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated, issueMobileToken } from "./replitAuth";
 import { marketplaceGuard, isMarketplaceEnabled, invalidateMarketplaceCache } from "./config/features";
 import { insertPromptSchema, insertProjectSchema, insertCollectionSchema, insertPromptRatingSchema, insertCommunitySchema, insertUserCommunitySchema, insertUserSchema, bulkOperationSchema, bulkOperationResultSchema, insertCategorySchema, insertPromptTypeSchema, insertPromptStyleSchema, insertPromptStyleRuleTemplateSchema, insertIntendedGeneratorSchema, insertRecommendedModelSchema, insertMarketplaceListingSchema, insertSellerProfileSchema, insertMarketplaceOrderSchema, insertDigitalLicenseSchema, marketplaceOrders, digitalLicenses, marketplaceListings, sellerProfiles, insertMarketplaceDisputeSchema, insertDisputeMessageSchema, type UserRole, type CommunityRole } from "@workspace/db";
 import Stripe from "stripe";
@@ -261,6 +261,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Issue a long-lived mobile bearer token for the current session.
+  // The token can be stored in the mobile app and used as Authorization: Bearer.
+  app.post('/api/auth/mobile-token', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = (req.user as any).claims.sub;
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      const token = issueMobileToken(userId);
+      res.json({ token, user });
+    } catch (error) {
+      console.error("Error issuing mobile token:", error);
+      res.status(500).json({ message: "Failed to issue token" });
     }
   });
 
@@ -1022,6 +1039,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error) {
       console.error("Error fetching prompts:", error);
+      res.status(500).json({ message: "Failed to fetch prompts" });
+    }
+  });
+
+  /**
+   * GET /api/prompts/mine — returns all prompts owned by the authenticated user,
+   * including private ones. User ID is derived server-side from the session/token;
+   * the client cannot supply a userId to see another user's private prompts.
+   */
+  app.get('/api/prompts/mine', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId: string = (req.user as any)?.claims?.sub;
+      if (!userId) return res.status(401).json({ message: "Unauthorized" });
+
+      const search = typeof req.query.search === "string" ? req.query.search : undefined;
+      const prompts = await storage.getPrompts({ userId, search });
+      res.json(prompts);
+    } catch (error) {
       res.status(500).json({ message: "Failed to fetch prompts" });
     }
   });

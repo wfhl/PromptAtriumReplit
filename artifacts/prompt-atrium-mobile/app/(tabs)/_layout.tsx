@@ -24,6 +24,10 @@ function NativeTabLayout() {
         <Icon sf={{ default: "magnifyingglass", selected: "magnifyingglass" }} />
         <Label>Browse</Label>
       </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="mine">
+        <Icon sf={{ default: "pencil.and.list.clipboard", selected: "pencil.and.list.clipboard" }} />
+        <Label>My Prompts</Label>
+      </NativeTabs.Trigger>
       <NativeTabs.Trigger name="saved">
         <Icon sf={{ default: "bookmark", selected: "bookmark.fill" }} />
         <Label>Saved</Label>
@@ -46,6 +50,7 @@ type TabDef = {
 const TABS: TabDef[] = [
   { name: "index", title: "Discover", feather: "compass", sf: "sparkles" },
   { name: "browse", title: "Browse", feather: "search", sf: "magnifyingglass" },
+  { name: "mine", title: "My Prompts", feather: "edit", sf: "pencil.and.list.clipboard" },
   { name: "saved", title: "Saved", feather: "bookmark", sf: "bookmark" },
   { name: "tools", title: "Tools", feather: "tool", sf: "wrench.and.screwdriver" },
 ];
