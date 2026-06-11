@@ -21,3 +21,18 @@ timeoutMs = 20000
 
 [nix]
 channel = "stable-25_05"
+
+[objectStorage]
+defaultBucketID = "replit-objstore-0787b323-84b9-43bc-9908-9e19c8088441"
+
+[[ports]]
+localPort = 8080
+externalPort = 8080
+
+[[ports]]
+localPort = 8081
+externalPort = 80
+
+[[ports]]
+localPort = 19608
+externalPort = 3000
