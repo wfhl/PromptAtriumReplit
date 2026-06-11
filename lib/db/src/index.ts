@@ -11,6 +11,17 @@ if (!process.env.DATABASE_URL) {
 }
 
 export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+// Prevent an idle/terminated pooled connection from crashing the process.
+// node-postgres' Pool is an EventEmitter; an emitted `error` with no listener
+// becomes an unhandled exception and kills the server (e.g. when the database
+// terminates an idle connection: "terminating connection due to administrator
+// command"). Log it and let the pool transparently open a new connection on the
+// next query.
+pool.on("error", (err) => {
+  console.error("[db] Unexpected error on idle Postgres client:", err);
+});
+
 export const db = drizzle(pool, { schema });
 
 export * from "./schema";

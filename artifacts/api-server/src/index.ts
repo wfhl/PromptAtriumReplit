@@ -2,6 +2,14 @@ import app from "./app";
 import { registerRoutes } from "./legacyRoutes";
 import { logger } from "./lib/logger";
 
+process.on("uncaughtException", (err) => {
+  logger.error({ err }, "Uncaught exception");
+});
+
+process.on("unhandledRejection", (reason) => {
+  logger.error({ err: reason }, "Unhandled promise rejection");
+});
+
 const rawPort = process.env["PORT"];
 
 if (!rawPort) {
