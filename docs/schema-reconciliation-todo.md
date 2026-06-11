@@ -8,25 +8,6 @@ The live databases (dev and production) have drifted from `schema.ts` in both di
 
 ---
 
-## Tables added in Task 28 (now in schema.ts + dev DB)
-
-These tables were added via raw SQL and are reflected in `schema.ts`:
-
-| Table | Description |
-|---|---|
-| `feature_types` | Classification of prompt feature slots (lite_featured, lite_preview, marketplace_featured, trending, sponsored) |
-| `prompt_features` | Join table linking prompts to feature_type slots with sort_order + expires_at |
-
-New columns on `prompts`:
-- `is_lite_featured boolean DEFAULT false` — prompt appears on PromptAtriumLite Discover screen
-- `is_lite_preview boolean DEFAULT false` — prompt appears as a teaser/upsell on PromptAtriumLite
-
-New rows in `prompt_types`: skill, rule, agent, plugin (all `type='global'`).
-
-**Production:** These will be applied automatically when the user next publishes (Replit Publish computes the diff from dev → prod and applies it).
-
----
-
 ## Tables in dev + production that are NOT in schema.ts
 
 These exist in the live databases but are absent from `schema.ts`. They need to be added to the schema before a safe db:push can happen.

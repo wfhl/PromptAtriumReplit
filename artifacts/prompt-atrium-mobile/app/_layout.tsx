@@ -21,7 +21,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import colors from "@/constants/colors";
 import { deepLinkTarget } from "@/lib/api";
 import { registerForPushNotifications } from "@/lib/notifications";
-import { AuthProvider } from "@/lib/authContext";
 import { SavedProvider } from "@/lib/saved";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -44,8 +43,6 @@ function RootLayoutNav() {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="prompt/[id]" options={{ title: "Prompt", headerBackTitle: "Back" }} />
-      <Stack.Screen name="my-prompts/create" options={{ title: "New Prompt", headerBackTitle: "Back" }} />
-      <Stack.Screen name="my-prompts/edit/[id]" options={{ title: "Edit Prompt", headerBackTitle: "Back" }} />
       <Stack.Screen name="tools/aspect-ratio" options={{ title: "Aspect Ratio" }} />
       <Stack.Screen name="tools/prompting-guides" options={{ title: "Prompting Guides" }} />
       <Stack.Screen name="tools/metadata-analyzer" options={{ title: "Image Metadata" }} />
@@ -116,16 +113,14 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <SavedProvider>
-              <GestureHandlerRootView>
-                <KeyboardProvider>
-                  <StatusBar style="light" />
-                  <RootLayoutNav />
-                </KeyboardProvider>
-              </GestureHandlerRootView>
-            </SavedProvider>
-          </AuthProvider>
+          <SavedProvider>
+            <GestureHandlerRootView>
+              <KeyboardProvider>
+                <StatusBar style="light" />
+                <RootLayoutNav />
+              </KeyboardProvider>
+            </GestureHandlerRootView>
+          </SavedProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
