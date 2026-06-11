@@ -47,6 +47,52 @@ async function apiGet<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
+async function apiPost<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`${res.status}: ${text || res.statusText}`);
+  }
+  return (await res.json()) as T;
+}
+
+// ---- Push notifications ----
+
+/** Upload an Expo push token so the backend can notify this device. */
+export function registerPushToken(
+  token: string,
+  platform?: "ios" | "android" | "web",
+): Promise<{ ok: boolean; id?: string }> {
+  return apiPost("/api/push/register", { token, platform });
+}
+
+/** Opt this device out of push notifications. */
+export function unregisterPushToken(token: string): Promise<{ ok: boolean }> {
+  return apiPost("/api/push/unregister", { token });
+}
+
+/**
+ * Resolve the in-app navigation target for a tapped notification's data
+ * payload. The backend sends `{ promptId, url }`; we prefer an explicit
+ * promptId, then fall back to a known in-app path.
+ */
+export function deepLinkTarget(
+  data: Record<string, unknown> | undefined | null,
+): string | null {
+  if (!data) return null;
+  if (typeof data.promptId === "string" && data.promptId) {
+    return `/prompt/${data.promptId}`;
+  }
+  if (typeof data.url === "string" && data.url.startsWith("/")) {
+    return data.url;
+  }
+  return null;
+}
+
 // ---- Types (mirror the shared web schema fields the mobile app reads) ----
 
 export interface PromptUser {

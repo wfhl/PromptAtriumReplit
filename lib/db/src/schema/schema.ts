@@ -622,6 +622,21 @@ export const notifications = pgTable("notifications", {
   index("idx_notifications_user_unread").on(table.userId, table.isRead),
 ]);
 
+// Expo push notification device tokens. The mobile companion is browse-only and
+// unauthenticated, so a token is the device identity (userId is optional and
+// only set if a logged-in session ever registers one).
+export const pushTokens = pgTable("push_tokens", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  token: text("token").notNull().unique(), // Expo push token (ExponentPushToken[...])
+  userId: varchar("user_id").references(() => users.id), // Optional owner if authenticated
+  platform: varchar("platform"), // "ios" | "android" | "web"
+  enabled: boolean("enabled").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+}, (table) => [
+  index("idx_push_tokens_enabled").on(table.enabled),
+]);
+
 // Wordsmith Codex Tables
 
 // Categories for organizing terms (e.g., "Styles", "Lighting", "Aesthetics", etc.)
@@ -1443,6 +1458,12 @@ export const insertNotificationSchema = createInsertSchema(notifications).omit({
   createdAt: true,
 });
 
+export const insertPushTokenSchema = createInsertSchema(pushTokens).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Codex insert schemas
 export const insertCodexCategorySchema = createInsertSchema(codexCategories).omit({
   id: true,
@@ -1760,6 +1781,8 @@ export type InsertActivity = z.infer<typeof insertActivitySchema>;
 export type Activity = typeof activities.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type Notification = typeof notifications.$inferSelect;
+export type InsertPushToken = z.infer<typeof insertPushTokenSchema>;
+export type PushToken = typeof pushTokens.$inferSelect;
 
 // Codex types
 export type InsertCodexCategory = z.infer<typeof insertCodexCategorySchema>;

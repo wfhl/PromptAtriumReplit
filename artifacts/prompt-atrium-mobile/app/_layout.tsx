@@ -6,17 +6,20 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Stack } from "expo-router";
+import * as Notifications from "expo-notifications";
+import { router, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import colors from "@/constants/colors";
+import { deepLinkTarget } from "@/lib/api";
+import { registerForPushNotifications } from "@/lib/notifications";
 import { SavedProvider } from "@/lib/saved";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -53,6 +56,8 @@ export default function RootLayout() {
     Inter_700Bold,
   });
 
+  const handledInitialResponse = useRef(false);
+
   useEffect(() => {
     SystemUI.setBackgroundColorAsync(theme.background).catch(() => {});
   }, []);
@@ -62,6 +67,37 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
+
+  // Register this device for push notifications on launch.
+  useEffect(() => {
+    registerForPushNotifications();
+  }, []);
+
+  // Deep-link when a notification is tapped, whether the app was already open
+  // or launched from a cold start by the tap.
+  useEffect(() => {
+    function navigateFromData(data: Record<string, unknown> | undefined) {
+      const target = deepLinkTarget(data);
+      if (target) router.push(target as never);
+    }
+
+    Notifications.getLastNotificationResponseAsync().then((response) => {
+      if (response && !handledInitialResponse.current) {
+        handledInitialResponse.current = true;
+        navigateFromData(
+          response.notification.request.content.data as Record<string, unknown>,
+        );
+      }
+    });
+
+    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
+      navigateFromData(
+        response.notification.request.content.data as Record<string, unknown>,
+      );
+    });
+
+    return () => sub.remove();
+  }, []);
 
   if (!fontsLoaded && !fontError) return null;
 

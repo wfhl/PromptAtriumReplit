@@ -18,6 +18,8 @@ import {
   requireSubCommunityAdmin,
   requireSubCommunityMember
 } from "./rbac";
+import { upsertPushToken, disablePushToken } from "./push";
+import { notifyPromptFeatured, notifyAdminBroadcast } from "./notificationTriggers";
 import { ObjectStorageService, ObjectNotFoundError, objectStorageClient, parseObjectPath } from "./objectStorage";
 import { ObjectPermission, getObjectAclPolicy } from "./objectAcl";
 import { File } from "@google-cloud/storage";
@@ -2034,7 +2036,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
       }
-      
+
+      // Push trigger: when a prompt is featured, notify mobile devices so they
+      // come back to discover it. See notificationTriggers.ts for the message
+      // and the public/NSFW gating.
+      if (newFeaturedStatus) {
+        notifyPromptFeatured(prompt);
+      }
+
       res.json({ featured: newFeaturedStatus });
     } catch (error) {
       console.error("Error toggling featured status:", error);
@@ -7888,6 +7897,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to preview migration", 
         error: error instanceof Error ? error.message : String(error)
       });
+    }
+  });
+
+  // ---- Push notifications (mobile companion) ----
+
+  // Register / refresh an Expo push token. Public: the mobile app is a
+  // browse-only companion with no auth session. If an authenticated session is
+  // present we associate the token with that user.
+  const registerPushSchema = z.object({
+    token: z.string().min(1),
+    platform: z.enum(["ios", "android", "web"]).optional(),
+  });
+
+  app.post("/api/push/register", apiLimiter, async (req: any, res) => {
+    try {
+      const parsed = registerPushSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid push token payload" });
+      }
+      const userId = req.user?.claims?.sub ?? null;
+      const row = await upsertPushToken({
+        token: parsed.data.token,
+        platform: parsed.data.platform ?? null,
+        userId,
+      });
+      return res.json({ ok: true, id: row.id });
+    } catch (error) {
+      req.log?.error({ err: error }, "Failed to register push token");
+      return res.status(500).json({ message: "Failed to register push token" });
+    }
+  });
+
+  // Unregister (opt-out) a device token.
+  app.post("/api/push/unregister", apiLimiter, async (req: any, res) => {
+    try {
+      const token = typeof req.body?.token === "string" ? req.body.token : "";
+      if (!token) return res.status(400).json({ message: "token is required" });
+      await disablePushToken(token);
+      return res.json({ ok: true });
+    } catch (error) {
+      req.log?.error({ err: error }, "Failed to unregister push token");
+      return res.status(500).json({ message: "Failed to unregister push token" });
+    }
+  });
+
+  // Admin-triggered broadcast (e.g. "new trending prompts this week"). Sends to
+  // all enabled devices, optionally deep-linking to a prompt or in-app path.
+  const broadcastSchema = z.object({
+    title: z.string().min(1).max(120),
+    body: z.string().min(1).max(300),
+    promptId: z.string().optional(),
+    url: z.string().optional(),
+  });
+
+  app.post("/api/push/broadcast", requireSuperAdmin, async (req: any, res) => {
+    try {
+      const parsed = broadcastSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid broadcast payload" });
+      }
+      const result = await notifyAdminBroadcast(parsed.data);
+      return res.json({ ok: true, ...result });
+    } catch (error) {
+      req.log?.error({ err: error }, "Failed to broadcast push");
+      return res.status(500).json({ message: "Failed to broadcast push" });
     }
   });
 
