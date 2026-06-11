@@ -95,6 +95,67 @@ function resolvePublicImageUrl(url: string | null | undefined): string | null | 
   return url;
 }
 
+// DEVELOPMENT ONLY: serve an object from the local dev-storage disk.
+// In development, uploads are written to local disk (see devStorage) rather
+// than Google Cloud Storage, so the GCS-based serve path misses them. This
+// helper streams the file from disk when present. Callers MUST gate on
+// NODE_ENV === 'development'; it is never invoked in production, so the
+// production serve/upload behavior is completely unchanged.
+async function tryServeFromDevStorage(
+  normalizedPath: string,
+  res: Response,
+): Promise<boolean> {
+  // Different frontend components build the serve URL differently, so the
+  // path can arrive in several shapes, e.g. "/objects/uploads/<id>",
+  // "//objects/uploads/<id>" (encoded leading slash decodes to a double
+  // slash), "/uploads/<id>", "uploads/<id>", or "objects/uploads/<id>".
+  // Normalize all of them to "<type>/<objectId>".
+  let relative = normalizedPath.replace(/^\/+/, "");
+  if (relative.startsWith("objects/")) {
+    relative = relative.slice("objects/".length);
+  }
+  const parts = relative.split("/").filter(Boolean);
+  if (parts.length < 2) return false;
+  const type = parts[0];
+  const objectId = parts.slice(1).join("/");
+
+  // Guard against path traversal: devStorage interpolates objectId directly
+  // into a filesystem path. Stored ids are UUIDs, so reject anything that
+  // could escape the storage directory.
+  if (objectId.includes("..") || objectId.startsWith("/")) {
+    return false;
+  }
+
+  try {
+    const { data, metadata } = await devStorage.getFile(type, objectId);
+
+    let contentType = metadata?.contentType || "application/octet-stream";
+    if (contentType === "application/octet-stream") {
+      const ext = objectId.split(".").pop()?.toLowerCase();
+      const mimeTypes: { [key: string]: string } = {
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        png: "image/png",
+        gif: "image/gif",
+        webp: "image/webp",
+        svg: "image/svg+xml",
+      };
+      contentType = mimeTypes[ext || ""] || contentType;
+    }
+
+    res.set({
+      "Content-Type": contentType,
+      "Content-Length": data.length.toString(),
+      "Cache-Control": "public, max-age=3600",
+    });
+    res.send(data);
+    return true;
+  } catch {
+    // Not found on local disk; let the caller continue with its fallback.
+    return false;
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Seed default prompt styles on startup if none exist
   try {
@@ -611,6 +672,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Stream the file to the response
         await objectStorageService.downloadObject(objectFile, res);
       } catch (error) {
+        // DEVELOPMENT ONLY: the file may live on the local dev-storage disk
+        // instead of GCS. This branch never runs in production (NODE_ENV is
+        // 'production' there), so production serving is unaffected.
+        if (process.env.NODE_ENV === 'development') {
+          if (await tryServeFromDevStorage(normalizedPath, res)) {
+            return;
+          }
+        }
+
         // Fallback for production environment when sidecar isn't available
         if (process.env.NODE_ENV === 'production' || error instanceof ObjectNotFoundError) {
           console.log("Falling back to direct bucket access for:", normalizedPath);
