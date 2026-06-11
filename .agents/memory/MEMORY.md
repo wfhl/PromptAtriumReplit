@@ -7,4 +7,5 @@
 - [Dev image serving](dev-image-serving.md) — dev uploads go to local disk not GCS; serve route needs a NODE_ENV-gated dev fallback; serve URLs arrive in several shapes; devStorage.getFile has no traversal guard.
 - [Mobile public-API gotchas](mobile-public-api-gotchas.md) — unauth clients: wildcard CORS forbids credentials; server ignores sortBy & serves NSFW; filter/sort client-side.
 - [Mobile AI tools API contracts](mobile-ai-tools-api-contracts.md) — miner /analyze needs taskType "file" + data-URL base64 (bare base64 silently breaks); enhance-prompt character is an object; cap ALL free-text fields on the public endpoint.
+- [Schema reconciliation TODO](schema-reconciliation-todo.md) — schema.ts missing real tables + has legacy duplicate columns; deferred; full detail in docs/schema-reconciliation-todo.md; do NOT run db:push until reconciled.
 - [Expo native-only APIs crash web preview](expo-web-preview-native-apis.md) — unguarded native calls (e.g. expo-notifications) redbox the whole web dev preview; Platform-guard them.
