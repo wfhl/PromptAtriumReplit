@@ -211,6 +211,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // PromptAtrium Lite — public (no-auth) endpoints for the Lite mobile app.
+  // Use the existing storage layer so responses share the canonical camelCase prompt shape.
+  app.get('/api/lite/featured', strictApiLimiter, async (_req, res) => {
+    try {
+      const results = await storage.getPrompts({
+        isPublic: true,
+        isLiteFeatured: true,
+        isHidden: false,
+        showNsfw: false,
+        limit: 50,
+      });
+      res.json(results);
+    } catch (error) {
+      console.error("Error fetching lite featured prompts:", error);
+      res.status(500).json({ message: "Failed to fetch featured prompts" });
+    }
+  });
+
+  // Returns prompts flagged as is_lite_preview (teaser content for Lite upsell).
+  app.get('/api/lite/preview', strictApiLimiter, async (_req, res) => {
+    try {
+      const results = await storage.getPrompts({
+        isPublic: true,
+        isLitePreview: true,
+        isHidden: false,
+        showNsfw: false,
+        limit: 20,
+      });
+      res.json(results);
+    } catch (error) {
+      console.error("Error fetching lite preview prompts:", error);
+      res.status(500).json({ message: "Failed to fetch preview prompts" });
+    }
+  });
+
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {

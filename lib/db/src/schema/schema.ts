@@ -516,6 +516,8 @@ export const prompts = pgTable("prompts", {
   updatedAt: timestamp("updated_at").defaultNow(),
   promptContent: text("prompt_content").notNull(),
   negativePrompt: text("negative_prompt"),
+  isLiteFeatured: boolean("is_lite_featured").default(false),
+  isLitePreview: boolean("is_lite_preview").default(false),
 }, (table) => [
   // Foreign key indexes
   index("idx_prompts_user_id").on(table.userId),
@@ -525,6 +527,9 @@ export const prompts = pgTable("prompts", {
   index("idx_prompts_public_created").on(table.isPublic, table.createdAt),
   // Partial index for featured prompts
   index("idx_prompts_featured").on(table.isFeatured).where(sql`${table.isFeatured} = true`),
+  // Partial indexes for Lite feature flags
+  index("idx_prompts_lite_featured").on(table.createdAt).where(sql`${table.isLiteFeatured} = true`),
+  index("idx_prompts_lite_preview").on(table.createdAt).where(sql`${table.isLitePreview} = true`),
 ]);
 
 // Prompt likes table - tracks individual likes/hearts
@@ -1853,6 +1858,45 @@ export type BulkEditPrompt = z.infer<typeof bulkEditPromptSchema>;
 export type BulkOperation = z.infer<typeof bulkOperationSchema>;
 export type BulkOperationResult = z.infer<typeof bulkOperationResultSchema>;
 export type BulkOperationType = BulkOperation["operation"];
+
+// PromptAtrium Lite feature tables
+
+export const featureTypes = pgTable("feature_types", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 100 }).notNull().unique(),
+  displayName: varchar("display_name", { length: 200 }).notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const promptFeatures = pgTable("prompt_features", {
+  id: serial("id").primaryKey(),
+  promptId: char("prompt_id", { length: 10 }).notNull().references(() => prompts.id, { onDelete: "cascade" }),
+  featureTypeId: integer("feature_type_id").notNull().references(() => featureTypes.id, { onDelete: "cascade" }),
+  sortOrder: integer("sort_order").default(0).notNull(),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  unique("uq_prompt_feature").on(table.promptId, table.featureTypeId),
+  index("idx_prompt_features_prompt_id").on(table.promptId),
+  index("idx_prompt_features_feature_type_id").on(table.featureTypeId),
+]);
+
+export const insertFeatureTypeSchema = createInsertSchema(featureTypes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPromptFeatureSchema = createInsertSchema(promptFeatures).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type FeatureType = typeof featureTypes.$inferSelect;
+export type InsertFeatureType = z.infer<typeof insertFeatureTypeSchema>;
+export type PromptFeature = typeof promptFeatures.$inferSelect;
+export type InsertPromptFeature = z.infer<typeof insertPromptFeatureSchema>;
 
 // User role types
 export type UserRole = "user" | "community_admin" | "sub_community_admin" | "super_admin" | "global_admin" | "developer";

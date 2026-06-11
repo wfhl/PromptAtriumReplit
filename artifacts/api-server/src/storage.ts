@@ -165,6 +165,9 @@ export interface IStorage {
     userId?: string;
     isPublic?: boolean;
     isFeatured?: boolean;
+    isLiteFeatured?: boolean;
+    isLitePreview?: boolean;
+    isHidden?: boolean;
     category?: string;
     tags?: string[];
     search?: string;
@@ -688,6 +691,9 @@ export class DatabaseStorage implements IStorage {
     userId?: string;
     isPublic?: boolean;
     isFeatured?: boolean;
+    isLiteFeatured?: boolean;
+    isLitePreview?: boolean;
+    isHidden?: boolean;
     category?: string;
     status?: string;
     statusNotEqual?: string;
@@ -721,6 +727,18 @@ export class DatabaseStorage implements IStorage {
     
     if (options.isFeatured) {
       conditions.push(eq(prompts.isFeatured, true));
+    }
+
+    if (options.isLiteFeatured) {
+      conditions.push(eq(prompts.isLiteFeatured, true));
+    }
+
+    if (options.isLitePreview) {
+      conditions.push(eq(prompts.isLitePreview, true));
+    }
+
+    if (options.isHidden !== undefined) {
+      conditions.push(eq(prompts.isHidden, options.isHidden));
     }
     
     if (options.category) {
@@ -924,6 +942,8 @@ export class DatabaseStorage implements IStorage {
         updatedAt: prompts.updatedAt,
         promptContent: prompts.promptContent,
         negativePrompt: prompts.negativePrompt,
+        isLiteFeatured: prompts.isLiteFeatured,
+        isLitePreview: prompts.isLitePreview,
         user: {
           id: users.id,
           email: users.email,
@@ -985,6 +1005,8 @@ export class DatabaseStorage implements IStorage {
         updatedAt: prompts.updatedAt,
         promptContent: prompts.promptContent,
         negativePrompt: prompts.negativePrompt,
+        isLiteFeatured: prompts.isLiteFeatured,
+        isLitePreview: prompts.isLitePreview,
         user: {
           id: users.id,
           email: users.email,
