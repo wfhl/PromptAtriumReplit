@@ -17,11 +17,28 @@ import {
 const DOMAIN = process.env.EXPO_PUBLIC_DOMAIN;
 export const API_BASE = DOMAIN ? `https://${DOMAIN}` : "";
 
+/**
+ * Resolve an image URL coming from the API into an absolute URL the native
+ * client can load. Mirrors the web app's PromptImageCarousel resolution so the
+ * same stored values render identically, but prefixes API_BASE because Expo
+ * bundles run outside the Replit shared proxy and need absolute URLs.
+ *
+ * Object-storage values arrive as `/objects/<key>`; the public read route is
+ * `/api/objects/serve/<url-encoded key>` (the bare `/objects/...` path falls
+ * through to the SPA and returns HTML, which silently fails to decode as an
+ * image — the cause of the missing thumbnails).
+ */
 export function resolveImageUrl(url?: string | null): string | null {
   if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  if (url.startsWith("/objects/")) {
+    const key = url.slice("/objects/".length);
+    return `${API_BASE}/api/objects/serve/${encodeURIComponent(key)}`;
+  }
+  // `/api/...` and other absolute paths are served as-is.
   if (url.startsWith("/")) return `${API_BASE}${url}`;
-  return `${API_BASE}/${url}`;
+  // Bare relative keys are object-storage keys behind the serve route.
+  return `${API_BASE}/api/objects/serve/${encodeURIComponent(url)}`;
 }
 
 function qs(params: Record<string, string | number | boolean | undefined>): string {
@@ -276,7 +293,7 @@ export interface EnhancePromptInput {
   useHappyTalk?: boolean;
   customBasePrompt?: string;
   subject?: string;
-  character?: string;
+  character?: { name: string; description?: string };
 }
 
 export interface EnhancePromptResult {
@@ -319,7 +336,25 @@ export interface MinedPrompt {
 
 /** Extract structured prompts from pasted text or an image via PromptMiner. */
 export function minerAnalyze(input: MinerInput): Promise<{ prompts: MinedPrompt[] }> {
-  return apiPost<{ prompts: MinedPrompt[] }>("/api/prompt-miner/analyze", input);
+  if (input.taskType === "image") {
+    const mimeType = input.mimeType ?? "image/jpeg";
+    const raw = input.base64 ?? "";
+    // The server's `/analyze` contract uses taskType "file" for binary uploads
+    // and extracts the payload via `dataUrl.split(",")[1]`, so it needs a
+    // data-URL prefix. expo-image-picker returns bare base64 without one.
+    const base64 = raw.startsWith("data:") ? raw : `data:${mimeType};base64,${raw}`;
+    return apiPost<{ prompts: MinedPrompt[] }>("/api/prompt-miner/analyze", {
+      taskType: "file",
+      name: input.name,
+      mimeType,
+      base64,
+    });
+  }
+  return apiPost<{ prompts: MinedPrompt[] }>("/api/prompt-miner/analyze", {
+    taskType: "text",
+    name: input.name,
+    data: input.data,
+  });
 }
 
 export interface PromptTemplate {

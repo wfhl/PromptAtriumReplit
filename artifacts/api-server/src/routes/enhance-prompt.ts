@@ -232,8 +232,19 @@ router.post('/', strictApiLimiter, async (req, res) => {
       });
     }
 
-    if (prompt.length > MAX_PROMPT_CHARS ||
-        (typeof customBasePrompt === 'string' && customBasePrompt.length > MAX_PROMPT_CHARS)) {
+    // Cap every free-text field that gets concatenated into the provider call,
+    // not just `prompt`. `subject` and `character.*` are forwarded into the
+    // system prompt, so leaving them uncapped lets an unauthenticated caller
+    // amplify per-request token spend far past the intended limit.
+    const overLong = (v: unknown): boolean =>
+      typeof v === 'string' && v.length > MAX_PROMPT_CHARS;
+    if (
+      prompt.length > MAX_PROMPT_CHARS ||
+      overLong(customBasePrompt) ||
+      overLong(subject) ||
+      (character && typeof character === 'object' &&
+        (overLong(character.name) || overLong(character.description)))
+    ) {
       return res.status(400).json({
         error: `Prompt too long. Maximum ${MAX_PROMPT_CHARS} characters.`,
         success: false

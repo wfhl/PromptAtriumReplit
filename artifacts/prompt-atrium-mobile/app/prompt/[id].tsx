@@ -17,6 +17,7 @@ import {
   View,
 } from "react-native";
 
+import { ExampleImages } from "@/components/ExampleImages";
 import { Badge, EmptyState, ErrorState, LoadingState } from "@/components/ui";
 import { gradients } from "@/constants/colors";
 import { useColors } from "@/hooks/useColors";
@@ -120,23 +121,15 @@ export default function PromptDetailScreen() {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      {/* Media */}
+      {/* Media — natural-aspect gallery mirroring the web "Example Images" strip */}
       {images.length > 0 ? (
-        <ScrollView
-          horizontal
-          pagingEnabled={images.length > 1}
-          showsHorizontalScrollIndicator={false}
-        >
-          {images.map((uri) => (
-            <Image
-              key={uri}
-              source={{ uri }}
-              style={{ width: SCREEN_W, height: SCREEN_W * 0.7 }}
-              contentFit="cover"
-              transition={200}
-            />
-          ))}
-        </ScrollView>
+        <ExampleImages
+          images={prompt.exampleImagesUrl}
+          height={300}
+          showLabel
+          style={styles.gallery}
+          onPressImage={(_, uri) => WebBrowser.openBrowserAsync(uri)}
+        />
       ) : (
         <LinearGradient
           colors={gradients.library as [string, string]}
@@ -286,6 +279,7 @@ export default function PromptDetailScreen() {
 
 const styles = StyleSheet.create({
   content: { paddingBottom: 48 },
+  gallery: { paddingHorizontal: 18, paddingTop: 18 },
   heroPlaceholder: { height: 180, alignItems: "center", justifyContent: "center" },
   section: { padding: 18, gap: 14 },
   title: { fontSize: 24, fontFamily: "Inter_700Bold", lineHeight: 30, letterSpacing: -0.4 },

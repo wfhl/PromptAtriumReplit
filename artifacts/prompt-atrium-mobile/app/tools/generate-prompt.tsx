@@ -53,7 +53,10 @@ export default function GeneratePromptScreen() {
     setSaved(false);
     try {
       const character = selectedPreset
-        ? [selectedPreset.name, selectedPreset.description].filter(Boolean).join(": ")
+        ? {
+            name: selectedPreset.name,
+            description: selectedPreset.description ?? undefined,
+          }
         : undefined;
       const res = await enhancePrompt({
         prompt,

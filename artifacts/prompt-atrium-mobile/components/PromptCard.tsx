@@ -6,6 +6,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { ExampleImages } from "@/components/ExampleImages";
 import { gradients } from "@/constants/colors";
 import { useColors } from "@/hooks/useColors";
 import { displayName, initials, resolveImageUrl, type Prompt } from "@/lib/api";
@@ -34,7 +35,8 @@ export const PromptCard = React.memo(function PromptCard({
   const saved = isSaved(prompt.id);
   const r = colors.radius;
 
-  const image = resolveImageUrl(prompt.exampleImagesUrl?.[0]);
+  const cover = resolveImageUrl(prompt.exampleImagesUrl?.[0]);
+  const hasImages = (prompt.exampleImagesUrl?.filter(Boolean).length ?? 0) > 0;
   const avatar = resolveImageUrl(prompt.user?.profileImageUrl);
   const tags = (prompt.tags || []).filter(Boolean).slice(0, compact ? 2 : 3);
 
@@ -58,57 +60,98 @@ export const PromptCard = React.memo(function PromptCard({
         },
       ]}
     >
-      <View style={[styles.media, { borderTopLeftRadius: r + 4, borderTopRightRadius: r + 4 }]}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.mediaImg} contentFit="cover" transition={200} />
-        ) : (
-          <LinearGradient
-            colors={gradients.library as unknown as [string, string]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.mediaImg}
-          >
-            <Feather name={typeIcon(prompt.promptType)} size={28} color="rgba(255,255,255,0.92)" />
-          </LinearGradient>
-        )}
+      {compact ? (
+        <View style={[styles.media, { borderTopLeftRadius: r + 4, borderTopRightRadius: r + 4 }]}>
+          {cover ? (
+            <Image source={{ uri: cover }} style={styles.mediaImg} contentFit="cover" transition={200} />
+          ) : (
+            <LinearGradient
+              colors={gradients.library as unknown as [string, string]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.mediaImg}
+            >
+              <Feather name={typeIcon(prompt.promptType)} size={28} color="rgba(255,255,255,0.92)" />
+            </LinearGradient>
+          )}
 
-        {prompt.isFeatured ? (
-          <View style={[styles.featured, { backgroundColor: "rgba(0,0,0,0.55)" }]}>
-            <Feather name="star" size={11} color="#ffd24a" />
-            <Text style={styles.featuredText}>Featured</Text>
-          </View>
-        ) : null}
+          {prompt.isFeatured ? (
+            <View style={[styles.featured, { backgroundColor: "rgba(0,0,0,0.55)" }]}>
+              <Feather name="star" size={11} color="#ffd24a" />
+              <Text style={styles.featuredText}>Featured</Text>
+            </View>
+          ) : null}
 
-        <Pressable onPress={onSave} hitSlop={10} style={[styles.saveBtn, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
-          <Feather
-            name="bookmark"
-            size={16}
-            color={saved ? colors.primary : "#ffffff"}
-            style={saved ? undefined : { opacity: 0.95 }}
-          />
-        </Pressable>
-      </View>
+          <Pressable onPress={onSave} hitSlop={10} style={[styles.saveBtn, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
+            <Feather
+              name="bookmark"
+              size={16}
+              color={saved ? colors.primary : "#ffffff"}
+              style={saved ? undefined : { opacity: 0.95 }}
+            />
+          </Pressable>
+        </View>
+      ) : null}
 
       <View style={styles.body}>
         <View style={styles.metaRow}>
-          {prompt.category ? (
-            <Text style={[styles.category, { color: colors.primary }]} numberOfLines={1}>
-              {prompt.category}
-            </Text>
-          ) : null}
-          {prompt.promptType ? (
-            <Text style={[styles.dot, { color: colors.mutedForeground }]}>·</Text>
-          ) : null}
-          {prompt.promptType ? (
-            <Text style={[styles.typeText, { color: colors.mutedForeground }]} numberOfLines={1}>
-              {prompt.promptType}
-            </Text>
+          <View style={styles.metaLeft}>
+            {!compact && prompt.isFeatured ? (
+              <View style={[styles.featuredPill, { backgroundColor: colors.secondary }]}>
+                <Feather name="star" size={10} color="#f5a623" />
+                <Text style={[styles.featuredPillText, { color: colors.secondaryForeground }]}>
+                  Featured
+                </Text>
+              </View>
+            ) : null}
+            {prompt.category ? (
+              <Text style={[styles.category, { color: colors.primary }]} numberOfLines={1}>
+                {prompt.category}
+              </Text>
+            ) : null}
+            {prompt.category && prompt.promptType ? (
+              <Text style={[styles.dot, { color: colors.mutedForeground }]}>·</Text>
+            ) : null}
+            {prompt.promptType ? (
+              <Text style={[styles.typeText, { color: colors.mutedForeground }]} numberOfLines={1}>
+                {prompt.promptType}
+              </Text>
+            ) : null}
+          </View>
+          {!compact ? (
+            <Pressable onPress={onSave} hitSlop={10} style={styles.saveInline}>
+              <Feather
+                name="bookmark"
+                size={18}
+                color={saved ? colors.primary : colors.mutedForeground}
+              />
+            </Pressable>
           ) : null}
         </View>
 
         <Text style={[styles.title, { color: colors.foreground }]} numberOfLines={2}>
           {prompt.name}
         </Text>
+
+        {!compact ? (
+          hasImages ? (
+            <ExampleImages
+              images={prompt.exampleImagesUrl}
+              height={150}
+              showLabel
+              onPressImage={() => router.push(`/prompt/${prompt.id}`)}
+            />
+          ) : (
+            <LinearGradient
+              colors={gradients.library as unknown as [string, string]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[styles.fallback, { borderRadius: r + 2 }]}
+            >
+              <Feather name={typeIcon(prompt.promptType)} size={30} color="rgba(255,255,255,0.92)" />
+            </LinearGradient>
+          )
+        ) : null}
 
         {!compact && prompt.description ? (
           <Text style={[styles.desc, { color: colors.mutedForeground }]} numberOfLines={2}>
@@ -190,7 +233,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   body: { padding: 14, gap: 8 },
-  metaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  metaRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
+  metaLeft: { flexDirection: "row", alignItems: "center", gap: 6, flex: 1 },
+  saveInline: { padding: 2 },
+  featuredPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+  },
+  featuredPillText: { fontSize: 10, fontFamily: "Inter_600SemiBold" },
+  fallback: { height: 150, alignItems: "center", justifyContent: "center", overflow: "hidden" },
   category: { fontSize: 12, fontFamily: "Inter_600SemiBold", flexShrink: 1 },
   dot: { fontSize: 12 },
   typeText: { fontSize: 12, fontFamily: "Inter_400Regular", flexShrink: 1 },
